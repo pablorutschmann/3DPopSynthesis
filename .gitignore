@@ -1,0 +1,11 @@
+.DS_Store
+.idea/
+3DPopSyn
+CMakeLists.txt
+DiskModule.o
+EvolutionModule.o
+NBodyModule.o
+SatelliteModule.o
+cmake-build-debug/
+disks/
+main.o
