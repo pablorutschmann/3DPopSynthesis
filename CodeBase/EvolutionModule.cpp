@@ -617,8 +617,8 @@ int EvolutionModel::Tick()
         }
     }
 
-    if(flags) cout << "\nTick is done at time " << Time << "\n\n\n\n";
-    
+    if (flags) { cout << "\nTick is done at time " << Time << "\n\n\n\n"; }
+
     return 0;
 }
 

@@ -56,7 +56,7 @@ SatelliteModel::SatelliteModel(int id, double mass, double x, double y, double z
     KClock = 0;
     AdvanceI = false;
     
-    Active = true;              // whether the satellite is active or destroied
+    Active = true;              // whether the satellite is active or destroyed
     
     GroupID = -1;               // group ID for close-encounters
     
@@ -82,7 +82,7 @@ double SatelliteModel::ComputeRadius()
 double SatelliteModel::ComputeR2D()
 {
     /*
-    Compute the 2D distance from the center (R in cilindrical coordinates)
+    Compute the 2D distance from the center (R in cylindrical coordinates)
     */
     return sqrt(X*X + Y*Y);
 }
@@ -116,7 +116,7 @@ double SatelliteModel::ComputeV()
 double SatelliteModel::ComputeTheta()
 {
     /*
-    Compute azimuthal angle (theta in cilindrical coordinates, phi in spherical coordinates)
+    Compute azimuthal angle (theta in cylindrical coordinates, phi in spherical coordinates)
     */
     return atan2(Y, X);
 }
