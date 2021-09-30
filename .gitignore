@@ -9,7 +9,6 @@ Executable/SatelliteModule.o
 cmake-build-debug/
 disks/
 Executable/main.o
-ppd
-Executable
-/disk215
-/disk215.txt
+ppd/
+Executable/
+/Disk_Profiles/
