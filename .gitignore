@@ -11,4 +11,6 @@ disks/
 Executable/main.o
 ppd/
 Executable/
-/Disk_Profiles/
+/disks/
+/Disk_Plots/
+/disks/
