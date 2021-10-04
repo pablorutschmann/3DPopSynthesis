@@ -71,7 +71,7 @@ def import_ppd(path):
                'velo_z [cm/s]', 'opac[cm^2/g]']
 
     # Read the file
-    disk = pd.read_csv(path, delim_whitespace=True, names=columns, index_col=False)
+    disk = pd.read_csv(path, delim_whitespace=True, names=columns, index_col=False, dtype=np.float64)
 
     # Convert to cylindrcal coordinates
     radius, phi = cart2pol(disk['x [cm]'], disk['y [cm]'])
@@ -165,11 +165,15 @@ def integrate_1D(name, space, df, plot=False):
 
         if plot == True:
             def raymond(r):
-                y = 4000 * au / (r * R_J)
+                y = 4000 * (au / (r * R_J))
+                return y / M_J * R_J2
+
+            def binkert(r):
+                y = 80 * (au / (r * R_J))**0.5
                 return y / M_J * R_J2
 
             def temp_ronco (r):
-                y = 280 * (au / (r * R_J))**(0.5)
+                y = 280 * (au / (r * R_J))
                 return y
 
             fig, ax = plt.subplots()
@@ -182,10 +186,10 @@ def integrate_1D(name, space, df, plot=False):
             ax.plot(x, func_exp(x, *popt), 'r-', label="Disk Model")
             if type == 'Surface Density' and name == 'gas':
                 unit = ' in M_J / R_jup^2'
-                #ax.plot(np.concatenate((x, r_all)), raymond(np.concatenate((x, r_all))), label="Raymond")
+                ax.plot(np.concatenate((x, r_all)), binkert(np.concatenate((x, r_all))), label="Raymond")
             if type == 'Surface Density' and name == 'dust':
                 unit = ' in M_J / R_jup^2'
-                #ax.plot(np.concatenate((x, r_all)), raymond(np.concatenate((x, r_all)))*0.01, label="Raymond")
+                ax.plot(np.concatenate((x, r_all)), binkert(np.concatenate((x, r_all)))*0.01, label="Raymond")
             if type == 'Temperature':
                 unit = ' Kelvin'
                 ax.plot(np.concatenate((x, r_all)), temp_ronco(np.concatenate((x, r_all))), label="Ronco")

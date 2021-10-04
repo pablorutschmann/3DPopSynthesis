@@ -2,6 +2,9 @@ import disk
 
 mydisk = disk.disk('ppd/')
 
+mydisk.gas.to_pickle('ppd/lev0_gas.dat.pickle')
+mydisk.dust.to_pickle('ppd/lev0_dust.dat.pickle')
+
 mydisk.N_front = 7
 mydisk.N_back = 6
 

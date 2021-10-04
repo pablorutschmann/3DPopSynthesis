@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from math import log
+import os.path
 
 # Defining Constants
 
@@ -70,18 +71,23 @@ class disk:
 
     # Import Function, Saves Disk to Dataframe in cgs units
     def import_ppd(self, path):
-        # Initial Columns
-        columns = ['x [cm]', 'y [cm]', 'z [cm]', 'dens [g/cm3]', 'temp [K]', 'velo_x [cm/s]', 'velo_y [cm/s]',
-                   'velo_z [cm/s]', 'opac[cm^2/g]']
+        if os.path.isfile(self.inpath + path + '.pickle'):
+            disk = pd.read_pickle(self.inpath + path + '.pickle')
+        else:
+            # Initial Columns
+            columns = ['x [cm]', 'y [cm]', 'z [cm]', 'dens [g/cm3]', 'temp [K]', 'velo_x [cm/s]', 'velo_y [cm/s]',
+                       'velo_z [cm/s]', 'opac[cm^2/g]']
 
-        # Read the file
-        disk = pd.read_csv(self.inpath + path, delim_whitespace=True, names=columns, index_col=False)
+            # Read the file
+            disk = pd.read_csv(self.inpath + path, delim_whitespace=True, names=columns, index_col=False, dtype=np.float64)
 
-        # Convert to cylindrcal coordinates
-        radius, phi = self.cart2pol(disk['x [cm]'], disk['y [cm]'])
-        disk['r [AU]'] = radius
-        disk['phi [rad]'] = phi + np.pi
-        print('Imported disk from: ' + path)
+            # Convert to cylindrcal coordinates
+            radius, phi = self.cart2pol(disk['x [cm]'], disk['y [cm]'])
+            radius_sph, phi_sph, theta_sph = self.cart2sph(disk['x [cm]'], disk['y [cm]'], disk['z [cm]'])
+            disk['r [AU]'] = radius
+            disk['phi [rad]'] = phi + np.pi
+            disk['theta [rad]'] = theta_sph
+            print('Imported disk from: ' + path)
         return disk
 
     def integrate_1D(self, phase):
@@ -95,15 +101,52 @@ class disk:
             trunc = arr[N_front:-N_back]
             return trunc
 
+
+        # Radii of data values
+        rs = np.reshape(df['r [AU]'].values, [self.phi_cells, self.r_cells, self.th_cells])
+
+
         # density
         dens = np.reshape(df['dens [g/cm3]'].values, [self.phi_cells, self.r_cells, self.th_cells])
         # height one cell 202799192448.87842
         # Integrate in z direction
-        sigma2d = np.sum(dens, axis=2) * 203599192448.87842
+
+        def cell_height(arr):
+            dx = []
+            for i in range(len(arr)-1):
+                dx.append(arr[i+1]-arr[i])
+            heights = []
+            heights.append(dx[0])
+            for i in range(1,len(dx)):
+                heights.append(dx[i-1]/2 + dx[i]/2)
+            heights.append(dx[-1])
+
+            return np.array((heights))
+        drs = cell_height(rs[0,:,0])
+        dhs = np.apply_along_axis(cell_height, arr=rs[0,:,:],axis=0)
+        print(len(drs))
+        print(dhs.shape)
+        print(dens.shape)
+        #integrate vertically
+        sigma2d = np.einsum('ijk,jk->ij',dens, dhs)
+        print(sigma2d.shape)
+
+        #sigma1d = np.sum(sigma2d, axis=(0))
+        #sigma2d = np.sum(dens, axis=2) * 202799192448.87842
         # Average azimutal direction
-        sigma1d = truncate(np.sum(sigma2d, axis=(0)), self.N_front, self.N_back)
+        sigma1d = np.mean(sigma2d, axis=(0))
         # convert to Solar Radius and Mass units
+        ann = []
+        for i in range(len(drs)):
+            ann.append(np.pi * ((rs[0,i,0] + drs[i]/2)**2 - (rs[0,i,0] - drs[i]/2)**2))
+        total_mass = np.dot(sigma1d,ann)
+        print('Total mass: ' + str(total_mass/M_J))
+
         sigma1d = sigma1d / M_J * R_J2
+
+
+
+        sigma1d = truncate(sigma1d,self.N_front, self.N_back)
 
         self.save_profile(phase, False, 'Surface Density [M_J / R_J^2]', sigma1d)
 
@@ -123,8 +166,6 @@ class disk:
 
         self.save_profile(phase, False, 'Temperature [K]', temp1d)
 
-        # Radii of data values
-        rs = np.reshape(df['r [AU]'].values, [self.phi_cells, self.r_cells, self.th_cells])
         rs = truncate(rs[0, :, 0], self.N_front, self.N_back) / R_J
 
         self.save_profile(phase, False, 'Radius [R_J]', rs)
@@ -221,9 +262,9 @@ class disk:
         sigma = self.raymond(self.out['r [R_J]'])
         sigma_dust = sigma * 0.01
 
-        out['sigma gas [M_J/R_J^2]'] = sigma
-        out['sigma dust [M_J/R_J^2]'] = sigma_dust
-        out['sigma dustbar [M_J/R_J^2]'] = sigma_dust
+        # out['sigma gas [M_J/R_J^2]'] = sigma
+        # out['sigma dust [M_J/R_J^2]'] = sigma_dust
+        # out['sigma dustbar [M_J/R_J^2]'] = sigma_dust
         out['Power Coefficient Density'] = np.full(self.N, 0)
         out['Power Coefficient Temperature'] = np.full(self.N, 0)
         out['Gas Opacity []'] = np.full(self.N, 0)
@@ -258,6 +299,16 @@ class disk:
         phi = np.arctan2(y, x)
         return (radius, phi)
 
+    def cart2sph(self, x, y, z):
+        radius = np.sqrt(x ** 2 + y ** 2 + z ** 2)
+        phi = np.arctan2(np.sqrt(x ** 2 + y ** 2), z)
+        theta = np.arctan2(y,x)
+        for i in range(len(x)):
+            if x[i] >= 0:
+                theta[i] += np.pi
+
+        return (radius, phi,theta)
+
     def func(self, x, a, b):
         return a * x + b
 
@@ -269,6 +320,9 @@ class disk:
     def raymond(self, r):
         y = 4000 * au / (r * R_J)
         return y / M_J * R_J2
+
+    def binkert(self, r):
+        y = 80
 
     def temp_ronco(self, r):
         y = 280 * (au / (r * R_J))**(0.5)
