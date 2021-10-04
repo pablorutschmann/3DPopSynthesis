@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.optimize import curve_fit
 import astropy.constants as astroconst
 from astropy import units as u
 import pandas as pd
@@ -55,6 +54,7 @@ N_b = 6
 R_min = 0.5
 R_max = 5
 N = 1000
+space ='log'
 
 
 # Helper Functions
@@ -182,10 +182,10 @@ def integrate_1D(name, space, df, plot=False):
             ax.plot(x, func_exp(x, *popt), 'r-', label="Disk Model")
             if type == 'Surface Density' and name == 'gas':
                 unit = ' in M_J / R_jup^2'
-                ax.plot(np.concatenate((x, r_all)), raymond(np.concatenate((x, r_all))), label="Raymond")
+                #ax.plot(np.concatenate((x, r_all)), raymond(np.concatenate((x, r_all))), label="Raymond")
             if type == 'Surface Density' and name == 'dust':
                 unit = ' in M_J / R_jup^2'
-                ax.plot(np.concatenate((x, r_all)), raymond(np.concatenate((x, r_all)))*0.01, label="Raymond")
+                #ax.plot(np.concatenate((x, r_all)), raymond(np.concatenate((x, r_all)))*0.01, label="Raymond")
             if type == 'Temperature':
                 unit = ' Kelvin'
                 ax.plot(np.concatenate((x, r_all)), temp_ronco(np.concatenate((x, r_all))), label="Ronco")
@@ -227,7 +227,8 @@ def write_disk(space, dim=1):
     sigma_dust = sigma * 0.01
 
     out = {}
-    out['#r [R_J]'] = x
+    out['r [R_J]'] = x
+    out['dr [R_J]'] = dx
     out['sigma gas [M_J/R_J^2]'] = sigma
     out['sigma dust [M_J/R_J^2]'] = sigma_dust
     out['sigma dustbar [M_J/R_J^2]'] = sigma_dust
@@ -252,9 +253,9 @@ def write_disk(space, dim=1):
 
 # a = integrate_1D(gas,True)
 # b = integrate_1D(dust,True)
-space = "log"
 
-#disk_out = write_disk(space)
+
+disk_out = write_disk(space)
 
 print('Solar Mass in Jupiter Masses: ' + str(M_S/M_J))
 
