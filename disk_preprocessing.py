@@ -36,6 +36,9 @@ R_E = astroconst.R_earth.decompose(u.cgs.bases).value
 # Gravitational Constant
 G = astroconst.G.decompose(u.cgs.bases).value
 
+# Seconds in a year
+year = 31536000
+
 # print(1.5 * 10 ** (-21) * M_J / R_J2 * 202799192448.87842)
 
 # Defining Parameters
@@ -128,7 +131,7 @@ def integrate_1D(name, space, df, plot=False):
 
     # Calculate Keplerian Veloctiy
 
-    year = 31536000
+
 
     def kepl_velo(r):
         # convert r to cgs
@@ -241,7 +244,7 @@ def write_disk(space, dim=1):
     else:
         outpath = 'disks/disk_' + str(N) + '.txt'
 
-    df_out.to_csv(outpath, sep=' ', mode='w')
+    df_out.to_csv(outpath, header=False, sep='\t', mode='w')
 
     print("Written disk file")
     return df_out
@@ -251,8 +254,11 @@ def write_disk(space, dim=1):
 # b = integrate_1D(dust,True)
 space = "log"
 
-disk_out = write_disk(space)
+#disk_out = write_disk(space)
 
 print('Solar Mass in Jupiter Masses: ' + str(M_S/M_J))
 
 print('Solar Radius in Jupiter Radii: ' + str(R_S/R_J))
+
+print(0.5 * au / R_J )
+print(5 * au / R_J)

@@ -1,0 +1,19 @@
+# Make
+
+cd CodeBase
+make -B
+mv 3DPopSyn DiskModule.o EvolutionModule.o main.o NBodyModule.o SatelliteModule.o ../Executable/
+cd ..
+
+# Empty outputs folder
+
+rm -rf system_0000/outputs/*
+
+# Start Simulation
+
+Executable/3DPopSyn system_0000/inputs system_0000/outputs system_0000/history.txt
+
+# move disk to inputs
+
+mv disks/disk_log_1000.txt system_0000/inputs/disk.txt
+
