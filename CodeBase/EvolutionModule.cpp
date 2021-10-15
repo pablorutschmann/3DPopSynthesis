@@ -214,6 +214,8 @@ void EvolutionModel::SetOptions()
     InputFile.close();
 
     NSatellites = Options["NSatellites"];
+    R_min = Options["R_min"];
+    R_max = Options["R_max"];
     InitMass = Options["InitMass"];
     Rho = Options["Rho"];
     FeedRadius = Options["FeedRadius"];
@@ -368,7 +370,8 @@ void EvolutionModel::CreateSatellite(int index)
 
     ID++;
 
-    expr = log10(1046.2560195546355) + (rand() % 10000) / 10000. * (log10(10462.560195546355) - log10(1046.2560195546355));
+    expr = log10(R_min) + (rand() % 10000) / 10000. * (log10(R_max) - log10(R_min));
+    //expr = log10(1046.2560195546355) + (rand() % 10000) / 10000. * (log10(10462.560195546355) - log10(1046.2560195546355));
     // expr = log10(20.) + (rand() % 1000) / 10000. * (log10(300.) - log10(20.));
     r = pow(10, expr);
     theta = (rand() % 10000) / 10000. * 2 * M_PI;

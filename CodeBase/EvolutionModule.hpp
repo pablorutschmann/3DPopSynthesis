@@ -32,6 +32,7 @@ public:
     string InputAddress, OutputAddress, MigrationType;
     double Time, MaxTime;
     int NSatellites;
+    double R_min, R_max;
     double InitMass, Rho;
     double DtMax, GlobalDt;
     double RDistruction;
