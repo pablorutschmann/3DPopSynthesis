@@ -56,6 +56,9 @@ R_max = 5
 N = 1000
 space ='log'
 
+print(R_min *  au / R_S)
+
+print(R_max *  au / R_S)
 
 # Helper Functions
 def cart2pol(x, y):

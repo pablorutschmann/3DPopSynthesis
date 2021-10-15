@@ -4,6 +4,7 @@ from astropy import units as u
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
+from scipy.integrate import tplquad
 from math import log
 import os.path
 
@@ -13,16 +14,21 @@ import os.path
 au = astroconst.au.decompose(u.cgs.bases).value
 
 # Jupiter Radius in cm
+#R_J = astroconst.R_jup.decompose(u.cgs.bases).value
 R_J = astroconst.R_jup.decompose(u.cgs.bases).value
 
 # Jupiter Radius squared
-R_J2 = (astroconst.R_jup.decompose(u.cgs.bases).value) ** 2
+R_J2 = R_J ** 2
 
 # Jupiter Mass in grams
+#M_J = astroconst.M_jup.decompose(u.cgs.bases).value
 M_J = astroconst.M_jup.decompose(u.cgs.bases).value
 
-# Solar Mass in grams
+# Solar Radius in grams
 R_S = astroconst.R_sun.decompose(u.cgs.bases).value
+
+# Solar Radius squared
+R_S2 = R_S ** 2
 
 # Solar Mass in grams
 M_S = astroconst.M_sun.decompose(u.cgs.bases).value
@@ -39,8 +45,17 @@ G = astroconst.G.decompose(u.cgs.bases).value
 # Seconds in a year
 year = 31536000
 
+print(0.0933 * M_E/M_S)
+
+print(au / R_S)
+print(au / R_J)
+
+
+
+G_jup = (G / R_S**3) * M_S * year**2
+
 class disk:
-    def __init__(self, path):
+    def __init__(self, path, pick = True):
         # Parameters
         self.inpath = path
         self.spacing = 'None'
@@ -49,11 +64,15 @@ class disk:
         self.R_min = -1 # Minimum Radius in AU for extrapolation
         self.R_max = -1 # Maximum Radius in AU for extrapolation
         self.N = -1 # Number of cells in extrapolation axis
+        self.from_pickle = pick
 
         # Shape of Data, [phi_cells, r_cells, th_cells]
         self.phi_cells = 680
         self.r_cells = 215
         self.th_cells = 20
+        self.dth = 0.006461
+        self.dphi = self.vec_sf(2 * np.pi / 680,prec=6)
+        self.dr = 7.18092128e+11
 
         self.tot_mass_gas = -1
         self.tot_mass_dust = -1
@@ -71,9 +90,9 @@ class disk:
 
     # Import Function, Saves Disk to Dataframe in cgs units
     def import_ppd(self, path):
-        if os.path.isfile(self.inpath + path + '.pickle'):
+        if os.path.isfile(self.inpath + path + '.pickle') and self.from_pickle == True:
             disk = pd.read_pickle(self.inpath + path + '.pickle')
-        else:
+        elif self.from_pickle == False or not(os.path.isfile(self.inpath + path + '.pickle')):
             # Initial Columns
             columns = ['x [cm]', 'y [cm]', 'z [cm]', 'dens [g/cm3]', 'temp [K]', 'velo_x [cm/s]', 'velo_y [cm/s]',
                        'velo_z [cm/s]', 'opac[cm^2/g]']
@@ -82,11 +101,16 @@ class disk:
             disk = pd.read_csv(self.inpath + path, delim_whitespace=True, names=columns, index_col=False, dtype=np.float64)
 
             # Convert to cylindrcal coordinates
-            radius, phi = self.cart2pol(disk['x [cm]'], disk['y [cm]'])
-            radius_sph, phi_sph, theta_sph = self.cart2sph(disk['x [cm]'], disk['y [cm]'], disk['z [cm]'])
-            disk['r [AU]'] = radius
-            disk['phi [rad]'] = phi + np.pi
-            disk['theta [rad]'] = theta_sph
+            #radius, phi = self.cart2pol(disk['x [cm]'], disk['y [cm]'])
+            radius, phi, theta = self.cart2sph(disk['x [cm]'], disk['y [cm]'], disk['z [cm]'])
+            disk['r [AU]'] = self.vec_sf(radius)
+            disk['phi [rad]'] = self.vec_sf(self.vec_sf(phi) + self.vec_sf(np.pi),prec=8)
+            disk['theta [rad]'] = self.vec_sf(theta)
+
+            #radius, phi, theta = self.vec_sf(self.cart2sph(self.vec_sf(disk['x [cm]']), self.vec_sf(disk['y [cm]']), self.vec_sf(disk['z [cm]'])),prec=8)
+            # disk['r [AU]'] = radius
+            # disk['phi [rad]'] = phi
+            # disk['theta [rad]'] = theta
             print('Imported disk from: ' + path)
         return disk
 
@@ -100,15 +124,40 @@ class disk:
         def truncate(arr, N_front,N_back):
             trunc = arr[N_front:-N_back]
             return trunc
-
-
         # Radii of data values
         rs = np.reshape(df['r [AU]'].values, [self.phi_cells, self.r_cells, self.th_cells])
+        phis = np.reshape(df['phi [rad]'].values, [self.phi_cells, self.r_cells, self.th_cells])
+        thetas = np.reshape(df['theta [rad]'].values, [self.phi_cells, self.r_cells, self.th_cells])
+
+        def check_unique(arr, type):
+            print('Unique ' + type )
+            flag = False
+            unique = np.unique(arr)
+            print(len(unique))
+
+        check_unique(rs, 'Radius')
+        ass = []
+        unique = np.unique(rs)
+        for i in range(self.r_cells-1):
+            ass.append(unique[i+1]/unique[i])
+
+        print(np.power(unique[-1]/unique[0], (1/self.r_cells)))
+        a = np.mean(ass)
+        print(a)
+        check_unique(phis, 'Phi')
+        check_unique(thetas, 'Theta')
+
+        unique = unique.tolist()
+        #logarithmically extend by 1 on both sides for distance measure
+        unique.append(unique[-1]*a)
+        unique.insert(0,unique[0]/a)
+        # Calculate Delta Radius
+        dx = [(a-1) * x for x in unique]
+        print(dx)
 
 
         # density
         dens = np.reshape(df['dens [g/cm3]'].values, [self.phi_cells, self.r_cells, self.th_cells])
-        # height one cell 202799192448.87842
         # Integrate in z direction
 
         def cell_height(arr):
@@ -117,47 +166,60 @@ class disk:
                 dx.append(arr[i+1]-arr[i])
             heights = []
             heights.append(dx[0])
-            for i in range(1,len(dx)):
-                heights.append(dx[i-1]/2 + dx[i]/2)
+            for i in range(0,len(dx)-1):
+                heights.append(dx[i]/2 + dx[i+1]/2)
             heights.append(dx[-1])
-
             return np.array((heights))
-        drs = cell_height(rs[0,:,0])
-        dhs = np.apply_along_axis(cell_height, arr=rs[0,:,:],axis=0)
-        print(len(drs))
-        print(dhs.shape)
-        print(dens.shape)
+
+        #calulate cell Volume
+        Vols = []
+        # for i in range(len(rs[0,:,0])):
+        #     for th in thetas[0,0,:]:
+        #         r_tuple = (dx[i],dx[i+1])
+        #         Vols.append(self.cell_vol(rs[0,i,0],r_tuple,self.dphi,th,self.dth))
+        #
+        # Vols = np.asarray(Vols)
+        # Vols = np.reshape(Vols, (self.th_cells,self.r_cells))
+        # np.save('ppd/Vols', Vols)
+        Vols = np.load('ppd/Vols.npy')
+
         #integrate vertically
-        sigma2d = np.einsum('ijk,jk->ij',dens, dhs)
-        print(sigma2d.shape)
+        dens_mean = np.sum(dens, axis=(0))
+        annulus_masses = np.einsum('jk,kj->j',dens_mean, Vols)
 
         #sigma1d = np.sum(sigma2d, axis=(0))
         #sigma2d = np.sum(dens, axis=2) * 202799192448.87842
         # Average azimutal direction
-        sigma1d = np.mean(sigma2d, axis=(0))
-        # convert to Solar Radius and Mass units
+
         ann = []
-        for i in range(len(drs)):
-            ann.append(np.pi * ((rs[0,i,0] + drs[i]/2)**2 - (rs[0,i,0] - drs[i]/2)**2))
-        total_mass = np.dot(sigma1d,ann)
-        print('Total mass: ' + str(total_mass/M_J))
+        for r in rs[0,:,0]:
+            ann.append(np.pi * ((r + self.dr/2)**2 - (r - self.dr/2)**2))
 
-        sigma1d = sigma1d / M_J * R_J2
+        #Surface Density
+        sigma1d = annulus_masses/ann
 
+        #Mirror Surface Density
+        sigma1d *= 2
 
+        total_mass = np.dot(sigma1d,ann) / M_S
+        print('Total mass: ' + str(total_mass))
 
+        # Convert to CODEUNTIS
+        sigma1d = sigma1d / M_S * R_S2
+
+        # Truncate front and back artifacts
         sigma1d = truncate(sigma1d,self.N_front, self.N_back)
 
-        self.save_profile(phase, False, 'Surface Density [M_J / R_J^2]', sigma1d)
+        self.save_profile(phase, False, 'Surface Density [M_S / R_S^2]', sigma1d)
 
         # opacity
         opac = np.reshape(df['opac[cm^2/g]'].values, [self.phi_cells, self.r_cells, self.th_cells])
         # average in vertical and azimutal directions
         opac1d = truncate(np.mean(opac, axis=(0, 2)), self.N_front, self.N_back)
         # convert to Solar Radius and Mass units
-        opac1d = opac1d * M_J / R_J2
+        opac1d = opac1d * M_S / R_S2
 
-        self.save_profile(phase, False, 'Opacity [M_J / R_J^2]', opac1d)
+        self.save_profile(phase, False, 'Opacity [M_S / R_S^2]', opac1d)
 
         # temperature
         temp = np.reshape(df['temp [K]'].values, [self.phi_cells, self.r_cells, self.th_cells])
@@ -166,9 +228,9 @@ class disk:
 
         self.save_profile(phase, False, 'Temperature [K]', temp1d)
 
-        rs = truncate(rs[0, :, 0], self.N_front, self.N_back) / R_J
+        rs = truncate(rs[0, :, 0], self.N_front, self.N_back) / R_S
 
-        self.save_profile(phase, False, 'Radius [R_J]', rs)
+        self.save_profile(phase, False, 'Radius [R_S]', rs)
 
 
     def extrapolate(self, spacing, R_min, R_max, N):
@@ -177,30 +239,38 @@ class disk:
         self.R_max = R_max
         self.N = N
 
-        # Extrapolation linspace or logspace of radii in R_J, include one point more for N cells
+        # Extrapolation linspace or logspace of radii in R_S, include one point more for N cells
         if self.spacing == 'lin':
-            x = np.linspace(self.R_min, self.R_max, self.N + 1) * au / R_J
+            x = np.linspace(self.R_min, self.R_max, self.N + 1) * au / R_S
         elif self.spacing == 'log':
-            x = np.logspace(1, log(self.R_max, self.R_min), self.N + 1, base=self.R_min) * au / R_J
+            a = np.power(self.R_max/self.R_min, 1/self.N)
+            x = np.geomspace(self.R_min,self.R_max,self.N) * au / R_S
+            dx = [(a-1) * item for item in x]
+            dx.append((a-1)*x[-1]*a)
+            dx.insert(0,(a-1)*x/a)
+            print(dx)
 
 
-        r_all = np.linspace(R_max, self.gas_profiles['Radius [R_J]'].max() * R_J / au, N) * au / R_J
+
+        r_all = np.linspace(R_max, self.gas_profiles['Radius [R_S]'].max() * R_S / au, N) * au / R_S
 
         # calculate delta_x
-        dx = np.zeros(N)
-        for i in range(N):
-            dx[i] = x[i + 1] - x[i]
+        # dx = np.zeros(N)
+        # for i in range(N):
+        #     dx[i] = x[i + 1] - x[i]
+        #
+        # # remove last element
+        # x = x[:-1]
 
-        # remove last element
-        x = x[:-1]
-
-        self.out['r [R_J]'] = x
-        self.out['dr [R_J]'] = dx
+        self.out['r [R_S]'] = x
+        dx.pop(0)
+        dx.pop(-1)
+        self.out['dr [R_S]'] = np.array(dx)
 
         # Calculate Keplerian Veloctiy
         def kepl_velo(r):
             # convert r to cgs
-            r = r * R_J
+            r = r * R_S
             v_kep = np.sqrt(G * M_S / r ** 3)
             # convert back to Jupiter Units
 
@@ -208,14 +278,14 @@ class disk:
 
         vx = kepl_velo(x)
 
-        self.out['Keplerian Velocity [R_J / yr]'] = vx
+        self.out['Keplerian Velocity [R_S / yr]'] = vx
 
         # Calculate Area of Annulus
         A = np.zeros(N)
         for i in range(N):
-            A[i] = np.pi * ((x[i] + dx[i]) ** 2 - x[i] ** 2)
+            A[i] = np.pi * ((x[i] + dx[i]/2)**2 - (x[i] - dx[i]/2)** 2)
 
-        self.out['Area [R_J^2]'] = A
+        self.out['Area [R_S^2]'] = A
 
         for phase in ['gas','dust']:
             if phase == 'gas':
@@ -223,26 +293,26 @@ class disk:
             if phase == 'dust':
                 profiles = self.dust_profiles
 
-            rs = profiles['Radius [R_J]']
+            rs = profiles['Radius [R_S]']
 
-            sigma_extra, pow_coeff_sigma = self.get_extrapolate(rs, profiles['Surface Density [M_J / R_J^2]'])
-            self.save_profile(phase, True, 'Surface Density [M_J / R_J^2]', sigma_extra)
-            self.save_profile(phase, True, 'Power Coefficient Sigma', pow_coeff_sigma)
+            sigma_extra, popt_sigma = self.get_extrapolate(rs, profiles['Surface Density [M_S / R_S^2]'])
+            self.save_profile(phase, True, 'Surface Density [M_S / R_S^2]', sigma_extra)
+            self.save_profile(phase, True, 'Power Coefficient Sigma', popt_sigma)
 
-            opac_extra, pow_coeff_opac = self.get_extrapolate(rs, profiles['Opacity [M_J / R_J^2]'])
+            opac_extra, popt_opac = self.get_extrapolate(rs, profiles['Opacity [M_S / R_S^2]'])
             self.save_profile(phase, True, 'Opacity []', opac_extra)
-            self.save_profile(phase, True, 'Power Coefficient Opac', pow_coeff_opac)
+            self.save_profile(phase, True, 'Power Coefficient Opac', popt_opac)
 
-            temp_extra, pow_coeff_temp = self.get_extrapolate(rs, profiles['Temperature [K]'])
+            temp_extra, popt_temp = self.get_extrapolate(rs, profiles['Temperature [K]'])
             self.save_profile(phase, True, 'Temperature [K]', temp_extra)
-            self.save_profile(phase, True, 'Power Coefficient Temp', pow_coeff_temp)
+            self.save_profile(phase, True, 'Power Coefficient Temp', popt_temp)
 
-        self.out['sigma gas [M_J/R_J^2]'] = self.gas_profiles_extra['Surface Density [M_J / R_J^2]']
-        self.out['sigma dust [M_J/R_J^2]'] = self.dust_profiles_extra['Surface Density [M_J / R_J^2]']
-        self.out['sigma dustbar [M_J/R_J^2]'] = self.dust_profiles_extra['Surface Density [M_J / R_J^2]']
+        self.out['sigma gas [M_S/R_S^2]'] = self.gas_profiles_extra['Surface Density [M_S / R_S^2]']
+        self.out['sigma dust [M_S/R_S^2]'] = self.dust_profiles_extra['Surface Density [M_S / R_S^2]']
+        self.out['sigma dustbar [M_S/R_S^2]'] = self.dust_profiles_extra['Surface Density [M_S / R_S^2]']
         self.out['T [K]'] = self.gas_profiles_extra['Temperature [K]']
-        self.out['Power Coefficient Density'] = np.full(N, self.gas_profiles_extra['Power Coefficient Sigma'])
-        self.out['Power Coefficient Temperature'] = np.full(N, self.gas_profiles_extra['Power Coefficient Temp'])
+        self.out['Power Coefficient Density'] = np.full(N, self.gas_profiles_extra['Power Coefficient Sigma'][0])
+        self.out['Power Coefficient Temperature'] = np.full(N, self.gas_profiles_extra['Power Coefficient Temp'][0])
         self.out['Gas Opacity []'] = self.gas_profiles_extra['Opacity []']
 
         print("Inter/Extrapolated Data!")
@@ -253,24 +323,24 @@ class disk:
         print(len(out))
         print(type(out))
         for x,y in out.items():
-            print(x, y.shape)
+            print(x, type(y))
         print(out.values)
         # disk profile
-        # index 0-(N-1), radius R_J, delta radius R_J, sigma gas, sigma dust M_J R_J2, sigma dust bar, temperature, area of annulus, keplerian orbital velocity omega, sigma exponent, temp exponent, opacity
+        # index 0-(N-1), radius R_S, delta radius R_S, sigma gas, sigma dust M_S R_S2, sigma dust bar, temperature, area of annulus, keplerian orbital velocity omega, sigma exponent, temp exponent, opacity
 
         # sigma dust for now with gas to dust ratio of 0.01
-        sigma = self.raymond(self.out['r [R_J]'])
+        sigma = self.raymond(self.out['r [R_S]'])
         sigma_dust = sigma * 0.01
 
-        # out['sigma gas [M_J/R_J^2]'] = sigma
-        # out['sigma dust [M_J/R_J^2]'] = sigma_dust
-        # out['sigma dustbar [M_J/R_J^2]'] = sigma_dust
-        out['Power Coefficient Density'] = np.full(self.N, 0)
-        out['Power Coefficient Temperature'] = np.full(self.N, 0)
+        out['sigma gas [M_S/R_S^2]'] = sigma
+        out['sigma dust [M_S/R_S^2]'] = sigma_dust
+        out['sigma dustbar [M_S/R_S^2]'] = sigma_dust
+        out['Power Coefficient Density'] = np.full(self.N, -1)
+        out['Power Coefficient Temperature'] = np.full(self.N, -0.5)
         out['Gas Opacity []'] = np.full(self.N, 0)
 
 
-        for key in ['r [R_J]', 'dr [R_J]', 'sigma gas [M_J/R_J^2]', 'sigma dust [M_J/R_J^2]', 'sigma dustbar [M_J/R_J^2]', 'T [K]', 'Area [R_J^2]', 'Keplerian Velocity [R_J / yr]', 'Power Coefficient Density', 'Power Coefficient Temperature', 'Gas Opacity []']:
+        for key in ['r [R_S]', 'dr [R_S]', 'sigma gas [M_S/R_S^2]', 'sigma dust [M_S/R_S^2]', 'sigma dustbar [M_S/R_S^2]', 'T [K]', 'Area [R_S^2]', 'Keplerian Velocity [R_S / yr]', 'Power Coefficient Density', 'Power Coefficient Temperature', 'Gas Opacity []']:
             #self.out = self.out.pop[key]
             out[key] = out.pop(key)
 
@@ -280,13 +350,13 @@ class disk:
         else:
             outpath = 'disks/disk_' + str(self.N) + '.txt'
 
-        self.tot_mass_gas = np.dot(out['sigma gas [M_J/R_J^2]'],out['Area [R_J^2]'])
-        self.tot_mass_dust = np.dot(out['sigma dust [M_J/R_J^2]'],out['Area [R_J^2]'])
+        self.tot_mass_gas = np.dot(out['sigma gas [M_S/R_S^2]'],out['Area [R_S^2]'])
+        self.tot_mass_dust = np.dot(out['sigma dust [M_S/R_S^2]'],out['Area [R_S^2]'])
         self.tot_mass = self.tot_mass_gas + self.tot_mass_dust
 
-        print('Total Mass of Gas: ' + str(self.tot_mass_gas))
-        print('Total Mass of Dust: ' + str(self.tot_mass_dust))
-        print('Total Mass: ' + str(self.tot_mass))
+        print('Total Mass of Gas: ' + str(self.tot_mass_gas*M_S/M_J))
+        print('Total Mass of Dust: ' + str(self.tot_mass_dust*M_S/M_J))
+        print('Total Mass: ' + str(self.tot_mass*M_S/M_J))
 
         df_out.to_csv(outpath, header=True, sep='\t', mode='w')
 
@@ -301,13 +371,41 @@ class disk:
 
     def cart2sph(self, x, y, z):
         radius = np.sqrt(x ** 2 + y ** 2 + z ** 2)
-        phi = np.arctan2(np.sqrt(x ** 2 + y ** 2), z)
-        theta = np.arctan2(y,x)
+        theta = np.arctan(z / np.sqrt(x ** 2 + y ** 2))
+        #phi = np.arctan2(self.vec_sf(y, prec = 5),self.vec_sf(x, prec = 5))
+        phi = np.arctan2(y,x)
         for i in range(len(x)):
-            if x[i] >= 0:
-                theta[i] += np.pi
+            if x[i] <= 0:
+                #theta[i] -= 2 * theta[i]
+                a=1
+        # for i in range(len(y)):
+        #         phi[i] += np.pi
 
-        return (radius, phi,theta)
+        return (radius, phi , theta)
+
+    def cell_vol(self, r, dr , dphi, theta, dtheta):
+        def theta_trafo(th):
+            return np.pi/2 - th
+        theta = theta_trafo(theta)
+        theta1 = theta - dtheta/2
+        theta2 = theta + dtheta/2
+        dr1, dr2 = dr
+        r1 = r - dr1/2
+        r2 = r + dr2/2
+
+        phi1 = 0
+        phi2 = dphi
+
+        def integrant(phi,th,r):
+            return r**2 * np.sin(th)
+        V, dV = tplquad(integrant, r1, r2, lambda x: theta1, lambda x: theta2,lambda x, y: phi1, lambda x, y: phi2)
+        return V
+
+    # Significant Digits Rounding Function
+    def sf(x,prec=13):
+        x = float(np.format_float_positional(x, precision=prec, unique=False, fractional=False,trim='k'))
+        return x
+    vec_sf = np.vectorize(sf)
 
     def func(self, x, a, b):
         return a * x + b
@@ -318,23 +416,22 @@ class disk:
         return B * x ** a
 
     def raymond(self, r):
-        y = 4000 * au / (r * R_J)
-        return y / M_J * R_J2
+        y = 4000 * au / (r * R_S)
+        return y / M_S * R_S2
 
     def binkert(self, r):
-        y = 80
+        y = 80 * (au / (r * R_S))**0.5
+        return y / M_S * R_S2
 
     def temp_ronco(self, r):
-        y = 280 * (au / (r * R_J))**(0.5)
+        y = 280 * (au / (r * R_S))**(0.5)
         return y
 
     def get_extrapolate(self, x_init, y_init):
         # Fit the linear function to log log data
         popt, pcov = curve_fit(self.func, np.log(x_init), np.log(y_init))
 
-        pow_coeff = popt[0]
-
-        return self.func_exp(self.out['r [R_J]'], *popt), pow_coeff
+        return self.func_exp(self.out['r [R_S]'], *popt), popt
 
     def save_profile(self, type, extra, key, arr):
         if extra:
@@ -347,4 +444,9 @@ class disk:
                 self.gas_profiles[key] = arr
             if type == 'dust':
                 self.dust_profiles[key] = arr
+
+    def mirror_theta(self, arr):
+        flipped = np.flip(arr, axis=0)
+        mirrored = np.concatenate((arr, flipped), axis=0)
+        return mirrored
 
