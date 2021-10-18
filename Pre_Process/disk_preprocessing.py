@@ -216,8 +216,8 @@ def integrate_1D(name, space, df, plot=False):
 
 
 def write_disk(space, dim=1):
-    gas = import_ppd('ppd/lev0_gas.dat')
-    dust = import_ppd('ppd/lev0_dust.dat')
+    gas = import_ppd('../ppd/lev0_gas.dat')
+    dust = import_ppd('../ppd/lev0_dust.dat')
 
     if dim == 1:
         x, dx, sigma, opac, temp, Area, v_kepl, pow_coeffs = integrate_1D('gas', space, gas, True)

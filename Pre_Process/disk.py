@@ -45,12 +45,8 @@ G = astroconst.G.decompose(u.cgs.bases).value
 # Seconds in a year
 year = 31536000
 
-print(0.0933 * M_E/M_S)
-
-print(au / R_S)
-print(au / R_J)
-
-
+rho = 5.513 / M_S * R_S**3
+print(rho)
 
 G_jup = (G / R_S**3) * M_S * year**2
 
@@ -181,7 +177,7 @@ class disk:
         # Vols = np.asarray(Vols)
         # Vols = np.reshape(Vols, (self.th_cells,self.r_cells))
         # np.save('ppd/Vols', Vols)
-        Vols = np.load('ppd/Vols.npy')
+        Vols = np.load('/Users/prut/CLionProjects/3DPopSynthesis/ppd/Vols.npy')
 
         #integrate vertically
         dens_mean = np.sum(dens, axis=(0))
@@ -336,7 +332,7 @@ class disk:
         out['sigma dust [M_S/R_S^2]'] = sigma_dust
         out['sigma dustbar [M_S/R_S^2]'] = sigma_dust
         out['Power Coefficient Density'] = np.full(self.N, -1)
-        out['Power Coefficient Temperature'] = np.full(self.N, -0.5)
+        #out['Power Coefficient Temperature'] = np.full(self.N, -0.5)
         out['Gas Opacity []'] = np.full(self.N, 0)
 
 

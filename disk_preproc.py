@@ -1,6 +1,4 @@
-import disk
-import plotting
-import numpy as np
+from Pre_Process import disk, plotting
 
 mydisk = disk.disk('ppd/', pick=True)
 

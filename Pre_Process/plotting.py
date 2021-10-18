@@ -1,13 +1,6 @@
 import numpy as np
-import astropy.constants as astroconst
-from astropy import units as u
-import pandas as pd
 import matplotlib.pyplot as plt
-from scipy.optimize import curve_fit
-from math import log
-import os.path
 
-import disk
 
 class plotter:
     def __init__(self, disk):
