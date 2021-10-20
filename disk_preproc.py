@@ -5,8 +5,8 @@ mydisk = disk.disk('ppd/', pick=True)
 mydisk.gas.to_pickle('ppd/lev0_gas.dat.pickle')
 mydisk.dust.to_pickle('ppd/lev0_dust.dat.pickle')
 
-mydisk.N_front = 7
-mydisk.N_back = 6
+mydisk.N_front = 15
+mydisk.N_back = 15
 
 mydisk.integrate_1D('gas')
 mydisk.integrate_1D('dust')
@@ -22,4 +22,4 @@ mydisk.write_disk()
 
 plt = plotting.plotter(mydisk)
 
-plt.plot_density()
+plt.plot_density('log')

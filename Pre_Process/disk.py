@@ -8,10 +8,9 @@ from scipy.integrate import tplquad
 from math import log
 import os.path
 
-# Defining Constants
+from scipy.optimize import fsolve
 
-# AU in cm
-au = astroconst.au.decompose(u.cgs.bases).value
+# Defining Constants
 
 # Jupiter Radius in cm
 #R_J = astroconst.R_jup.decompose(u.cgs.bases).value
@@ -46,9 +45,32 @@ G = astroconst.G.decompose(u.cgs.bases).value
 year = 31536000
 
 rho = 5.513 / M_S * R_S**3
-print(rho)
 
 G_jup = (G / R_S**3) * M_S * year**2
+
+
+#Effective Temperature of Sun
+T_S = 5780
+
+T_J = 130
+
+SMA_J = 5.2
+#
+print('alpha')
+alpha = T_J/T_S * (SMA_J/R_S)**0.5
+print(alpha)
+
+#inputs in au
+def temp(r):
+    return (T_S * (R_S / r)**0.5 * alpha) - 170.0
+
+r_ice = fsolve(temp,3)
+
+print(r_ice)
+
+temps = [temp(x) for x in np.linspace(0.5,30,100)]
+
+print(temps)
 
 class disk:
     def __init__(self, path, pick = True):
@@ -328,9 +350,9 @@ class disk:
         sigma = self.raymond(self.out['r [R_S]'])
         sigma_dust = sigma * 0.01
 
-        out['sigma gas [M_S/R_S^2]'] = sigma
-        out['sigma dust [M_S/R_S^2]'] = sigma_dust
-        out['sigma dustbar [M_S/R_S^2]'] = sigma_dust
+        # out['sigma gas [M_S/R_S^2]'] = sigma
+        # out['sigma dust [M_S/R_S^2]'] = sigma_dust
+        # out['sigma dustbar [M_S/R_S^2]'] = sigma_dust
         out['Power Coefficient Density'] = np.full(self.N, -1)
         #out['Power Coefficient Temperature'] = np.full(self.N, -0.5)
         out['Gas Opacity []'] = np.full(self.N, 0)

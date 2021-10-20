@@ -5,6 +5,20 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib import colors
 from pathlib import Path
+import astropy.constants as astroconst
+from astropy import units as u
+
+# AU in cm
+au = astroconst.au.decompose(u.cgs.bases).value
+
+# Solar Radius in grams
+R_S = astroconst.R_sun.decompose(u.cgs.bases).value
+
+# Solar Radius squared
+R_S2 = R_S ** 2
+
+# Solar Mass in grams
+M_S = astroconst.M_sun.decompose(u.cgs.bases).value
 
 class sat_data:
     def __init__(self, dir):
@@ -36,7 +50,7 @@ class sat_data:
         first_snap = self.raw_data[str(self.numbers[0])]
 
         all_init_masses = first_snap['M']
-        all_init_sma = first_snap['a']
+        all_init_sma = first_snap['a'] * R_S / au
         all_init_e = first_snap['e']
 
         #ids of the remaining satellites
@@ -52,17 +66,17 @@ class sat_data:
         fig, (ax1, ax2) = plt.subplots(ncols=2)
         fig.set_size_inches(18.5, 10.5)
         final_masses = data_rem[str(self.numbers[-1])]['M']
-        final_sma = data_rem[str(self.numbers[-1])]['a']
+        final_sma = data_rem[str(self.numbers[-1])]['a'] * R_S / au
         final_e = data_rem[str(self.numbers[-1])]['e']
         final_s = final_masses/max(all_init_masses)
 
         init_masses = data_rem[str(self.numbers[0])]['M']
-        init_sma = data_rem[str(self.numbers[0])]['a']
+        init_sma = data_rem[str(self.numbers[0])]['a']* R_S / au
         init_e = data_rem[str(self.numbers[0])]['e']
 
         init_s = init_masses/max(final_masses)
         all_init_s = all_init_masses/max(all_init_masses)
-        init_sma = (init_sma / max(init_sma))
+        init_sma = (init_sma / max(init_sma)) * R_S / au
         scaling = 5
 
         cmap = cm.cividis
@@ -78,9 +92,9 @@ class sat_data:
                      label="starting sma", ax=[ax1,ax2])
         # ax1.set_ylim(-0.05,0.4)
         # ax2.set_ylim(-0.05, 0.4)
-        ax1.set_xlabel('Semi Mayor Axis in J_r', fontsize=15)
+        ax1.set_xlabel('Semi Mayor Axis in AU', fontsize=15)
         ax1.set_ylabel('Eccentricity', fontsize=15)
-        ax2.set_xlabel('Semi Mayor Axis in J_r', fontsize=15)
+        ax2.set_xlabel('Semi Mayor Axis in AU', fontsize=15)
         ax2.set_ylabel('Eccentricity', fontsize=15)
         fig.suptitle('Final Satellites and their starting Conditions')
 
