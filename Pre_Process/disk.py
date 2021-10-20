@@ -11,6 +11,8 @@ import os.path
 from scipy.optimize import fsolve
 
 # Defining Constants
+# AU in cm
+au = astroconst.au.decompose(u.cgs.bases).value
 
 # Jupiter Radius in cm
 #R_J = astroconst.R_jup.decompose(u.cgs.bases).value
@@ -57,12 +59,15 @@ T_J = 130
 SMA_J = 5.2
 #
 print('alpha')
-alpha = T_J/T_S * (SMA_J/R_S)**0.5
+alpha = T_J/T_S * (SMA_J/(R_S/au))**0.5
 print(alpha)
 
 #inputs in au
 def temp(r):
-    return (T_S * (R_S / r)**0.5 * alpha) - 170.0
+    return (T_S * (R_S/au / r)**0.5 * alpha) - 170
+
+def temp(r):
+    return (5780 * (1 / r)**0.5 * 0.7520883995742579)
 
 r_ice = fsolve(temp,3)
 

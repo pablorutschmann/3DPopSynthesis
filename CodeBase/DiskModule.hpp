@@ -28,9 +28,9 @@ public:
     
     string InputAddress, OutputAddress;
 
+
     double MP, RP;
     double DustToGas;
-    double Tmin;
     double RCavity;
     double TDisp, TTemp, TRefilling;
     int GasDrop, DustDrop, TempDrop, Refilling;
@@ -64,6 +64,7 @@ public:
     double ComputeH(int i);
     double ComputeMaxMass(int i);
     double ComputeOpacity(int i);
+    double ComputeTmin(int i);
 
     // Evolution functions
     void DiskEvolution(double dt);

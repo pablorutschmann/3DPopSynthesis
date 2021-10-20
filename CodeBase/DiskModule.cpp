@@ -38,7 +38,6 @@ DiskModel::DiskModel(string input_address, string output_address, std::map<std::
     // Assign options
     MP = Options["MP"];
     RP = Options["RP"];
-    Tmin = Options["Tmin"];
     RCavity = Options["RCavity"];
     TDisp = Options["TDisp"];
     TTemp = Options["TTemp"];
@@ -157,6 +156,11 @@ double DiskModel::ComputeOpacity(int i)
     return k * 8481.;      // in Jupiter unit
 }
 
+double DiskModel::ComputeTmin(int i)
+{
+    return 5780. * sqrt( RP / R[i] ) * 0.7520883995742579 / 100;
+}
+
 
 
 double DiskModel::ComputeMaxMass(int i)
@@ -188,12 +192,13 @@ void DiskModel::DiskEvolution(double dt)
             SigmaDustBar[i] *= DiskFactor;
         }
         sigma_gas += SigmaGas[i] / 2.;      // average gas density before and after if RadiativeCooling is ON
-        if((TempDrop) && (Temp[i] > Tmin))
+        if((TempDrop) && (Temp[i] > ComputeTmin(i)))
             {
                 if(RadiativeCooling)
                 {
                     double tau = sqrt(2. * M_PI) * SigmaGas[i] * ComputeOpacity(i);
                     double T = Temp[i];
+                    double Tmin = ComputeTmin(i);
                     double TempGrad = - SigmaBoltz / Cv / sigma_gas * (T*T*T*T - Tmin*Tmin*Tmin*Tmin) / (tau + 1/tau);
                     /*
                     cout << "i = " << i << " over " << Length << '\n';
@@ -206,11 +211,11 @@ void DiskModel::DiskEvolution(double dt)
                     
 
                     Temp[i] = T + TempGrad * dt;
-                    if (Temp[i] < Tmin) { Temp[i] = Tmin; }
+                    if (Temp[i] < ComputeTmin(i)) { Temp[i] = ComputeTmin(i); }
                 }
                 else
                 {
-                    double temp = Tmin + (Temp[i] - Tmin) * TempFactor;
+                    double temp = ComputeTmin(i) + (Temp[i] - ComputeTmin(i)) * TempFactor;
                     Temp[i] = temp;
                 }
             }

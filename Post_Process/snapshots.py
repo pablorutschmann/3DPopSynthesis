@@ -139,6 +139,80 @@ class sat_data:
         #plt.show()
         fig.savefig(self.dir + 'plots/' + 'accretion.png')
 
+class disk_data:
+    def __init__(self, dir):
+        self.dir = dir
+        self.path = self.dir + 'outputs/'
+
+        Path(self.dir + 'plots/' ).mkdir(parents=False, exist_ok=True)
+
+        labelnames = ['Radius', 'Delta Radius', 'Surface Density Gas', 'Surface Density Dust', 'Initial Surface Density Dust', 'Temperature', 'Annulus Area','Keplerian Velocity', 'Surface Density Exponent', 'Temperature Exponent', 'Opacity']
+        units = ['AU', 'AU', r'$M_s R_s^{-2}$', r'$M_s R_s^{-2}$', r'$M_s R_s^{-2}$', r'$Kelvin$', r'$R_s^{2}$', 'Velocity', 'unitless', 'unitless', 'unitless']
+        names = ['r', 'dr', 'SigmaGas', 'SigmaDust', 'SigmaDustBar', 'Temp', 'Area','OmegaK', 'SigmaExponent', 'TExponent', 'Opacity']
+        self.labels = {}
+        self.labels['unit'] = units
+        self.labels['label'] = labelnames
+        self.labels['name'] = names
+
+        #get number of snapshots
+        N_snaps = 0
+        self.numbers = []
+        for file in os.listdir(self.path):
+            if "Snapshot" in file:
+                number = int(file[-4:])
+                self.numbers.append(number)
+                N_snaps += 1
+        self.n_snaps = N_snaps
+        self.numbers.sort()
+        self.raw_data = {}
+        self.times = []
+        for i in self.numbers:
+            path = self.path + "Snapshot_" + str(i).zfill(4)
+            diskfile = path + "/disk.txt"
+            df = pd.read_csv(diskfile, sep="	", index_col="#index", dtype='float64')
+            df.sort_index(inplace=True)
+            df.index = df.index.astype(int)
+            d = {}
+            parafile = path + "/parameters.txt"
+            with open(parafile) as f:
+                for line in f:
+                    (key, val) = line.split()
+                    d[key] = val
+            self.times.append(d['Time'])
+            self.raw_data[str(i)] = df
+
+
+    def temp(self,r):
+        return (5780 * (1 / r)**0.5 * 0.7520883995742579)
+
+
+    def plot_evol(self,name):
+
+        index = self.labels['name'].index(name)
+        name = self.labels['name'][index]
+        unit = self.labels['unit'][index]
+        label = self.labels['label'][index]
+
+        fig, ax = plt.subplots()
+
+        rs = self.raw_data[str(self.numbers[0])]['r'] * R_S / au
+
+        data = []
+        for key, item in self.raw_data.items():
+            data.append(item[name])
+        #ax.plot(rs,self.temp(rs))
+        for i, item in enumerate(data):
+            ax.plot(rs,item, label=str(self.times[i]))
+        ax.set_xlabel('Radius in AU', fontsize=15)
+        ax.set_ylabel(unit, fontsize=15)
+        ax.set_xscale('log')
+        ax.set_yscale('log')
+        ax.legend()
+        fig.suptitle(label + 'Profile Evolution')
+
+        #plt.show()
+        fig.savefig(self.dir + 'plots/' + label + '_profile_evolution_' + '.png')
+
 
 
 
