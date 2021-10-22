@@ -159,6 +159,7 @@ double DiskModel::ComputeOpacity(int i)
 double DiskModel::ComputeTmin(int i)
 {
     return 5780. * sqrt( RP / R[i] ) * 0.7520883995742579 / 100;
+    // return 0
 }
 
 
