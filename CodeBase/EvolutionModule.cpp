@@ -276,7 +276,7 @@ void EvolutionModel::SetParameters()
         ofstream OutputFile;
 
         OutputFile.open(OutputAddress + "/satellite_list.txt");
-        OutputFile << "#ID\tinit_time\tmass\twmf\tr2D\ttheta\tz\tx\ty\tz\tinit_temp\n";
+        OutputFile << "#ID\tinit_time\tmass\twmf\tr2D\ttheta\tx\ty\tz\tinit_temp\n";
         OutputFile.close();
 
         OutputFile.open(OutputAddress + "/lost_satellites.txt");
@@ -386,7 +386,7 @@ void EvolutionModel::CreateSatellite(int index)
 
     ofstream OutputFile;
     OutputFile.open(OutputAddress + "/satellite_list.txt", ios_base::app);
-    OutputFile << Satellites[index].ID << '\t' << Satellites[index].InitTime << '\t' << Satellites[index].Mass << '\t' << Satellites[index].WMF << '\t' << Satellites[index].ComputeR2D() << '\t' << Satellites[index].ComputeTheta() << '\t' << Satellites[index].Z << '\t' << Satellites[index].X << '\t' << Satellites[index].Y << '\t' << Satellites[index].Z << '\t' << Disk.Temp[Satellites[index].Index] << '\n';
+    OutputFile << Satellites[index].ID << '\t' << Satellites[index].InitTime << '\t' << Satellites[index].Mass << '\t' << Satellites[index].WMF << '\t' << Satellites[index].ComputeR2D() << '\t' << Satellites[index].ComputeTheta() << '\t' << Satellites[index].X << '\t' << Satellites[index].Y << '\t' << Satellites[index].Z << '\t' << Disk.Temp[Satellites[index].Index] << '\n';
     OutputFile.close();
 
     Satellites[index].Print(Time, "");
