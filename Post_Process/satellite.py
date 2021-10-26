@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import pandas as pd
 
 class satellite:
@@ -25,12 +26,30 @@ class satellite:
             if self.ID in item.satellites.index:
                 for col in columns:
                     data[col].append(item.satellites.loc[ID,col])
-                data['time'].append(item.time)
+                data['time'].append(float(item.time))
         self.data = pd.DataFrame.from_dict(data)
         self.data.set_index('time',inplace=True)
 
-        # Get Accretion Data
 
+        # Get Accretion Data
+        self.acc = self.data[['M','WMF']]
+        self.acc = self.acc.rename(columns={"M": "mass", "WMF": "wmf"})
+
+        for time, row in run.collisions.iterrows():
+            if row['ID'] == self.ID:
+                #print(row)
+                new_row = row[['mass','wmf']]
+                new_row.index.name = 'time'
+                # new_row['time'] = row.['time']
+                # new_row['mass'] = row['mass']
+                # new_row['wmf'] = row['wmf']
+                #new_row = pd.DataFrame.from_dict(new_row)
+                self.acc = self.acc.append(new_row)
+        self.acc.sort_index(inplace=True)
+
+    def fig_accretion(self,fig,ax):
+        ax.step(list(self.acc.index), self.acc['mass'], where='post')
+        return fig,ax
 
 
 if __name__ == "__main__":

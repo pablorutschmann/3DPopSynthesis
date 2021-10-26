@@ -26,7 +26,7 @@ class run:
         path = os.path.join(self.output_path,'collisions.txt')
         df = pd.read_csv(path, sep="	", index_col="#time", dtype='float64')
         df.sort_index(inplace=True)
-        df.index = df.index.astype(int)
+        df.index = df.index.astype(float)
         self.collisions = df
 
         #import lost_satellites.txt
@@ -94,11 +94,20 @@ class run:
         test.plot_disk_evol(field="SigmaDust", N=N)
         test.plot_disk_evol(field="Temp", N=N)
 
+    def plot_accretion(self):
+        fig, ax = plt.subplots()
+        ax.set_xlabel('time in years')
+        ax.set_ylabel('mass in [Units]')
+        ax.set_title('Mass Evolution of remaining satellites')
 
+        for item in self.satellites.values():
+            fig, ax = item.fig_accretion(fig,ax)
+
+        plt.show()
 
 
 
 if __name__ == "__main__":
     test = run('/Users/prut/CLionProjects/3DPopSynthesis/Runs/fulltest')
-    test.plot_snapshots()
-    test.plot_disk_evol_all()
+    #test.satellites.
+    test.plot_accretion()
