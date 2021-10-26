@@ -21,8 +21,7 @@ const bool TypeIIMigration = true;  // take into account gap opening effects
 
 // Defining the functions for satellites
 
-SatelliteModel::SatelliteModel()
-{
+SatelliteModel::SatelliteModel() {
 }
 
 SatelliteModel::SatelliteModel(int id, double mass, double x, double y, double z, double rho, double mu, double time)
@@ -41,6 +40,7 @@ SatelliteModel::SatelliteModel(int id, double mass, double x, double y, double z
 
     ID = id;
     Mass = mass;
+    WMF = -1;
     X = x;
     Y = y;
     Z = z;
@@ -490,6 +490,7 @@ void SatelliteModel::Print(float time, string message)
     cout << "Group ID = " << GroupID << '\n';
     cout << "Disk index = " << Index << '\n';
     cout << "Mass = " << Mass << '\n';
+    cout << "WMF = " << WMF << '\n';
     cout << "Physical r = " << ComputeR2D() << '\n';
     cout << "Disk r = " << R << '\n';
     cout << "X = " << X << '\n';

@@ -19,12 +19,13 @@ using namespace std;
 class SatelliteModel
 {
 public:
-    
+
     SatelliteModel();
     SatelliteModel(int id, double mass, double x, double y, double z, double rho, double mu, double time);
     
     int ID, Index;
     double Mass;
+    double WMF;
     double X, Y, Z;
     double Vx, Vy, Vz;
     double Ax, Ay, Az;

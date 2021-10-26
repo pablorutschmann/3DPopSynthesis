@@ -49,6 +49,7 @@ public:
     double SigmaExponent[DiskLength];
     double TempExponent[DiskLength];
     double Opacity[DiskLength];
+    double WMF[DiskLength];
     
     // Setting functions
     void SetDisk();

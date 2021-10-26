@@ -13,7 +13,7 @@
 #include "DiskModule.hpp"
 #include "SatelliteModule.hpp"
 
-const int TotalNumberSatellites = 30;
+const int TotalNumberSatellites = 100;
 using namespace std;
 
 
@@ -43,6 +43,7 @@ public:
     double Snapshots;
     double MaxRunTime;
     int SaveIndex;
+    int TraceWMF;
 
     double TimeStopFormation;
 

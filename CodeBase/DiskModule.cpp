@@ -77,7 +77,7 @@ void DiskModel::SetDisk()
     InputFile.open(OutputAddress + "/restart/disk.txt");
     
     /*-- reading from file. Dustbar is the dust profile without satellite accretion, it is used for refilling calculation --*/
-    while(InputFile >> index >> R[i] >> Dr[i] >> SigmaGas[i] >> SigmaDust[i] >> SigmaDustBar[i] >> Temp[i] >> Area[i] >> OmegaK[i] >> SigmaExponent[i] >> TempExponent[i] >> Opacity[i])
+    while(InputFile >> index >> R[i] >> Dr[i] >> SigmaGas[i] >> SigmaDust[i] >> SigmaDustBar[i] >> Temp[i] >> Area[i] >> OmegaK[i] >> SigmaExponent[i] >> TempExponent[i] >> Opacity[i] >> WMF[i])
     {
         if(RCavity > R[i])
         {
@@ -94,7 +94,7 @@ void DiskModel::SetDisk()
     if(i == 0)          // if no disk is found in the restart folder, then load it from the input folder
     {
         InputFile.open(InputAddress + "/disk.txt");
-        while(InputFile >> index >> R[i] >> Dr[i] >> SigmaGas[i] >> SigmaDust[i] >> SigmaDustBar[i] >> Temp[i] >> Area[i] >> OmegaK[i] >> SigmaExponent[i] >> TempExponent[i] >> Opacity[i])
+        while(InputFile >> index >> R[i] >> Dr[i] >> SigmaGas[i] >> SigmaDust[i] >> SigmaDustBar[i] >> Temp[i] >> Area[i] >> OmegaK[i] >> SigmaExponent[i] >> TempExponent[i] >> Opacity[i] >> WMF[i])
         {
             if(RCavity > R[i])
             {
@@ -104,6 +104,7 @@ void DiskModel::SetDisk()
             }
             Opacity[i] = ComputeOpacity(i);
             i ++;
+
         }
     }
 
