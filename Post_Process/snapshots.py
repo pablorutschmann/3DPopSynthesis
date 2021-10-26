@@ -52,6 +52,7 @@ class sat_data:
         all_init_masses = first_snap['M']
         all_init_sma = first_snap['a'] * R_S / au
         all_init_e = first_snap['e']
+        all_init_wmf = first_snap['WMF']
 
         #ids of the remaining satellites
         id_rem = list(last_snap.index.values)
@@ -68,6 +69,7 @@ class sat_data:
         final_masses = data_rem[str(self.numbers[-1])]['M']
         final_sma = data_rem[str(self.numbers[-1])]['a'] * R_S / au
         final_e = data_rem[str(self.numbers[-1])]['e']
+        final_wmf = data_rem[str(self.numbers[-1])]['WMF']
         final_s = final_masses/max(all_init_masses)
 
         init_masses = data_rem[str(self.numbers[0])]['M']
@@ -77,21 +79,25 @@ class sat_data:
         init_s = init_masses/max(final_masses)
         all_init_s = all_init_masses/max(all_init_masses)
         init_sma = (init_sma / max(init_sma)) * R_S / au
-        scaling = 5
+        scaling = 20
 
-        cmap = cm.cividis
-        bounds = init_sma
-        norm = colors.Normalize(vmin=min(all_init_sma), vmax=max(all_init_sma))
+        #norm = plt.Normalize(0,0.5)
 
+        #cmap = colors.LinearSegmentedColormap.from_list("", ["red","yellow","blue"], N=1000)
+        cmap = 'turbo_r'
 
-        ax1.scatter(all_init_sma, all_init_e, c=all_init_sma, cmap='cividis', s=all_init_s*scaling, alpha=1)
+        cmin = min([min(all_init_wmf),min(final_wmf)])
+        cmax = max([max(all_init_wmf),max(final_wmf)])
+        print(cmin)
+        print(final_wmf)
+        norm = colors.Normalize(cmin,cmax)
+
+        ax1.scatter(all_init_sma, all_init_e, c=all_init_wmf, cmap=cmap, norm=norm, s=all_init_s*scaling, alpha=1)
         #ax1.scatter(init_sma, init_e, c=init_sma, cmap='cividis', s=init_s * scaling, alpha=1)
-        ax2.scatter(final_sma,final_e, c=init_sma, cmap='cividis', s=final_s*scaling, alpha=1)
-        fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap),
-                     orientation='vertical',
-                     label="starting sma", ax=[ax1,ax2])
-        # ax1.set_ylim(-0.05,0.4)
-        # ax2.set_ylim(-0.05, 0.4)
+        ax2.scatter(final_sma,final_e, c=final_wmf, cmap=cmap, norm=norm, s=final_s*scaling, alpha=1)
+        fig.colorbar(cm.ScalarMappable(cmap=cmap,norm=norm), orientation='vertical', label="Water Mass Fraction", ax=[ax1,ax2])
+        ax1.set_ylim(-0.05,0.4)
+        ax2.set_ylim(-0.05, 0.4)
         ax1.set_xlabel('Semi Mayor Axis in AU', fontsize=15)
         ax1.set_ylabel('Eccentricity', fontsize=15)
         ax2.set_xlabel('Semi Mayor Axis in AU', fontsize=15)
@@ -212,9 +218,6 @@ class disk_data:
 
         #plt.show()
         fig.savefig(self.dir + 'plots/' + label + '_profile_evolution_' + '.png')
-
-
-
 
 
 

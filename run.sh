@@ -9,7 +9,7 @@ cp disks/disk_log_1000.txt system_0000/inputs/disk.txt
 rm -rf system_0000/outputs/
 mkdir system_0000/outputs
 
-cp -r restart system_0000/outputs/
+# cp -r restart system_0000/outputs/
 
 # Start Simulation
 

@@ -77,8 +77,21 @@ temps = [temp(x) for x in np.linspace(0.5,30,100)]
 
 print(temps)
 
+
+
+m1,m2 = 2.80226e-07, 2.80226e-07
+wmf1, wmf2 = 0.1, 0.1
+wm1 = m1 * wmf1
+wm2 = m2 * wmf2
+
+wmf = (wm1 + wm2)/(m1+m2)
+print("WMF: ")
+print(wmf)
+
 class disk:
     def __init__(self, path, pick = True):
+        self.wmf = np.vectorize(self.wmf_1d)
+
         # Parameters
         self.inpath = path
         self.spacing = 'None'
@@ -164,9 +177,7 @@ class disk:
         for i in range(self.r_cells-1):
             ass.append(unique[i+1]/unique[i])
 
-        print(np.power(unique[-1]/unique[0], (1/self.r_cells)))
         a = np.mean(ass)
-        print(a)
         check_unique(phis, 'Phi')
         check_unique(thetas, 'Theta')
 
@@ -176,8 +187,6 @@ class disk:
         unique.insert(0,unique[0]/a)
         # Calculate Delta Radius
         dx = [(a-1) * x for x in unique]
-        print(dx)
-
 
         # density
         dens = np.reshape(df['dens [g/cm3]'].values, [self.phi_cells, self.r_cells, self.th_cells])
@@ -271,7 +280,6 @@ class disk:
             dx = [(a-1) * item for item in x]
             dx.append((a-1)*x[-1]*a)
             dx.insert(0,(a-1)*x/a)
-            print(dx)
 
 
 
@@ -289,6 +297,10 @@ class disk:
         dx.pop(0)
         dx.pop(-1)
         self.out['dr [R_S]'] = np.array(dx)
+
+        # Get Water Mass Fraction
+        self.out['WMF []'] = self.wmf(x)
+        print(self.out['WMF []'])
 
         # Calculate Keplerian Veloctiy
         def kepl_velo(r):
@@ -347,7 +359,6 @@ class disk:
         print(type(out))
         for x,y in out.items():
             print(x, type(y))
-        print(out.values)
         # disk profile
         # index 0-(N-1), radius R_S, delta radius R_S, sigma gas, sigma dust M_S R_S2, sigma dust bar, temperature, area of annulus, keplerian orbital velocity omega, sigma exponent, temp exponent, opacity
 
@@ -363,11 +374,12 @@ class disk:
         out['Gas Opacity []'] = np.full(self.N, 0)
 
 
-        for key in ['r [R_S]', 'dr [R_S]', 'sigma gas [M_S/R_S^2]', 'sigma dust [M_S/R_S^2]', 'sigma dustbar [M_S/R_S^2]', 'T [K]', 'Area [R_S^2]', 'Keplerian Velocity [R_S / yr]', 'Power Coefficient Density', 'Power Coefficient Temperature', 'Gas Opacity []']:
+        for key in ['r [R_S]', 'dr [R_S]', 'sigma gas [M_S/R_S^2]', 'sigma dust [M_S/R_S^2]', 'sigma dustbar [M_S/R_S^2]', 'T [K]', 'Area [R_S^2]', 'Keplerian Velocity [R_S / yr]', 'Power Coefficient Density', 'Power Coefficient Temperature', 'Gas Opacity []', 'WMF []']:
             #self.out = self.out.pop[key]
             out[key] = out.pop(key)
 
         df_out = pd.DataFrame.from_dict(out)
+        df_out.index.name = 'index'
         if self.spacing == 'log':
             outpath = 'disks/disk_log_' + str(self.N) + '.txt'
         else:
@@ -380,8 +392,8 @@ class disk:
         print('Total Mass of Gas: ' + str(self.tot_mass_gas*M_S/M_J))
         print('Total Mass of Dust: ' + str(self.tot_mass_dust*M_S/M_J))
         print('Total Mass: ' + str(self.tot_mass*M_S/M_J))
-
-        df_out.to_csv(outpath, header=True, sep='\t', mode='w')
+        print(df_out.columns)
+        df_out.to_csv(outpath, header=False, sep='\t', mode='w')
 
         print("Written disk file!")
 
@@ -472,4 +484,16 @@ class disk:
         flipped = np.flip(arr, axis=0)
         mirrored = np.concatenate((arr, flipped), axis=0)
         return mirrored
+
+    def wmf_1d(self,r):
+        r_au = r / au * R_S
+        if r_au < 2:
+            wmf = 0.0
+        elif 2 <= r_au < 2.5:
+            wmf = 0.1
+        elif 2.5 <= r_au:
+            wmf = 0.5
+
+        return wmf
+
 
