@@ -2,9 +2,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os.path
-import snapshot as snap
-import satellite as sat
-from units import *
+from . import snapshot
+from . import satellite
+#from units import *
 from collections import OrderedDict
 
 class run:
@@ -46,14 +46,14 @@ class run:
         snaps_unordered = {}
         # iterate through list of Snapshot directory name and create class instance Snapshot and save it to dictionary
         for snap_path in [ f.path for f in os.scandir(self.output_path) if (f.is_dir() and 'Snapshot' in f.path)]:
-            shot = snap.snapshot(snap_path)
+            shot = snapshot(snap_path)
             snaps_unordered[shot.index] = shot
         self.snaps = OrderedDict(sorted(snaps_unordered.items(), key=lambda t: t[0]))
 
         # transform data to satellite specific
         self.satellites = {}
         for index in self.satellite_list.index:
-            self.satellites[index] = sat.satellite(index,self)
+            self.satellites[index] = satellite.satellite(index,self)
 
     def plot_snapshots(self, ids=None):
         if ids == None:
@@ -90,9 +90,9 @@ class run:
         print('Plot saved at: ' + os.path.join(self.plot_path,filename))
 
     def plot_disk_evol_all(self, N=10):
-        test.plot_disk_evol(field="SigmaGas", N=N)
-        test.plot_disk_evol(field="SigmaDust", N=N)
-        test.plot_disk_evol(field="Temp", N=N)
+        self.plot_disk_evol(field="SigmaGas", N=N)
+        self.plot_disk_evol(field="SigmaDust", N=N)
+        self.plot_disk_evol(field="Temp", N=N)
 
     def plot_accretion(self):
         fig, ax = plt.subplots()
@@ -102,8 +102,9 @@ class run:
 
         for item in self.satellites.values():
             fig, ax = item.fig_accretion(fig,ax)
+        savepath = os.path.join(self.plot_path,'accretion.png')
+        fig.savefig(savepath)
 
-        plt.show()
 
 
 

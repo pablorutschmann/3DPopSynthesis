@@ -13,10 +13,14 @@ mkdir system_0000/outputs
 
 # Start Simulation
 
-Executable/3DPopSyn system_0000/inputs system_0000/outputs system_0000/history.txt
+Executable/3DPopSyn system_0000/inputs system_0000/outputs history.txt
 
 [[ -d Runs/$name ]] && rm -r Runs/$name
 
 cp -r system_0000 Runs/$name
 
-python3 Post_Process/plotter.py $name
+echo "Starting Plotting!"
+
+python3 POST_PROCESS.py $name
+
+echo "Done!"

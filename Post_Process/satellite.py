@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import pandas as pd
 
 class satellite:
@@ -40,10 +39,6 @@ class satellite:
                 #print(row)
                 new_row = row[['mass','wmf']]
                 new_row.index.name = 'time'
-                # new_row['time'] = row.['time']
-                # new_row['mass'] = row['mass']
-                # new_row['wmf'] = row['wmf']
-                #new_row = pd.DataFrame.from_dict(new_row)
                 self.acc = self.acc.append(new_row)
         self.acc.sort_index(inplace=True)
 

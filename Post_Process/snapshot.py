@@ -4,7 +4,7 @@ import os.path
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib import colors
-from units import *
+from .units import *
 
 class snapshot:
     def __init__(self, path):
@@ -44,7 +44,6 @@ class snapshot:
         fig.set_size_inches(15.5, 10.5)
 
         cmap = 'turbo_r'
-
         cmin = min(self.satellites['WMF'])
         cmax = max(self.satellites['WMF'])
         norm = colors.Normalize(cmin,cmax)
@@ -64,8 +63,6 @@ class snapshot:
         ax.plot(rtoau * self.disk['r'], self.disk[field] , label=self.time)
 
         return fig,ax
-
-
 
 # Helper Functions
 
