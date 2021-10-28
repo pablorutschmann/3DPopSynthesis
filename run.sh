@@ -13,7 +13,6 @@ name=$1
 
 
 
-
 mkdir -p Runs/$name/
 
 mkdir -p Runs/$name/outputs/
