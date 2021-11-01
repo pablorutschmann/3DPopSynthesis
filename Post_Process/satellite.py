@@ -31,13 +31,13 @@ class satellite:
         self.data.set_index('time', inplace=True)
 
         # Get Accretion Data
-        self.acc = self.data[['M', 'WMF']]
-        self.acc = self.acc.rename(columns={"M": "mass", "WMF": "wmf"})
+        self.acc = self.data[['M', 'WM']]
+        self.acc = self.acc.rename(columns={"M": "mass", "WM": "wm"})
 
         for time, row in run.collisions.iterrows():
             if row['ID'] == self.ID:
                 # print(row)
-                new_row = row[['mass', 'wmf']]
+                new_row = row[['mass', 'wm']]
                 new_row.index.name = 'time'
                 self.acc = self.acc.append(new_row)
         self.acc.sort_index(inplace=True)

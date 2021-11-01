@@ -25,7 +25,7 @@ public:
     
     int ID, Index;
     double Mass;
-    double WMF;
+    double WM;
     double X, Y, Z;
     double Vx, Vy, Vz;
     double Ax, Ay, Az;

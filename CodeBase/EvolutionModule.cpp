@@ -74,7 +74,7 @@ EvolutionModel::EvolutionModel(string input_address, string output_address)
     cout << "Eta = " << eta << '\n';
     cout << "EtaS = " << etaS << '\n';
     cout << "Migration factor = " << MigrationFactor << '\n' << '\n';
-    cout << "Tracing of WMF: " << TraceWMF << '\n';
+    cout << "Tracing of WM: " << TraceWM << '\n';
    
 
     
@@ -230,7 +230,7 @@ void EvolutionModel::SetOptions()
     RotationFraction = Options["RotationFraction"];
     DiskPrecision = Options["DiskPrecision"];
     MaxRunTime = Options["MaxRunTime"];
-    TraceWMF = Options["TraceWMF"];
+    TraceWM = Options["TraceWM"];
     if(Options.find("MigrationType") != Options.end())
     {
         int MigIndex = Options["MigrationType"];
@@ -276,15 +276,15 @@ void EvolutionModel::SetParameters()
         ofstream OutputFile;
 
         OutputFile.open(OutputAddress + "/satellite_list.txt");
-        OutputFile << "#ID\tinit_time\tmass\twmf\tr2D\ttheta\tx\ty\tz\tinit_temp\n";
+        OutputFile << "#ID\tinit_time\tmass\twm\tr2D\ttheta\tx\ty\tz\tinit_temp\n";
         OutputFile.close();
 
         OutputFile.open(OutputAddress + "/lost_satellites.txt");
-        OutputFile << "#ID\ttime\tmass\twmf\tr\tx\ty\tz\tvx\tvy\tvz\ta\tecc\tinc\tformation_time\tcollision\tcollision_index\n";
+        OutputFile << "#ID\ttime\tmass\twm\tr\tx\ty\tz\tvx\tvy\tvz\ta\tecc\tinc\tformation_time\tcollision\tcollision_index\n";
         OutputFile.close();
 
         OutputFile.open(OutputAddress + "/collisions.txt");
-        OutputFile << "#time\tID1\tmass1\twmf1\tx1\ty1\tz1\tvx1\tvy1\tvz1\tID2\tmass2\twmf2\tx2\ty2\tz2\tvx2\tvy2\tvz2\tID\tmass\twmf\tx\ty\tz\tvx\tvy\tvz\n";
+        OutputFile << "#time\tID1\tmass1\twm1\tx1\ty1\tz1\tvx1\tvy1\tvz1\tID2\tmass2\twm2\tx2\ty2\tz2\tvx2\tvy2\tvz2\tID\tmass\twm\tx\ty\tz\tvx\tvy\tvz\n";
         OutputFile.close();
 
         Time = 0.;
@@ -311,7 +311,7 @@ void EvolutionModel::SatelliteInitialization()
     /*-- INITIALIZE SATELLITES FROM RESTART FILES OR FROM SCRATCH --*/
 
     int ID, N;
-    double mass, wmf, x, y, z, vx, vy, vz, init_time, form_time, a, e, inc, dt, p;
+    double mass, wm, x, y, z, vx, vy, vz, init_time, form_time, a, e, inc, dt, p;
     ifstream InputFile;
     InputFile.open(OutputAddress + "/restart/satellites.txt");
 
@@ -319,7 +319,7 @@ void EvolutionModel::SatelliteInitialization()
     
     int i = 0;
         
-        while(InputFile >> ID >> mass >> wmf >>  x >> y >> z >> vx >> vy >> vz >> a >> e >> inc >> N >> dt >> init_time >> form_time >> p)    // search satellites in the restart file
+        while(InputFile >> ID >> mass >> wm >>  x >> y >> z >> vx >> vy >> vz >> a >> e >> inc >> N >> dt >> init_time >> form_time >> p)    // search satellites in the restart file
         {
             Satellites[i] = SatelliteModel(ID, mass, x, y, z, Rho, Disk.G * Disk.MP, init_time);
             Satellites[i].Vx = vx;
@@ -386,7 +386,7 @@ void EvolutionModel::CreateSatellite(int index)
 
     ofstream OutputFile;
     OutputFile.open(OutputAddress + "/satellite_list.txt", ios_base::app);
-    OutputFile << Satellites[index].ID << '\t' << Satellites[index].InitTime << '\t' << Satellites[index].Mass << '\t' << Satellites[index].WMF << '\t' << Satellites[index].ComputeR2D() << '\t' << Satellites[index].ComputeTheta() << '\t' << Satellites[index].X << '\t' << Satellites[index].Y << '\t' << Satellites[index].Z << '\t' << Disk.Temp[Satellites[index].Index] << '\n';
+    OutputFile << Satellites[index].ID << '\t' << Satellites[index].InitTime << '\t' << Satellites[index].Mass << '\t' << Satellites[index].WM << '\t' << Satellites[index].ComputeR2D() << '\t' << Satellites[index].ComputeTheta() << '\t' << Satellites[index].X << '\t' << Satellites[index].Y << '\t' << Satellites[index].Z << '\t' << Disk.Temp[Satellites[index].Index] << '\n';
     OutputFile.close();
 
     Satellites[index].Print(Time, "");
@@ -436,13 +436,13 @@ void EvolutionModel::WriteSnapshot(string FolderName, bool header)
 
     OutputFile.open(FolderName + "/satellites.txt");
 
-    if(header) OutputFile << "#ID\tM\tWMF\tx\ty\tz\txv\tvy\tvz\ta\te\ti\tN\tdt\tinit_time\tformation_time\tP\n";
+    if(header) OutputFile << "#ID\tM\tWM\tx\ty\tz\txv\tvy\tvz\ta\te\ti\tN\tdt\tinit_time\tformation_time\tP\n";
 
     for(int i = 0; i < NSatellites; i++)
     {
         if(Satellites[i].Active)
         {
-            OutputFile << Satellites[i].ID << '\t' << Satellites[i].Mass << '\t' << Satellites[i].WMF << '\t' << Satellites[i].X << '\t' << Satellites[i].Y << '\t' << Satellites[i].Z << '\t' << Satellites[i].Vx << '\t' << Satellites[i].Vy << '\t' << Satellites[i].Vz << '\t' << Satellites[i].ComputeA() << '\t' << Satellites[i].ComputeEcc() << '\t' << Satellites[i].ComputeInc() << '\t' << Satellites[i].N << '\t' << Satellites[i].Dt << '\t' <<  Satellites[i].InitTime << '\t' << Satellites[i].FormationTime << '\t' << Satellites[i].P << '\n';
+            OutputFile << Satellites[i].ID << '\t' << Satellites[i].Mass << '\t' << Satellites[i].WM << '\t' << Satellites[i].X << '\t' << Satellites[i].Y << '\t' << Satellites[i].Z << '\t' << Satellites[i].Vx << '\t' << Satellites[i].Vy << '\t' << Satellites[i].Vz << '\t' << Satellites[i].ComputeA() << '\t' << Satellites[i].ComputeEcc() << '\t' << Satellites[i].ComputeInc() << '\t' << Satellites[i].N << '\t' << Satellites[i].Dt << '\t' <<  Satellites[i].InitTime << '\t' << Satellites[i].FormationTime << '\t' << Satellites[i].P << '\n';
         }
     }
 
@@ -512,9 +512,9 @@ void EvolutionModel::ComputeParameters(int index)
         Satellites[index].Temp = Disk.Temp[Satellites[index].Index];
         Satellites[index].P = Satellites[index].ComputeP(Disk.Alpha);
 //        cout << Satellites[index].Index;
-        if (Satellites[index].WMF < 0.) {
+        if (Satellites[index].WM < 0.) {
 
-            Satellites[index].WMF = Disk.WMF[Satellites[index].Index];
+            Satellites[index].WM = Disk.WMF[Satellites[index].Index] * Satellites[index].Mass;
         }
         Satellites[index].R = Disk.R[Satellites[index].Index];
 
@@ -1349,8 +1349,8 @@ void EvolutionModel::CheckCollision(int index)
 
                 OutputFile.open(OutputAddress + "/collisions.txt", ios_base::app);
                 OutputFile << Time << '\t';
-                OutputFile << Satellites[save_index].ID << '\t' << Satellites[save_index].Mass << '\t' << Satellites[save_index].WMF << '\t' << Satellites[save_index].X << '\t' << Satellites[save_index].Y << '\t' << Satellites[save_index].Z << '\t' << Satellites[save_index].Vx << '\t' << Satellites[save_index].Vy << '\t' << Satellites[save_index].Vz << '\t';
-                OutputFile << Satellites[dest_index].ID << '\t' << Satellites[dest_index].Mass << '\t' << Satellites[dest_index].WMF << '\t' << Satellites[dest_index].X << '\t' << Satellites[dest_index].Y << '\t' << Satellites[dest_index].Z << '\t' << Satellites[dest_index].Vx << '\t' << Satellites[dest_index].Vy << '\t' << Satellites[dest_index].Vz << '\t';
+                OutputFile << Satellites[save_index].ID << '\t' << Satellites[save_index].Mass << '\t' << Satellites[save_index].WM << '\t' << Satellites[save_index].X << '\t' << Satellites[save_index].Y << '\t' << Satellites[save_index].Z << '\t' << Satellites[save_index].Vx << '\t' << Satellites[save_index].Vy << '\t' << Satellites[save_index].Vz << '\t';
+                OutputFile << Satellites[dest_index].ID << '\t' << Satellites[dest_index].Mass << '\t' << Satellites[dest_index].WM << '\t' << Satellites[dest_index].X << '\t' << Satellites[dest_index].Y << '\t' << Satellites[dest_index].Z << '\t' << Satellites[dest_index].Vx << '\t' << Satellites[dest_index].Vy << '\t' << Satellites[dest_index].Vz << '\t';
 
                 double TotalMass = Satellites[save_index].Mass + Satellites[dest_index].Mass;
                 Satellites[save_index].X = (Satellites[save_index].Mass * Satellites[save_index].X + Satellites[dest_index].Mass * Satellites[dest_index].X) / TotalMass;
@@ -1360,16 +1360,14 @@ void EvolutionModel::CheckCollision(int index)
                 Satellites[save_index].Vy = (Satellites[save_index].Mass * Satellites[save_index].Vy + Satellites[dest_index].Mass * Satellites[dest_index].Vy) / TotalMass;
                 Satellites[save_index].Vz = (Satellites[save_index].Mass * Satellites[save_index].Vz + Satellites[dest_index].Mass * Satellites[dest_index].Vz) / TotalMass;
 
-                if (TraceWMF) {
-                    double WaterMass_save = Satellites[save_index].WMF * Satellites[save_index].Mass;
-                    double WaterMass_dest = Satellites[dest_index].WMF * Satellites[dest_index].Mass;
-                    double TotalWM = WaterMass_save  + WaterMass_dest ;
-                    Satellites[save_index].WMF = TotalWM/TotalMass;
+                if (TraceWM) {
+                    double TotalWM = Satellites[save_index].WM  + Satellites[dest_index].WM ;
+                    Satellites[save_index].WM = TotalWM;
                 }
 
                 Satellites[save_index].Mass = TotalMass;
 
-                OutputFile << Satellites[save_index].ID << '\t' << Satellites[save_index].Mass << '\t' << Satellites[save_index].WMF << '\t' << Satellites[save_index].X << '\t' << Satellites[save_index].Y << '\t' << Satellites[save_index].Z << '\t' << Satellites[save_index].Vx << '\t' << Satellites[save_index].Vy << '\t' << Satellites[save_index].Vz << '\n';
+                OutputFile << Satellites[save_index].ID << '\t' << Satellites[save_index].Mass << '\t' << Satellites[save_index].WM << '\t' << Satellites[save_index].X << '\t' << Satellites[save_index].Y << '\t' << Satellites[save_index].Z << '\t' << Satellites[save_index].Vx << '\t' << Satellites[save_index].Vy << '\t' << Satellites[save_index].Vz << '\n';
                 OutputFile.close();
 
                 DestroySatellite(dest_index, 1, save_index);
@@ -1463,7 +1461,7 @@ void EvolutionModel::DestroySatellite(int index, int code, int index2)
 
     ofstream OutputFile;
     OutputFile.open(OutputAddress + "/lost_satellites.txt", ios_base::app);
-    OutputFile << Satellites[index].ID << '\t' << Time << '\t' << Satellites[index].Mass << '\t' <<Satellites[index].WMF << '\t' << Satellites[index].ComputeR2D() << '\t' << Satellites[index].X << '\t' << Satellites[index].Y << '\t' << Satellites[index].Z << '\t'<< Satellites[index].Vx << '\t' << Satellites[index].Vy << '\t'  << Satellites[index].Vz << '\t' << Satellites[index].ComputeA() << '\t' << Satellites[index].ComputeEcc() << '\t' << Satellites[index].ComputeInc() << '\t' << Satellites[index].FormationTime << '\t' << code << '\t' << Satellites[index2].ID << '\n';
+    OutputFile << Satellites[index].ID << '\t' << Time << '\t' << Satellites[index].Mass << '\t' <<Satellites[index].WM << '\t' << Satellites[index].ComputeR2D() << '\t' << Satellites[index].X << '\t' << Satellites[index].Y << '\t' << Satellites[index].Z << '\t'<< Satellites[index].Vx << '\t' << Satellites[index].Vy << '\t'  << Satellites[index].Vz << '\t' << Satellites[index].ComputeA() << '\t' << Satellites[index].ComputeEcc() << '\t' << Satellites[index].ComputeInc() << '\t' << Satellites[index].FormationTime << '\t' << code << '\t' << Satellites[index2].ID << '\n';
     OutputFile.close();
     cout << "Satellite " << Satellites[index].ID << " destroied because of reason " << code << " with satellite " << Satellites[index2].ID << '\n';
     Satellites[index].Active = false;

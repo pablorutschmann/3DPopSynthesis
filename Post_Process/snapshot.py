@@ -45,12 +45,13 @@ class snapshot:
         fig.set_size_inches(15.5, 10.5)
 
         cmap = 'turbo_r'
-        cmin = min(self.satellites['WMF'])
-        cmax = max(self.satellites['WMF'])
+        WMF_satellites = self.satellites['WM']/self.satellites['M']
+        cmin = min(WMF_satellites)
+        cmax = max(WMF_satellites)
         norm = colors.Normalize(cmin, cmax)
         mean_mass = np.min(mtome * self.satellites['M']) / 50000
 
-        ax.scatter(rtoau * self.satellites['a'], self.satellites['e'], c=self.satellites['WMF'], cmap=cmap, norm=norm,
+        ax.scatter(rtoau * self.satellites['a'], self.satellites['e'], c=WMF_satellites, cmap=cmap, norm=norm,
                    s=self.satellites['M'] / mean_mass, alpha=1)
         # ax1.scatter(init_sma, init_e, c=init_sma, cmap='cividis', s=init_s * scaling, alpha=1)
         fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label="Water Mass Fraction",

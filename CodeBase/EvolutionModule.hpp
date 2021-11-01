@@ -43,7 +43,7 @@ public:
     double Snapshots;
     double MaxRunTime;
     int SaveIndex;
-    int TraceWMF;
+    int TraceWM;
 
     double TimeStopFormation;
 
