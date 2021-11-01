@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os.path
 from . import snapshot
 from . import satellite
-# from units import *
+from Post_Process.units import *
 from collections import OrderedDict
 
 
@@ -60,6 +60,7 @@ class run:
             ids = [list(self.snaps.keys())[0], list(self.snaps.keys())[-1]]
         for i in ids:
             self.snaps[i].plot_satellites()
+            self.snaps[i].plot_satellites_ratio()
 
     def plot_disk_evol(self, field, log=True, N=10, keys=None):
         if keys == None:

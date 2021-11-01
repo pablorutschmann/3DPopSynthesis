@@ -51,46 +51,48 @@ rho = 5.513 / M_S * R_S**3
 G_jup = (G / R_S**3) * M_S * year**2
 
 
-#Effective Temperature of Sun
-T_S = 5780
+if __name__ == "__main__":
+    #Effective Temperature of Sun
+    T_S = 5780
 
-T_J = 130
+    T_J = 130
 
-SMA_J = 5.2
-#
-print('alpha')
-alpha = T_J/T_S * (SMA_J/(R_S/au))**0.5
-print(alpha)
+    SMA_J = 5.2
+    #
+    print('alpha')
+    alpha = T_J/T_S * (SMA_J/(R_S/au))**0.5
+    print(alpha)
 
-#inputs in au
-def temp(r):
-    return (T_S * (R_S/au / r)**0.5 * alpha) - 170
+    #inputs in au
+    def temp(r):
+        return (T_S * (R_S/au / r)**0.5 * alpha) - 170
 
-def temp(r):
-    return (5780 * (1 / r)**0.5 * 0.7520883995742579)
+    def temp(r):
+        return (5780 * (1 / r)**0.5 * 0.7520883995742579)
 
-r_ice = fsolve(temp,3)
+    r_ice = fsolve(temp,3)
 
-print(r_ice)
+    print(r_ice)
 
-temps = [temp(x) for x in np.linspace(0.5,30,100)]
+    temps = [temp(x) for x in np.linspace(0.5,30,100)]
 
-print(temps)
+    print(temps)
 
 
 
-m1,m2 = 2.80226e-07, 2.80226e-07
-wmf1, wmf2 = 0.1, 0.1
-wm1 = m1 * wmf1
-wm2 = m2 * wmf2
+    m1,m2 = 2.80226e-07, 2.80226e-07
+    wmf1, wmf2 = 0.1, 0.1
+    wm1 = m1 * wmf1
+    wm2 = m2 * wmf2
 
-wmf = (wm1 + wm2)/(m1+m2)
-print("WMF: ")
-print(wmf)
+    wmf = (wm1 + wm2)/(m1+m2)
+    print("WMF: ")
+    print(wmf)
 
 class disk:
     def __init__(self, path, pick = True):
         self.wmf = np.vectorize(self.wmf_1d)
+        self.swmf = np.vectorize(self.swmf_1d)
 
         # Parameters
         self.inpath = path
@@ -300,7 +302,9 @@ class disk:
 
         # Get Water Mass Fraction
         self.out['WMF []'] = self.wmf(x)
-        print(self.out['WMF []'])
+
+        # Get Solid Water Mass Fraction
+        self.out['SWMF []'] = self.swmf(x)
 
         # Calculate Keplerian Veloctiy
         def kepl_velo(r):
@@ -355,12 +359,14 @@ class disk:
 
     def write_disk(self):
         out = self.out.copy()
-        print(len(out))
-        print(type(out))
-        for x,y in out.items():
-            print(x, type(y))
+        # print(len(out))
+        # print(type(out))
+        # for x,y in out.items():
+        #     print(x, type(y))
+
+
         # disk profile
-        # index 0-(N-1), radius R_S, delta radius R_S, sigma gas, sigma dust M_S R_S2, sigma dust bar, temperature, area of annulus, keplerian orbital velocity omega, sigma exponent, temp exponent, opacity
+        # index 0-(N-1), radius R_S, delta radius R_S, sigma gas, sigma dust M_S R_S2, sigma dust bar, temperature, area of annulus, keplerian orbital velocity omega, sigma exponent, temp exponent, opacity, wmf , swmf
 
         # sigma dust for now with gas to dust ratio of 0.01
         sigma = self.raymond(self.out['r [R_S]'])
@@ -374,7 +380,7 @@ class disk:
         out['Gas Opacity []'] = np.full(self.N, 0)
 
 
-        for key in ['r [R_S]', 'dr [R_S]', 'sigma gas [M_S/R_S^2]', 'sigma dust [M_S/R_S^2]', 'sigma dustbar [M_S/R_S^2]', 'T [K]', 'Area [R_S^2]', 'Keplerian Velocity [R_S / yr]', 'Power Coefficient Density', 'Power Coefficient Temperature', 'Gas Opacity []', 'WMF []']:
+        for key in ['r [R_S]', 'dr [R_S]', 'sigma gas [M_S/R_S^2]', 'sigma dust [M_S/R_S^2]', 'sigma dustbar [M_S/R_S^2]', 'T [K]', 'Area [R_S^2]', 'Keplerian Velocity [R_S / yr]', 'Power Coefficient Density', 'Power Coefficient Temperature', 'Gas Opacity []', 'WMF []', 'SWMF []']:
             #self.out = self.out.pop[key]
             out[key] = out.pop(key)
 
@@ -495,5 +501,17 @@ class disk:
             wmf = 0.5
 
         return wmf
+
+    def swmf_1d(self,r):
+        r_au = r / au * R_S
+        # if r_au < 2:
+        #     wmf = 0.0
+        # elif 2 <= r_au < 2.5:
+        #     wmf = 0.1
+        # elif 2.5 <= r_au:
+        #     wmf = 0.5
+        swmf = 0.2
+
+        return swmf
 
 

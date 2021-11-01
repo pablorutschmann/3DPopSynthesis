@@ -41,6 +41,7 @@ SatelliteModel::SatelliteModel(int id, double mass, double x, double y, double z
     ID = id;
     Mass = mass;
     WM = -1;
+    SWM = -1;
     X = x;
     Y = y;
     Z = z;
@@ -491,6 +492,7 @@ void SatelliteModel::Print(float time, string message)
     cout << "Disk index = " << Index << '\n';
     cout << "Mass = " << Mass << '\n';
     cout << "WM = " << WM << '\n';
+    cout << "SWM = " << SWM << '\n';
     cout << "Physical r = " << ComputeR2D() << '\n';
     cout << "Disk r = " << R << '\n';
     cout << "X = " << X << '\n';
