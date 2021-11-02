@@ -77,7 +77,10 @@ class run:
 
         for key in keys:
             fig, ax = self.snaps[key].fig_disk(fig, ax, field)
-
+        if field == 'Temp':
+            xmin = rtoau * self.snaps[keys[0]].disk['r'].min()
+            xmax = rtoau * self.snaps[keys[0]].disk['r'].max()
+            ax.hlines(170, xmin, xmax, linestyles='dotted')
         ax.set_xlabel('Radius in AU', fontsize=15)
         ax.set_ylabel(units, fontsize=15)
         if log:

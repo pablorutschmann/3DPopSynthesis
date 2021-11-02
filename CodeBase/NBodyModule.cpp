@@ -29,7 +29,7 @@ int fgfull(double *x, double *y, double *z, double *vx, double *vy, double *vz, 
 	double f,g,fd,gd;                               /* Gauss's f, g, fdot and gdot */
 	double rsq,vsq,ir;
 	double u;                                       /* r v cos(phi) */
-	double ia;                                      //inverse of a
+	double ia;                                      /* inverse of a, Specific orbital energy */
 	double ria;
 	double air_;
 	double e;                                        /* eccentricity */
@@ -69,7 +69,7 @@ int fgfull(double *x, double *y, double *z, double *vx, double *vy, double *vz, 
 	ir = 1.0 / sqrt(rsq);
 	ia = 2.0*ir-vsq/mu;
 	
-	if(ia > 0)
+	if(ia > 0) /* Check if orbit is not hyperbolic */
 	{
 		t1 = ia*ia;
 		ria = rsq*ir*ia;
