@@ -163,7 +163,23 @@ double DiskModel::ComputeTmin(int i)
     // return 0
 }
 
-
+int DiskModel::ComputeIceLine()
+{
+// Find index of IceLine in disk
+    int index = 0  ;
+    if (TIce < Temp[0]) {
+        index = 0;
+    }
+    else {
+        for (int i = Length - 1 ; i > 0; i--) {
+            if (TIce > Temp[i]) {
+                index = i + 1;
+                break;
+            }
+        }
+    }
+    return index;
+}
 
 double DiskModel::ComputeMaxMass(int i)
 {
@@ -222,7 +238,8 @@ void DiskModel::DiskEvolution(double dt)
                 }
             }
         if((GasDrop)||(TempDrop)) Opacity[i] = ComputeOpacity(i);
-    }   
+    }
+    IceLineID = ComputeIceLine();
 }
 
 

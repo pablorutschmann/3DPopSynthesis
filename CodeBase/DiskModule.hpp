@@ -16,6 +16,7 @@
 using namespace std;
 
 const int DiskLength = 1000;
+const double TIce = 170;
 
 // Defining class for disks
 
@@ -38,6 +39,7 @@ public:
     double G, Cv, SigmaBoltz, KbMuMp, Alpha, Gamma;
     
     int Length;
+    int IceLineID;
     double R[DiskLength];
     double Dr[DiskLength];
     double SigmaGas[DiskLength];
@@ -59,8 +61,8 @@ public:
     double GasMass();
     double DustMass();
     double DustBarMass();
-    
-    
+    int ComputeIceLine();
+
     // Vector functions
     double ComputeCs(int i);
     double ComputeH(int i);

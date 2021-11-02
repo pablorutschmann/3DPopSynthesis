@@ -30,6 +30,7 @@ const int NH = 3; // coefficient to define r_crit
 const double eta = 0.02; // first coefficient for HPC timestep
 const double etaS = 0.01; // second coefficient for HPC timestep
 
+
 const bool flags = false;
 
 
@@ -290,6 +291,7 @@ void EvolutionModel::SetParameters()
         Time = 0.;
         UpdateTime = 0.;
         SaveIndex = 0;
+        Disk.IceLineID = Disk.ComputeIceLine();
 
         double DustMass = Disk.DustBarMass();
         TimeStopFormation = Time + Disk.TDisp * log(DustMass * FormationPerc/ InitMass);
@@ -302,6 +304,7 @@ void EvolutionModel::SetParameters()
         SaveIndex = Parameters["SaveIndex"];
         TimeStopFormation = Parameters["TimeStopFormation"];
         cout << "\nTimeStopFormation = " << TimeStopFormation << '\n';
+        Disk.IceLineID = Parameters["IceLineID"];
     }
 }
 
@@ -456,6 +459,8 @@ void EvolutionModel::WriteSnapshot(string FolderName, bool header)
     OutputFile << "SaveIndex" << '\t' << SaveIndex << '\n';
     OutputFile << "TimeStopFormation" << '\t' << TimeStopFormation << '\n';
     OutputFile << "GlobalDt" << '\t' << GlobalDt << '\n';
+    OutputFile << "IceLineID" << '\t' << Disk.IceLineID << '\n';
+    OutputFile << "IceLineRadius" << '\t' << Disk.R[Disk.IceLineID] << '\n';
 
     OutputFile.close();
     
@@ -867,6 +872,7 @@ void EvolutionModel::K(int i, double factor)
 
     check = fgfull(x, y, z, vx, vy, vz, dt, mu);
 
+    /* Destroy Satellites with hyperbolic trajectory */
     if(check && Satellites[i].Active) DestroySatellite(i, 2, -1);
 }
 
