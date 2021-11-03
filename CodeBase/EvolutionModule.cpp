@@ -314,7 +314,7 @@ void EvolutionModel::SatelliteInitialization()
     /*-- INITIALIZE SATELLITES FROM RESTART FILES OR FROM SCRATCH --*/
 
     int ID, N;
-    double mass, wm, x, y, z, vx, vy, vz, init_time, form_time, a, e, inc, dt, p;
+    double mass, wm, swm, x, y, z, vx, vy, vz, init_time, form_time, a, e, inc, dt, p;
     ifstream InputFile;
     InputFile.open(OutputAddress + "/restart/satellites.txt");
 
