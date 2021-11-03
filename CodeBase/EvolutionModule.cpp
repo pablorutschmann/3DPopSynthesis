@@ -322,7 +322,7 @@ void EvolutionModel::SatelliteInitialization()
     
     int i = 0;
         
-        while(InputFile >> ID >> mass >> wm >>  x >> y >> z >> vx >> vy >> vz >> a >> e >> inc >> N >> dt >> init_time >> form_time >> p)    // search satellites in the restart file
+        while(InputFile >> ID >> mass >> wm  >> swm >>  x >> y >> z >> vx >> vy >> vz >> a >> e >> inc >> N >> dt >> init_time >> form_time >> p)    // search satellites in the restart file
         {
             Satellites[i] = SatelliteModel(ID, mass, x, y, z, Rho, Disk.G * Disk.MP, init_time);
             Satellites[i].Vx = vx;
@@ -331,6 +331,8 @@ void EvolutionModel::SatelliteInitialization()
             Satellites[i].FormationTime = form_time;
             Satellites[i].N = N;
             Satellites[i].Dt = N * GlobalDt / 2;
+            Satellites[i].WM = wm;
+            Satellites[i].SWM = swm;
             ComputeParameters(i);
 
             i ++;
@@ -1306,7 +1308,7 @@ void EvolutionModel::I(int i, double factor)
 
 void EvolutionModel::CheckCollision(int index)
 {
-    /*-- CHECK FOR COLLISIONS BETWEEN SATELLITES OR WITH CENTRAL PLANET OR EJECTION --*/
+    /*-- CHECK FOR COLLISIONS OF SATELLITE index WITH SATELLITES OR WITH CENTRAL PLANET OR EJECTION --*/
 
     double r, r2;
     ofstream OutputFile;
