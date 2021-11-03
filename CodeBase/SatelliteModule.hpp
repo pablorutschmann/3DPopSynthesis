@@ -21,7 +21,7 @@ class SatelliteModel
 public:
 
     SatelliteModel();
-    SatelliteModel(int id, double mass, double x, double y, double z, double rho, double mu, double time);
+    SatelliteModel(int id, double mass, double x, double y, double z, double rho, double mu, double time, double Tsubli);
     
     int ID, Index;
     double Mass;
@@ -30,7 +30,7 @@ public:
     double X, Y, Z;
     double Vx, Vy, Vz;
     double Ax, Ay, Az;
-    double Adx, Ady, Adz;           // accelerations for Hemite integrator
+    double Adx, Ady, Adz;           // accelerations for Hermite integrator
     double Addx, Addy, Addz;
     double Adddx, Adddy, Adddz;
     double Radius;
@@ -40,6 +40,7 @@ public:
     double Dt;
     double InitTime;
     double FormationTime;
+    double Tsubli;
 
     int N;
     int IClock, KClock;
@@ -67,6 +68,7 @@ public:
     void ComputeTdyn(string migtype, double fraction, double alpha, double gamma, double kbmump, double sigma_boltz);
     double ComputeBmig(string migtype, double alpha, double gamma, double kbmump, double sigma_boltz);
     void ComputeAcc(int MigOption, int EccOption, int IncOption);
+    void UpdateWM(double dt);
     
     void Print(float time, string message);
 };

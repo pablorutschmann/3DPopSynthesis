@@ -44,6 +44,8 @@ public:
     double MaxRunTime;
     int SaveIndex;
     int TraceWM;
+    int Sublimation;
+    double Tsubli;
 
     double TimeStopFormation;
 

@@ -24,7 +24,7 @@ const bool TypeIIMigration = true;  // take into account gap opening effects
 SatelliteModel::SatelliteModel() {
 }
 
-SatelliteModel::SatelliteModel(int id, double mass, double x, double y, double z, double rho, double mu, double time)
+SatelliteModel::SatelliteModel(int id, double mass, double x, double y, double z, double rho, double mu, double time, double sublimationtime)
 {
     /*
     Initialize satellite model
@@ -40,17 +40,18 @@ SatelliteModel::SatelliteModel(int id, double mass, double x, double y, double z
 
     ID = id;
     Mass = mass;
-    WM = -1;               // Water Mass
-    SWM = -1;              // Hydrated Minerals Mass
+    WM = -1;                    // Water Mass
+    SWM = -1;                   // Hydrated Minerals Mass
     X = x;
     Y = y;
     Z = z;
     Rho = rho;
-    Mu = mu;                // G * M
-    N = 0;                  // individual timestep index
-    Twave = 1e10;           // timescale for migration, eccentricity and inclination damping
-    InitTime = time;        // time at which it is initiated
-    FormationTime = 0.;     // formation time, updated when the satellites grow to the threshold mass
+    Mu = mu;                    // G * M
+    N = 0;                      // individual timestep index
+    Twave = 1e10;               // timescale for migration, eccentricity and inclination damping
+    InitTime = time;            // time at which it is initiated
+    FormationTime = 0.;         // formation time, updated when the satellites grow to the threshold mass
+    Tsubli = sublimationtime;    // Sublimation timescale
 
     // clockes for individual timesteps, see Saha & Tremaine (1992, 1994)
     IClock = 0;             
@@ -479,6 +480,25 @@ void SatelliteModel::ComputeAcc(int MigOption, int EccOption, int IncOption)
     {
         Az -= Vz / Tinc;
     }
+}
+
+void SatelliteModel::UpdateWM(double dt) {
+    /*
+    Update the Water Mass according to exponential decay with timescale TSublimation,
+    also update the total mass of the satellite
+
+    INPUTS
+    - the timestep used for the current position and velocity update
+    */
+
+    double factor = exp(- dt / Tsubli);
+//    cout << "CHECK" << '\n';
+//    cout << Tsubli << '\n';
+//    cout << dt << '\n';
+//    cout << factor << '\n';
+    double WM_diff = WM * (1 - factor);
+    Mass -= WM_diff;
+    WM *= factor;
 }
 
 

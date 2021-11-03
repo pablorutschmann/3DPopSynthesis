@@ -90,6 +90,7 @@ class run:
         fig.suptitle(title + ' Evolution')
         filename = os.path.join(self.plot_path, title.replace(" ", "_") + '.png')
         fig.savefig(filename)
+        plt.close(fig)
         print('Plot saved at: ' + os.path.join(self.plot_path, filename))
 
     def plot_disk_evol_all(self, N=10):
@@ -107,6 +108,12 @@ class run:
             fig, ax = item.fig_accretion(fig, ax)
         savepath = os.path.join(self.plot_path, 'accretion.png')
         fig.savefig(savepath)
+        plt.close(fig)
+
+    def plot_wm(self):
+        for item in self.satellites.values():
+            item.wm_time(self.plot_path)
+
 
 
 if __name__ == "__main__":

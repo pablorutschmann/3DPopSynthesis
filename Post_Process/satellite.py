@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 class satellite:
@@ -45,6 +46,19 @@ class satellite:
     def fig_accretion(self, fig, ax):
         ax.step(list(self.acc.index), self.acc['mass'], where='post')
         return fig, ax
+
+    def wm_time(self, path):
+        fig, ax = plt.subplots(ncols=1)
+        fig.set_size_inches(15.5, 10.5)
+
+        ax.scatter(self.data.index, self.data['WM']/self.data['M'])
+
+        ax.set_xlabel('Time in Years', fontsize=15)
+        ax.set_ylabel('Water Mass', fontsize=15)
+        fig.suptitle('Water Mass Time Evolution of Satellite ' + str(self.ID))
+        fig.savefig(path + '/satellite' + str(self.ID) + '_wm.png')
+        plt.close(fig)
+        print('Plot saved at: ' + path + '/satellite' + str(self.ID) + '_wm.png')
 
 
 if __name__ == "__main__":

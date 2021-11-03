@@ -16,7 +16,7 @@
 using namespace std;
 
 const int DiskLength = 1000;
-const double TIce = 170;
+const double TIce = 1;
 
 // Defining class for disks
 

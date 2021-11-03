@@ -232,6 +232,8 @@ void EvolutionModel::SetOptions()
     DiskPrecision = Options["DiskPrecision"];
     MaxRunTime = Options["MaxRunTime"];
     TraceWM = Options["TraceWM"];
+    Sublimation = Options["Sublimation"];
+    Tsubli = Options["Tsubli"];
     if(Options.find("MigrationType") != Options.end())
     {
         int MigIndex = Options["MigrationType"];
@@ -324,7 +326,7 @@ void EvolutionModel::SatelliteInitialization()
         
         while(InputFile >> ID >> mass >> wm  >> swm >>  x >> y >> z >> vx >> vy >> vz >> a >> e >> inc >> N >> dt >> init_time >> form_time >> p)    // search satellites in the restart file
         {
-            Satellites[i] = SatelliteModel(ID, mass, x, y, z, Rho, Disk.G * Disk.MP, init_time);
+            Satellites[i] = SatelliteModel(ID, mass, x, y, z, Rho, Disk.G * Disk.MP, init_time, Tsubli);
             Satellites[i].Vx = vx;
             Satellites[i].Vy = vy;
             Satellites[i].Vz = vz;
@@ -386,7 +388,7 @@ void EvolutionModel::CreateSatellite(int index)
     theta = (rand() % 10000) / 10000. * 2 * M_PI;
     z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
 
-    Satellites[index] = SatelliteModel(ID, InitMass, r * cos(theta), r * sin(theta), z, Rho, Disk.G * Disk.MP, Time);
+    Satellites[index] = SatelliteModel(ID, InitMass, r * cos(theta), r * sin(theta), z, Rho, Disk.G * Disk.MP, Time, Tsubli);
     ComputeParameters(index);
 
     ofstream OutputFile;
@@ -865,6 +867,14 @@ void EvolutionModel::K(int i, double factor)
     int check;
     ofstream OutputFile;
 
+    if (Options["Sublimation"] == true) {
+
+        double position = abs(Satellites[i].ComputeA() * cos(Satellites[i].ComputeInc()));
+        if (position < Disk.R[Disk.IceLineID]) {
+            Satellites[i].UpdateWM(dt);
+        }
+    }
+
     x = &(Satellites[i].X);
     y = &(Satellites[i].Y);
     z = &(Satellites[i].Z);
@@ -1009,6 +1019,9 @@ double EvolutionModel::HPC(int id_group, double dt)
 {
     /*-- COMPUTE HERMITE INTEGRATION FOR A GROUP OF PARTICLES AND NEW TIME-STEP --*/
 
+
+
+
     // If you modify the first for loop you have to modify the second loop accordingly
 
     double next_dt = 0;
@@ -1021,6 +1034,7 @@ double EvolutionModel::HPC(int id_group, double dt)
             double ax, ay, az, adx, ady, adz;
             double r2, Ri, Xi, Yi, Zi, Vxi, Vyi, Vzi, Ri3, Ri5, RiVi;
             double mu = Disk.G * Disk.MP;
+
 
             Xi = Satellites[i].X;
             Yi = Satellites[i].Y;
@@ -1228,12 +1242,20 @@ double EvolutionModel::HPC(int id_group, double dt)
         }
     }
 
+
     //Implement corrections
     for(int i = 0; i < NSatellites; i++)
     {
         if((Satellites[i].GroupID == id_group) && Satellites[i].Active)
         {
             double addx, addy, addz, adddx, adddy, adddz;
+
+            if (Options["Sublimation"] == true) {
+                double position = abs(Satellites[i].ComputeA() * cos(Satellites[i].ComputeInc()));
+                if (position < Disk.R[Disk.IceLineID]) {
+                    Satellites[i].UpdateWM(dt);
+                }
+            }
 
             addx = Satellites[i].Addx;
             addy = Satellites[i].Addy;
@@ -1262,6 +1284,13 @@ void EvolutionModel::I(int i, double factor)
     /*-- COMPUTE INTERACTION PART OF THE HAMILTONIAN --*/
 
     double dt = Satellites[i].Dt * factor;
+
+    if (Options["Sublimation"] == true) {
+        double position = abs(Satellites[i].ComputeA() * cos(Satellites[i].ComputeInc()));
+        if (position < Disk.R[Disk.IceLineID]) {
+            Satellites[i].UpdateWM(dt);
+        }
+    }
 
     Satellites[i].Ax = 0.;
     Satellites[i].Ay = 0.;

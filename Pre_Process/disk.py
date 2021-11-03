@@ -496,7 +496,7 @@ class disk:
         if r_au < 2:
             wmf = 0.0
         elif 2 <= r_au < 2.5:
-            wmf = 0.1
+            wmf = 0.2
         elif 2.5 <= r_au:
             wmf = 0.5
 

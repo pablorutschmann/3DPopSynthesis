@@ -62,6 +62,7 @@ class snapshot:
         ax.set_ylabel('Eccentricity', fontsize=15)
         fig.suptitle('Satellites at time ' + str(self.time) + ' Myrs')
         fig.savefig(self.plot_path + '/satellites' + str(self.index).zfill(4) + '.png')
+        plt.close(fig)
         print('Plot saved at: ' + self.plot_path + '/satellites' + str(self.index).zfill(4) + '.png')
 
 
@@ -118,6 +119,7 @@ class snapshot:
         ax.legend(handles=handles, title='Components')
         fig.suptitle('Satellites at time ' + str(self.time) + ' Myrs')
         fig.savefig(self.plot_path + '/satellites_ratios_' + str(self.index).zfill(4) + '.png')
+        plt.close(fig)
         print('Plot saved at: ' + self.plot_path + '/satellites_ratios_' + str(self.index).zfill(4) + '.png')
 
     def fig_disk(self, fig, ax, field):

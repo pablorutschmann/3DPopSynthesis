@@ -167,13 +167,13 @@ int DiskModel::ComputeIceLine()
 {
 // Find index of IceLine in disk
     int index = 0  ;
-    if (TIce < Temp[0]) {
+    if (TIce > Temp[0]) {
         index = 0;
     }
     else {
         for (int i = Length - 1 ; i > 0; i--) {
-            if (TIce > Temp[i]) {
-                index = i + 1;
+            if (TIce < Temp[i]) {
+                index = i;
                 break;
             }
         }
