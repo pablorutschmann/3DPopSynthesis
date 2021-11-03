@@ -40,8 +40,8 @@ SatelliteModel::SatelliteModel(int id, double mass, double x, double y, double z
 
     ID = id;
     Mass = mass;
-    WM = -1;
-    SWM = -1;
+    WM = -1;               // Water Mass
+    SWM = -1;              // Hydrated Minerals Mass
     X = x;
     Y = y;
     Z = z;
