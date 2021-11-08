@@ -89,6 +89,30 @@ if __name__ == "__main__":
     print("WMF: ")
     print(wmf)
 
+    radius = 100 * 1000 * 100 #cm
+
+    vol = 4/3 * np.pi * radius**3
+
+    mass = 5.513 * vol
+
+    print(mass / M_S)
+
+    print(0.1 * M_E /M_S)
+
+    # radi = (mass * 3 / 4 / np.pi / 2)**(1/3) / 100 / 1000
+    #
+    # print(radi)
+    #
+    # mass = 2 * vol / M_E
+    #
+    # print(mass)
+
+
+
+
+
+
+
 class disk:
     def __init__(self, path, pick = True):
         self.wmf = np.vectorize(self.wmf_1d)
