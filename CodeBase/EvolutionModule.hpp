@@ -31,8 +31,12 @@ public:
     
     string InputAddress, OutputAddress, MigrationType;
     double Time, MaxTime;
+    int NEmbryos;
+    int NPlanetesimals;
     int NSatellites;
     double R_min, R_max;
+    double EmbryoInitMass, EmbryoRho;
+    double Spacing;
     double InitMass, Rho;
     double DtMax, GlobalDt;
     double RDistruction;
@@ -49,6 +53,8 @@ public:
 
     double TimeStopFormation;
 
+    double r_prev;
+
     int TotalSubticks;
     int CloseSubticks;
     
@@ -62,12 +68,13 @@ public:
     void SetParameters();
 
     void SatelliteInitialization();
-    void CreateSatellite(int index);
+    void CreateSatellite(int index, char type = 'P');
     void CreateSnapshot();
     void WriteSnapshot(string FolderName, bool header);
     void ComputeParameters(int index);
     void SortSatellites();
     void CheckCollision(int index);
+    bool CheckInvalidity(int index);
     void CheckAndCreate();
     void Accretion(int index, double dt);
 

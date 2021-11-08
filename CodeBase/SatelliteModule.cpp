@@ -24,7 +24,7 @@ const bool TypeIIMigration = true;  // take into account gap opening effects
 SatelliteModel::SatelliteModel() {
 }
 
-SatelliteModel::SatelliteModel(int id, double mass, double x, double y, double z, double rho, double mu, double time, double sublimationtime)
+SatelliteModel::SatelliteModel(int id, char type, double mass, double x, double y, double z, double rho, double mu, double time, double sublimationtime)
 {
     /*
     Initialize satellite model
@@ -39,6 +39,7 @@ SatelliteModel::SatelliteModel(int id, double mass, double x, double y, double z
     */
 
     ID = id;
+    Type = type;
     Mass = mass;
     WM = -1;                    // Water Mass
     SWM = -1;                   // Hydrated Minerals Mass
