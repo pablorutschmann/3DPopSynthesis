@@ -80,6 +80,7 @@ class snapshot:
 
         mean_mass = np.min(mtome * self.satellites['M'])
         mass_scaling = mean_mass / 90000
+        mass_scaling = 0.000000001
 
         def pie_1d(r1,r2):
             # calculate the points of the first pie marker

@@ -1,0 +1,1220 @@
+system_0000/inputs started at Fri Oct  1 14:27:54 2021
+
+	system_0000/inputs finished at Fri Oct  1 14:30:39 2021
+ after 164.46 s, 2.741 min, 0.0456834 hours
+system_0000/inputs started at Fri Oct  1 14:40:14 2021
+
+	system_0000/inputs finished at Fri Oct  1 14:42:56 2021
+ after 162.027 s, 2.70045 min, 0.0450075 hours
+system_0000/inputs started at Fri Oct  1 14:51:41 2021
+
+	system_0000/inputs finished at Fri Oct  1 14:54:22 2021
+ after 160.724 s, 2.67873 min, 0.0446454 hours
+system_0000/inputs started at Fri Oct  1 14:55:03 2021
+
+	system_0000/inputs finished at Fri Oct  1 14:55:03 2021
+ after 0.0054 s, 9e-05 min, 1.5e-06 hours
+system_0000/inputs started at Fri Oct  1 14:55:21 2021
+
+	system_0000/inputs finished at Fri Oct  1 14:58:02 2021
+ after 161.393 s, 2.68989 min, 0.0448315 hours
+system_0000/inputs started at Fri Oct  1 14:58:13 2021
+
+system_0000/inputs started at Fri Oct  1 15:17:18 2021
+
+system_0000/inputs started at Fri Oct  1 15:32:24 2021
+
+	system_0000/inputs finished at Fri Oct  1 15:32:24 2021
+ after 0.005227 s, 8.71167e-05 min, 1.45194e-06 hours
+system_0000/inputs started at Fri Oct  1 15:33:02 2021
+
+	system_0000/inputs finished at Fri Oct  1 15:33:02 2021
+ after 0.005825 s, 9.70833e-05 min, 1.61806e-06 hours
+system_0000/inputs started at Fri Oct  1 15:33:22 2021
+
+system_0000/inputs started at Fri Oct  1 15:34:31 2021
+
+system_0000/inputs started at Fri Oct  1 15:36:17 2021
+
+system_0000/inputs started at Fri Oct  1 15:37:21 2021
+
+system_0000/inputs started at Tue Oct  5 14:41:51 2021
+
+	system_0000/inputs finished at Tue Oct  5 14:41:51 2021
+ after 0.038988 s, 0.0006498 min, 1.083e-05 hours
+system_0000/inputs started at Tue Oct  5 14:51:35 2021
+
+	system_0000/inputs finished at Tue Oct  5 14:51:35 2021
+ after 0.042265 s, 0.000704417 min, 1.17403e-05 hours
+system_0000/inputs started at Tue Oct  5 14:53:47 2021
+
+system_0000/inputs started at Tue Oct  5 14:56:47 2021
+
+	system_0000/inputs finished at Tue Oct  5 14:56:47 2021
+ after 0.001536 s, 2.56e-05 min, 4.26667e-07 hours
+system_0000/inputs started at Tue Oct  5 14:58:01 2021
+
+	system_0000/inputs finished at Tue Oct  5 14:58:01 2021
+ after 0.001531 s, 2.55167e-05 min, 4.25278e-07 hours
+system_0000/inputs started at Mon Oct 11 11:55:22 2021
+
+	system_0000/inputs finished at Mon Oct 11 11:55:22 2021
+ after 0.001484 s, 2.47333e-05 min, 4.12222e-07 hours
+system_0000/inputs started at Mon Oct 11 11:56:02 2021
+
+	system_0000/inputs finished at Mon Oct 11 11:56:02 2021
+ after 0.001297 s, 2.16167e-05 min, 3.60278e-07 hours
+system_0000/inputs started at Mon Oct 11 11:58:27 2021
+
+	system_0000/inputs finished at Mon Oct 11 11:58:27 2021
+ after 0.001157 s, 1.92833e-05 min, 3.21389e-07 hours
+system_0000/inputs started at Mon Oct 11 11:59:06 2021
+
+	system_0000/inputs finished at Mon Oct 11 11:59:06 2021
+ after 0.001639 s, 2.73167e-05 min, 4.55278e-07 hours
+system_0000/inputs started at Mon Oct 11 12:11:38 2021
+
+	system_0000/inputs finished at Mon Oct 11 12:11:38 2021
+ after 0.001541 s, 2.56833e-05 min, 4.28056e-07 hours
+system_0000/inputs started at Mon Oct 11 12:15:00 2021
+
+	system_0000/inputs finished at Mon Oct 11 12:15:00 2021
+ after 0.001832 s, 3.05333e-05 min, 5.08889e-07 hours
+system_0000/inputs started at Mon Oct 11 12:15:52 2021
+
+	system_0000/inputs finished at Mon Oct 11 12:15:52 2021
+ after 0.001634 s, 2.72333e-05 min, 4.53889e-07 hours
+system_0000/inputs started at Mon Oct 11 12:17:20 2021
+
+	system_0000/inputs finished at Mon Oct 11 12:17:20 2021
+ after 0.042563 s, 0.000709383 min, 1.18231e-05 hours
+system_0000/inputs started at Mon Oct 11 12:19:28 2021
+
+	system_0000/inputs finished at Mon Oct 11 12:19:28 2021
+ after 0.037705 s, 0.000628417 min, 1.04736e-05 hours
+system_0000/inputs started at Mon Oct 11 12:20:04 2021
+
+	system_0000/inputs finished at Mon Oct 11 12:20:04 2021
+ after 0.041 s, 0.000683333 min, 1.13889e-05 hours
+system_0000/inputs started at Mon Oct 11 14:16:27 2021
+
+	system_0000/inputs finished at Mon Oct 11 14:16:27 2021
+ after 0.001975 s, 3.29167e-05 min, 5.48611e-07 hours
+system_0000/inputs started at Fri Oct 15 12:43:35 2021
+
+	system_0000/inputs finished at Fri Oct 15 12:43:35 2021
+ after 0.001374 s, 2.29e-05 min, 3.81667e-07 hours
+system_0000/inputs started at Fri Oct 15 12:50:21 2021
+
+	system_0000/inputs finished at Fri Oct 15 12:50:21 2021
+ after 0.626715 s, 0.0104452 min, 0.000174087 hours
+system_0000/inputs started at Fri Oct 15 14:33:58 2021
+
+	system_0000/inputs finished at Fri Oct 15 14:33:58 2021
+ after 0.295444 s, 0.00492407 min, 8.20678e-05 hours
+system_0000/inputs started at Fri Oct 15 14:48:11 2021
+
+	system_0000/inputs finished at Fri Oct 15 14:48:11 2021
+ after 0.593654 s, 0.00989423 min, 0.000164904 hours
+system_0000/inputs started at Fri Oct 15 14:56:55 2021
+
+	system_0000/inputs finished at Fri Oct 15 14:56:56 2021
+ after 0.795627 s, 0.0132605 min, 0.000221007 hours
+system_0000/inputs started at Fri Oct 15 15:04:50 2021
+
+	system_0000/inputs finished at Fri Oct 15 15:04:50 2021
+ after 0.741962 s, 0.012366 min, 0.000206101 hours
+system_0000/inputs started at Fri Oct 15 15:10:59 2021
+
+	system_0000/inputs finished at Fri Oct 15 15:10:59 2021
+ after 0.044375 s, 0.000739583 min, 1.23264e-05 hours
+system_0000/inputs started at Fri Oct 15 15:12:09 2021
+
+	system_0000/inputs finished at Fri Oct 15 15:12:09 2021
+ after 0.044255 s, 0.000737583 min, 1.22931e-05 hours
+system_0000/inputs started at Sun Oct 17 12:31:07 2021
+
+	system_0000/inputs finished at Sun Oct 17 12:31:07 2021
+ after 0.371683 s, 0.00619472 min, 0.000103245 hours
+system_0000/inputs started at Sun Oct 17 12:33:02 2021
+
+	system_0000/inputs finished at Sun Oct 17 12:33:02 2021
+ after 0.29386 s, 0.00489767 min, 8.16278e-05 hours
+system_0000/inputs started at Sun Oct 17 12:35:37 2021
+
+	system_0000/inputs finished at Sun Oct 17 12:35:37 2021
+ after 0.349629 s, 0.00582715 min, 9.71192e-05 hours
+system_0000/inputs started at Sun Oct 17 12:36:59 2021
+
+	system_0000/inputs finished at Sun Oct 17 12:36:59 2021
+ after 0.006479 s, 0.000107983 min, 1.79972e-06 hours
+system_0000/inputs started at Sun Oct 17 12:37:54 2021
+
+	system_0000/inputs finished at Sun Oct 17 12:37:54 2021
+ after 0.009143 s, 0.000152383 min, 2.53972e-06 hours
+system_0000/inputs started at Sun Oct 17 12:46:56 2021
+
+	system_0000/inputs finished at Sun Oct 17 12:46:56 2021
+ after 0.010292 s, 0.000171533 min, 2.85889e-06 hours
+system_0000/inputs started at Sun Oct 17 12:49:47 2021
+
+	system_0000/inputs finished at Sun Oct 17 12:49:47 2021
+ after 0.001608 s, 2.68e-05 min, 4.46667e-07 hours
+system_0000/inputs started at Sun Oct 17 12:54:54 2021
+
+	system_0000/inputs finished at Sun Oct 17 12:54:57 2021
+ after 3.41284 s, 0.0568806 min, 0.00094801 hours
+system_0000/inputs started at Sun Oct 17 13:44:31 2021
+
+	system_0000/inputs finished at Sun Oct 17 13:44:35 2021
+ after 3.39894 s, 0.0566489 min, 0.000944149 hours
+system_0000/inputs started at Sun Oct 17 13:47:00 2021
+
+	system_0000/inputs finished at Sun Oct 17 13:47:01 2021
+ after 1.60524 s, 0.0267539 min, 0.000445899 hours
+system_0000/inputs started at Sun Oct 17 13:52:46 2021
+
+	system_0000/inputs finished at Sun Oct 17 13:52:50 2021
+ after 3.69785 s, 0.0616308 min, 0.00102718 hours
+system_0000/inputs started at Sun Oct 17 13:55:12 2021
+
+	system_0000/inputs finished at Sun Oct 17 13:55:16 2021
+ after 3.70062 s, 0.0616771 min, 0.00102795 hours
+system_0000/inputs started at Sun Oct 17 14:18:35 2021
+
+	system_0000/inputs finished at Sun Oct 17 14:18:39 2021
+ after 3.69435 s, 0.0615726 min, 0.00102621 hours
+system_0000/inputs started at Sun Oct 17 14:22:33 2021
+
+	system_0000/inputs finished at Sun Oct 17 14:22:37 2021
+ after 3.70179 s, 0.0616965 min, 0.00102828 hours
+system_0000/inputs started at Sun Oct 17 14:24:32 2021
+
+	system_0000/inputs finished at Sun Oct 17 14:24:35 2021
+ after 3.6978 s, 0.06163 min, 0.00102717 hours
+system_0000/inputs started at Sun Oct 17 14:41:27 2021
+
+	system_0000/inputs finished at Sun Oct 17 14:41:31 2021
+ after 3.69951 s, 0.0616585 min, 0.00102764 hours
+system_0000/inputs started at Sun Oct 17 14:43:21 2021
+
+	system_0000/inputs finished at Sun Oct 17 14:43:25 2021
+ after 3.70237 s, 0.0617061 min, 0.00102844 hours
+system_0000/inputs started at Sun Oct 17 14:44:28 2021
+
+	system_0000/inputs finished at Sun Oct 17 14:44:32 2021
+ after 3.69654 s, 0.061609 min, 0.00102682 hours
+system_0000/inputs started at Sun Oct 17 14:46:07 2021
+
+	system_0000/inputs finished at Sun Oct 17 14:49:21 2021
+ after 193.806 s, 3.23011 min, 0.0538351 hours
+system_0000/inputs started at Sun Oct 17 14:54:42 2021
+
+	system_0000/inputs finished at Sun Oct 17 14:57:55 2021
+ after 193.397 s, 3.22328 min, 0.0537214 hours
+system_0000/inputs started at Sun Oct 17 15:01:53 2021
+
+	system_0000/inputs finished at Sun Oct 17 15:05:18 2021
+ after 204.753 s, 3.41255 min, 0.0568759 hours
+system_0000/inputs started at Sun Oct 17 15:09:39 2021
+
+	system_0000/inputs finished at Sun Oct 17 15:15:41 2021
+ after 362.309 s, 6.03848 min, 0.100641 hours
+system_0000/inputs started at Sun Oct 17 15:20:49 2021
+
+	system_0000/inputs finished at Sun Oct 17 15:24:14 2021
+ after 205.037 s, 3.41728 min, 0.0569546 hours
+system_0000/inputs started at Sun Oct 17 15:37:32 2021
+
+	system_0000/inputs finished at Sun Oct 17 15:45:35 2021
+ after 482.739 s, 8.04565 min, 0.134094 hours
+system_0000/inputs started at Sun Oct 17 15:49:03 2021
+
+	system_0000/inputs finished at Sun Oct 17 15:55:02 2021
+ after 359.029 s, 5.98382 min, 0.0997303 hours
+system_0000/inputs started at Mon Oct 18 08:59:31 2021
+
+	system_0000/inputs finished at Mon Oct 18 08:59:36 2021
+ after 4.87131 s, 0.0811886 min, 0.00135314 hours
+system_0000/inputs started at Mon Oct 18 09:01:31 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:01:34 2021
+ after 2.39218 s, 0.0398697 min, 0.000664495 hours
+system_0000/inputs started at Mon Oct 18 09:03:45 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:03:48 2021
+ after 2.42175 s, 0.0403624 min, 0.000672707 hours
+system_0000/inputs started at Mon Oct 18 09:05:12 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:05:19 2021
+ after 6.57637 s, 0.109606 min, 0.00182677 hours
+system_0000/inputs started at Mon Oct 18 09:06:28 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:06:34 2021
+ after 6.19538 s, 0.103256 min, 0.00172094 hours
+system_0000/inputs started at Mon Oct 18 09:07:41 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:07:49 2021
+ after 8.14083 s, 0.135681 min, 0.00226134 hours
+system_0000/inputs started at Mon Oct 18 09:19:05 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:19:09 2021
+ after 4.18811 s, 0.0698018 min, 0.00116336 hours
+system_0000/inputs started at Mon Oct 18 09:23:08 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:23:12 2021
+ after 3.90401 s, 0.0650668 min, 0.00108445 hours
+system_0000/inputs started at Mon Oct 18 09:34:11 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:34:15 2021
+ after 3.9942 s, 0.0665701 min, 0.0011095 hours
+system_0000/inputs started at Mon Oct 18 09:36:36 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:36:36 2021
+ after 0.699083 s, 0.0116514 min, 0.00019419 hours
+system_0000/inputs started at Mon Oct 18 09:38:20 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:38:21 2021
+ after 0.715161 s, 0.0119194 min, 0.000198656 hours
+system_0000/inputs started at Mon Oct 18 09:39:11 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:39:12 2021
+ after 0.648649 s, 0.0108108 min, 0.00018018 hours
+system_0000/inputs started at Mon Oct 18 09:43:10 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:43:10 2021
+ after 0.270149 s, 0.00450248 min, 7.50414e-05 hours
+system_0000/inputs started at Mon Oct 18 09:45:20 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:45:20 2021
+ after 0.371145 s, 0.00618575 min, 0.000103096 hours
+system_0000/inputs started at Mon Oct 18 09:46:12 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:46:13 2021
+ after 0.37565 s, 0.00626083 min, 0.000104347 hours
+system_0000/inputs started at Mon Oct 18 09:47:32 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:47:33 2021
+ after 0.70743 s, 0.0117905 min, 0.000196508 hours
+system_0000/inputs started at Mon Oct 18 09:53:14 2021
+
+	system_0000/inputs finished at Mon Oct 18 09:53:15 2021
+ after 0.656362 s, 0.0109394 min, 0.000182323 hours
+system_0000/inputs started at Mon Oct 18 10:05:08 2021
+
+	system_0000/inputs finished at Mon Oct 18 10:05:09 2021
+ after 0.531441 s, 0.00885735 min, 0.000147623 hours
+system_0000/inputs started at Mon Oct 18 10:08:43 2021
+
+	system_0000/inputs finished at Mon Oct 18 10:08:43 2021
+ after 0.54611 s, 0.00910183 min, 0.000151697 hours
+system_0000/inputs started at Mon Oct 18 10:09:29 2021
+
+	system_0000/inputs finished at Mon Oct 18 10:09:30 2021
+ after 0.520844 s, 0.00868073 min, 0.000144679 hours
+system_0000/inputs started at Mon Oct 18 10:09:47 2021
+
+	system_0000/inputs finished at Mon Oct 18 10:09:48 2021
+ after 0.522146 s, 0.00870243 min, 0.000145041 hours
+system_0000/inputs started at Mon Oct 18 10:10:59 2021
+
+	system_0000/inputs finished at Mon Oct 18 10:11:00 2021
+ after 0.495425 s, 0.00825708 min, 0.000137618 hours
+system_0000/inputs started at Mon Oct 18 10:13:00 2021
+
+	system_0000/inputs finished at Mon Oct 18 10:13:00 2021
+ after 0.50986 s, 0.00849767 min, 0.000141628 hours
+system_0000/inputs started at Mon Oct 18 10:39:44 2021
+
+	system_0000/inputs finished at Mon Oct 18 10:39:44 2021
+ after 0.096731 s, 0.00161218 min, 2.68697e-05 hours
+system_0000/inputs started at Mon Oct 18 10:41:13 2021
+
+	system_0000/inputs finished at Mon Oct 18 10:41:13 2021
+ after 0.274311 s, 0.00457185 min, 7.61975e-05 hours
+system_0000/inputs started at Mon Oct 18 10:42:09 2021
+
+	system_0000/inputs finished at Mon Oct 18 10:42:09 2021
+ after 0.18309 s, 0.0030515 min, 5.08583e-05 hours
+system_0000/inputs started at Mon Oct 18 10:42:42 2021
+
+	system_0000/inputs finished at Mon Oct 18 10:42:43 2021
+ after 1.24913 s, 0.0208188 min, 0.000346979 hours
+system_0000/inputs started at Mon Oct 18 10:45:14 2021
+
+	system_0000/inputs finished at Mon Oct 18 10:45:16 2021
+ after 2.14639 s, 0.0357732 min, 0.000596219 hours
+system_0000/inputs started at Mon Oct 18 10:46:17 2021
+
+	system_0000/inputs finished at Mon Oct 18 10:46:19 2021
+ after 2.12105 s, 0.0353509 min, 0.000589181 hours
+system_0000/inputs started at Wed Oct 20 11:07:55 2021
+
+	system_0000/inputs finished at Wed Oct 20 11:08:25 2021
+ after 30.5497 s, 0.509161 min, 0.00848602 hours
+system_0000/inputs started at Wed Oct 20 11:10:52 2021
+
+	system_0000/inputs finished at Wed Oct 20 11:11:23 2021
+ after 30.6619 s, 0.511032 min, 0.00851719 hours
+system_0000/inputs started at Wed Oct 20 11:12:18 2021
+
+	system_0000/inputs finished at Wed Oct 20 11:12:48 2021
+ after 30.3069 s, 0.505114 min, 0.00841857 hours
+system_0000/inputs started at Wed Oct 20 11:16:30 2021
+
+	system_0000/inputs finished at Wed Oct 20 11:17:01 2021
+ after 30.5652 s, 0.509421 min, 0.00849035 hours
+system_0000/inputs started at Wed Oct 20 11:20:46 2021
+
+	system_0000/inputs finished at Wed Oct 20 11:21:17 2021
+ after 31.1994 s, 0.51999 min, 0.0086665 hours
+system_0000/inputs started at Wed Oct 20 11:26:21 2021
+
+system_0000/inputs started at Wed Oct 20 11:35:05 2021
+
+	system_0000/inputs finished at Wed Oct 20 11:35:36 2021
+ after 31.5102 s, 0.52517 min, 0.00875284 hours
+system_0000/inputs started at Wed Oct 20 11:39:03 2021
+
+	system_0000/inputs finished at Wed Oct 20 11:39:35 2021
+ after 31.4964 s, 0.52494 min, 0.00874899 hours
+system_0000/inputs started at Wed Oct 20 11:45:33 2021
+
+system_0000/inputs started at Wed Oct 20 11:46:28 2021
+
+system_0000/inputs started at Wed Oct 20 11:46:41 2021
+
+	system_0000/inputs finished at Wed Oct 20 11:47:13 2021
+ after 31.6605 s, 0.527676 min, 0.00879459 hours
+system_0000/inputs started at Wed Oct 20 11:49:18 2021
+
+	system_0000/inputs finished at Wed Oct 20 11:49:50 2021
+ after 31.5074 s, 0.525124 min, 0.00875206 hours
+system_0000/inputs started at Wed Oct 20 14:10:35 2021
+
+	system_0000/inputs finished at Wed Oct 20 14:11:07 2021
+ after 31.5276 s, 0.52546 min, 0.00875767 hours
+system_0000/inputs started at Wed Oct 20 14:11:58 2021
+
+	system_0000/inputs finished at Wed Oct 20 14:12:29 2021
+ after 31.4661 s, 0.524435 min, 0.00874058 hours
+system_0000/inputs started at Wed Oct 20 14:22:52 2021
+
+	system_0000/inputs finished at Wed Oct 20 14:23:39 2021
+ after 47.0007 s, 0.783345 min, 0.0130558 hours
+system_0000/inputs started at Wed Oct 20 14:25:05 2021
+
+	system_0000/inputs finished at Wed Oct 20 14:25:52 2021
+ after 47.2948 s, 0.788246 min, 0.0131374 hours
+system_0000/inputs started at Wed Oct 20 14:27:29 2021
+
+	system_0000/inputs finished at Wed Oct 20 14:28:13 2021
+ after 43.9014 s, 0.73169 min, 0.0121948 hours
+system_0000/inputs started at Wed Oct 20 14:31:41 2021
+
+	system_0000/inputs finished at Wed Oct 20 14:32:31 2021
+ after 50.3226 s, 0.83871 min, 0.0139785 hours
+system_0000/inputs started at Wed Oct 20 14:34:07 2021
+
+	system_0000/inputs finished at Wed Oct 20 14:34:51 2021
+ after 43.6102 s, 0.726836 min, 0.0121139 hours
+system_0000/inputs started at Wed Oct 20 17:21:00 2021
+
+	system_0000/inputs finished at Wed Oct 20 17:21:45 2021
+ after 45.2418 s, 0.75403 min, 0.0125672 hours
+system_0000/inputs started at Wed Oct 20 17:24:47 2021
+
+	system_0000/inputs finished at Wed Oct 20 17:31:20 2021
+ after 393.682 s, 6.56137 min, 0.109356 hours
+system_0000/inputs started at Wed Oct 20 17:32:09 2021
+
+	system_0000/inputs finished at Wed Oct 20 17:33:00 2021
+ after 50.574 s, 0.842901 min, 0.0140483 hours
+system_0000/inputs started at Wed Oct 20 17:34:23 2021
+
+system_0000/inputs started at Fri Oct 22 14:35:13 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:35:13 2021
+ after 0.06226 s, 0.00103767 min, 1.72944e-05 hours
+system_0000/inputs started at Fri Oct 22 14:37:04 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:37:04 2021
+ after 0.169635 s, 0.00282725 min, 4.71208e-05 hours
+system_0000/inputs started at Fri Oct 22 14:37:22 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:37:22 2021
+ after 0.1953 s, 0.003255 min, 5.425e-05 hours
+system_0000/inputs started at Fri Oct 22 14:39:15 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:39:15 2021
+ after 0.219969 s, 0.00366615 min, 6.11025e-05 hours
+system_0000/inputs started at Fri Oct 22 14:40:26 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:40:26 2021
+ after 0.139558 s, 0.00232597 min, 3.87661e-05 hours
+system_0000/inputs started at Fri Oct 22 14:43:42 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:43:42 2021
+ after 0.164361 s, 0.00273935 min, 4.56558e-05 hours
+system_0000/inputs started at Fri Oct 22 14:44:05 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:44:05 2021
+ after 0.159522 s, 0.0026587 min, 4.43117e-05 hours
+system_0000/inputs started at Fri Oct 22 14:44:52 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:44:53 2021
+ after 0.149107 s, 0.00248512 min, 4.14186e-05 hours
+system_0000/inputs started at Fri Oct 22 14:47:29 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:47:30 2021
+ after 0.206474 s, 0.00344123 min, 5.73539e-05 hours
+system_0000/inputs started at Fri Oct 22 14:50:57 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:50:57 2021
+ after 0.184126 s, 0.00306877 min, 5.11461e-05 hours
+system_0000/inputs started at Fri Oct 22 14:52:04 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:52:04 2021
+ after 0.258171 s, 0.00430285 min, 7.17142e-05 hours
+system_0000/inputs started at Fri Oct 22 14:57:20 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:57:21 2021
+ after 0.267539 s, 0.00445898 min, 7.43164e-05 hours
+system_0000/inputs started at Fri Oct 22 14:58:00 2021
+
+	system_0000/inputs finished at Fri Oct 22 14:58:00 2021
+ after 0.21341 s, 0.00355683 min, 5.92806e-05 hours
+system_0000/inputs started at Fri Oct 22 15:00:11 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:00:11 2021
+ after 0.18222 s, 0.003037 min, 5.06167e-05 hours
+system_0000/inputs started at Fri Oct 22 15:04:29 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:04:29 2021
+ after 0.206173 s, 0.00343622 min, 5.72703e-05 hours
+system_0000/inputs started at Fri Oct 22 15:05:33 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:05:33 2021
+ after 0.134106 s, 0.0022351 min, 3.72517e-05 hours
+system_0000/inputs started at Fri Oct 22 15:06:21 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:06:21 2021
+ after 0.133398 s, 0.0022233 min, 3.7055e-05 hours
+system_0000/inputs started at Fri Oct 22 15:10:28 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:10:28 2021
+ after 0.100677 s, 0.00167795 min, 2.79658e-05 hours
+system_0000/inputs started at Fri Oct 22 15:17:55 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:17:55 2021
+ after 0.140623 s, 0.00234372 min, 3.90619e-05 hours
+system_0000/inputs started at Fri Oct 22 15:25:52 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:25:52 2021
+ after 0.178549 s, 0.00297582 min, 4.95969e-05 hours
+system_0000/inputs started at Fri Oct 22 15:28:42 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:28:43 2021
+ after 0.152517 s, 0.00254195 min, 4.23658e-05 hours
+system_0000/inputs started at Fri Oct 22 15:29:28 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:29:28 2021
+ after 0.15249 s, 0.0025415 min, 4.23583e-05 hours
+system_0000/inputs started at Fri Oct 22 15:34:03 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:34:03 2021
+ after 0.116857 s, 0.00194762 min, 3.24603e-05 hours
+system_0000/inputs started at Fri Oct 22 15:36:18 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:36:18 2021
+ after 0.13394 s, 0.00223233 min, 3.72056e-05 hours
+system_0000/inputs started at Fri Oct 22 15:37:15 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:37:15 2021
+ after 0.162432 s, 0.0027072 min, 4.512e-05 hours
+system_0000/inputs started at Fri Oct 22 15:38:37 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:38:37 2021
+ after 0.156073 s, 0.00260122 min, 4.33536e-05 hours
+system_0000/inputs started at Fri Oct 22 15:43:04 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:43:04 2021
+ after 0.15526 s, 0.00258767 min, 4.31278e-05 hours
+system_0000/inputs started at Fri Oct 22 15:47:52 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:47:52 2021
+ after 0.122438 s, 0.00204063 min, 3.40106e-05 hours
+system_0000/inputs started at Fri Oct 22 15:48:16 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:48:16 2021
+ after 0.168594 s, 0.0028099 min, 4.68317e-05 hours
+system_0000/inputs started at Fri Oct 22 15:50:35 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:50:36 2021
+ after 0.201022 s, 0.00335037 min, 5.58394e-05 hours
+system_0000/inputs started at Fri Oct 22 15:51:38 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:51:38 2021
+ after 0.182665 s, 0.00304442 min, 5.07403e-05 hours
+system_0000/inputs started at Fri Oct 22 15:56:41 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:56:41 2021
+ after 0.148978 s, 0.00248297 min, 4.13828e-05 hours
+system_0000/inputs started at Fri Oct 22 15:57:16 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:57:17 2021
+ after 0.174664 s, 0.00291107 min, 4.85178e-05 hours
+system_0000/inputs started at Fri Oct 22 15:58:01 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:58:01 2021
+ after 0.177122 s, 0.00295203 min, 4.92006e-05 hours
+system_0000/inputs started at Fri Oct 22 15:58:33 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:58:33 2021
+ after 0.19119 s, 0.0031865 min, 5.31083e-05 hours
+system_0000/inputs started at Fri Oct 22 15:58:58 2021
+
+	system_0000/inputs finished at Fri Oct 22 15:58:58 2021
+ after 0.194499 s, 0.00324165 min, 5.40275e-05 hours
+system_0000/inputs started at Fri Oct 22 16:48:49 2021
+
+	system_0000/inputs finished at Fri Oct 22 16:48:49 2021
+ after 0.148267 s, 0.00247112 min, 4.11853e-05 hours
+system_0000/inputs started at Fri Oct 22 16:51:23 2021
+
+	system_0000/inputs finished at Fri Oct 22 16:51:23 2021
+ after 0.135724 s, 0.00226207 min, 3.77011e-05 hours
+system_0000/inputs started at Fri Oct 22 16:52:34 2021
+
+	system_0000/inputs finished at Fri Oct 22 16:52:34 2021
+ after 0.227558 s, 0.00379263 min, 6.32106e-05 hours
+system_0000/inputs started at Fri Oct 22 16:52:55 2021
+
+	system_0000/inputs finished at Fri Oct 22 16:52:55 2021
+ after 0.208125 s, 0.00346875 min, 5.78125e-05 hours
+system_0000/inputs started at Fri Oct 22 17:13:02 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:13:03 2021
+ after 0.325033 s, 0.00541722 min, 9.02869e-05 hours
+system_0000/inputs started at Fri Oct 22 17:15:04 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:15:04 2021
+ after 0.366823 s, 0.00611372 min, 0.000101895 hours
+system_0000/inputs started at Fri Oct 22 17:16:20 2021
+
+system_0000/inputs started at Fri Oct 22 17:18:10 2021
+
+system_0000/inputs started at Fri Oct 22 17:18:22 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:18:38 2021
+ after 16.1194 s, 0.268656 min, 0.0044776 hours
+system_0000/inputs started at Fri Oct 22 17:21:22 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:21:41 2021
+ after 19.5776 s, 0.326294 min, 0.00543823 hours
+system_0000/inputs started at Fri Oct 22 17:22:08 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:22:42 2021
+ after 34.4157 s, 0.573595 min, 0.00955991 hours
+system_0000/inputs started at Fri Oct 22 17:23:39 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:23:39 2021
+ after 0.005022 s, 8.37e-05 min, 1.395e-06 hours
+system_0000/inputs started at Fri Oct 22 17:23:50 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:23:50 2021
+ after 0.004946 s, 8.24333e-05 min, 1.37389e-06 hours
+system_0000/inputs started at Fri Oct 22 17:25:00 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:25:00 2021
+ after 0.005271 s, 8.785e-05 min, 1.46417e-06 hours
+system_0000/inputs started at Fri Oct 22 17:26:45 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:27:19 2021
+ after 34.686 s, 0.5781 min, 0.009635 hours
+system_0000/inputs started at Fri Oct 22 17:28:03 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:28:27 2021
+ after 24.0391 s, 0.400651 min, 0.00667752 hours
+system_0000/inputs started at Fri Oct 22 17:31:30 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:31:58 2021
+ after 28.826 s, 0.480433 min, 0.00800722 hours
+system_0000/inputs started at Fri Oct 22 17:33:06 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:33:46 2021
+ after 40.2615 s, 0.671026 min, 0.0111838 hours
+system_0000/inputs started at Fri Oct 22 17:37:24 2021
+
+	system_0000/inputs finished at Fri Oct 22 17:37:50 2021
+ after 26.2054 s, 0.436757 min, 0.00727928 hours
+system_0000/inputs started at Mon Oct 25 08:16:45 2021
+
+	system_0000/inputs finished at Mon Oct 25 08:17:20 2021
+ after 34.3823 s, 0.573039 min, 0.00955064 hours
+system_0000/inputs started at Mon Oct 25 08:19:50 2021
+
+	system_0000/inputs finished at Mon Oct 25 08:19:57 2021
+ after 6.89357 s, 0.114893 min, 0.00191488 hours
+system_0000/inputs started at Mon Oct 25 08:22:29 2021
+
+	system_0000/inputs finished at Mon Oct 25 08:22:34 2021
+ after 4.66081 s, 0.0776802 min, 0.00129467 hours
+system_0000/inputs started at Mon Oct 25 08:23:33 2021
+
+	system_0000/inputs finished at Mon Oct 25 08:24:18 2021
+ after 44.6559 s, 0.744266 min, 0.0124044 hours
+system_0000/inputs started at Mon Oct 25 08:26:00 2021
+
+	system_0000/inputs finished at Mon Oct 25 08:26:45 2021
+ after 44.7492 s, 0.74582 min, 0.0124303 hours
+system_0000/inputs started at Mon Oct 25 08:29:31 2021
+
+system_0000/inputs started at Mon Oct 25 08:30:15 2021
+
+system_0000/inputs started at Mon Oct 25 08:31:03 2021
+
+system_0000/inputs started at Mon Oct 25 08:32:01 2021
+
+system_0000/inputs started at Mon Oct 25 08:32:35 2021
+
+system_0000/inputs started at Mon Oct 25 08:33:29 2021
+
+	system_0000/inputs finished at Mon Oct 25 08:35:02 2021
+ after 93.1336 s, 1.55223 min, 0.0258704 hours
+system_0000/inputs started at Mon Oct 25 08:43:55 2021
+
+	system_0000/inputs finished at Mon Oct 25 08:45:31 2021
+ after 95.4018 s, 1.59003 min, 0.0265005 hours
+system_0000/inputs started at Mon Oct 25 08:46:14 2021
+
+	system_0000/inputs finished at Mon Oct 25 08:47:48 2021
+ after 93.6453 s, 1.56075 min, 0.0260126 hours
+system_0000/inputs started at Mon Oct 25 08:47:54 2021
+
+	system_0000/inputs finished at Mon Oct 25 08:49:21 2021
+ after 87.3186 s, 1.45531 min, 0.0242552 hours
+system_0000/inputs started at Mon Oct 25 08:58:25 2021
+
+	system_0000/inputs finished at Mon Oct 25 08:59:55 2021
+ after 89.6783 s, 1.49464 min, 0.0249106 hours
+system_0000/inputs started at Mon Oct 25 09:18:23 2021
+
+	system_0000/inputs finished at Mon Oct 25 09:19:50 2021
+ after 87.1099 s, 1.45183 min, 0.0241972 hours
+system_0000/inputs started at Mon Oct 25 09:20:36 2021
+
+	system_0000/inputs finished at Mon Oct 25 09:22:04 2021
+ after 88.2239 s, 1.4704 min, 0.0245066 hours
+system_0000/inputs started at Mon Oct 25 09:22:12 2021
+
+	system_0000/inputs finished at Mon Oct 25 09:23:47 2021
+ after 94.3117 s, 1.57186 min, 0.0261977 hours
+system_0000/inputs started at Mon Oct 25 09:28:38 2021
+
+system_0000/inputs started at Mon Oct 25 09:30:31 2021
+
+	system_0000/inputs finished at Mon Oct 25 09:33:22 2021
+ after 171.071 s, 2.85118 min, 0.0475197 hours
+system_0000/inputs started at Mon Oct 25 09:58:39 2021
+
+	system_0000/inputs finished at Mon Oct 25 10:00:13 2021
+ after 93.2687 s, 1.55448 min, 0.025908 hours
+system_0000/inputs started at Mon Oct 25 10:02:35 2021
+
+	system_0000/inputs finished at Mon Oct 25 10:04:02 2021
+ after 87.0097 s, 1.45016 min, 0.0241694 hours
+system_0000/inputs started at Mon Oct 25 10:09:57 2021
+
+	system_0000/inputs finished at Mon Oct 25 10:11:24 2021
+ after 86.9813 s, 1.44969 min, 0.0241615 hours
+system_0000/inputs started at Mon Oct 25 10:11:27 2021
+
+	system_0000/inputs finished at Mon Oct 25 10:13:01 2021
+ after 94.0983 s, 1.5683 min, 0.0261384 hours
+system_0000/inputs started at Mon Oct 25 10:16:01 2021
+
+	system_0000/inputs finished at Mon Oct 25 10:17:32 2021
+ after 91.1223 s, 1.51871 min, 0.0253118 hours
+system_0000/inputs started at Mon Oct 25 15:21:42 2021
+
+	system_0000/inputs finished at Mon Oct 25 15:23:16 2021
+ after 93.4499 s, 1.5575 min, 0.0259583 hours
+system_0000/inputs started at Mon Oct 25 15:25:37 2021
+
+	system_0000/inputs finished at Mon Oct 25 15:27:12 2021
+ after 94.911 s, 1.58185 min, 0.0263642 hours
+system_0000/inputs started at Mon Oct 25 15:28:36 2021
+
+	system_0000/inputs finished at Mon Oct 25 19:34:03 2021
+ after 14727.9 s, 245.465 min, 4.09109 hours
+system_0000/inputs started at Tue Oct 26 12:22:28 2021
+
+	system_0000/inputs finished at Tue Oct 26 12:22:39 2021
+ after 10.4799 s, 0.174665 min, 0.00291108 hours
+Runs//inputs started at Wed Oct 27 11:19:33 2021
+
+	Runs//inputs finished at Wed Oct 27 11:19:33 2021
+ after 0.00076 s, 1.26667e-05 min, 2.11111e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:20:17 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:20:17 2021
+ after 0.001025 s, 1.70833e-05 min, 2.84722e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:22:43 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:22:43 2021
+ after 0.001103 s, 1.83833e-05 min, 3.06389e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:24:45 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:24:45 2021
+ after 0.001123 s, 1.87167e-05 min, 3.11944e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:25:14 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:25:14 2021
+ after 0.001109 s, 1.84833e-05 min, 3.08056e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:25:47 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:25:47 2021
+ after 0.001059 s, 1.765e-05 min, 2.94167e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:26:28 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:26:28 2021
+ after 0.001129 s, 1.88167e-05 min, 3.13611e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:26:34 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:26:34 2021
+ after 0.001135 s, 1.89167e-05 min, 3.15278e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:27:06 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:27:06 2021
+ after 0.001131 s, 1.885e-05 min, 3.14167e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:30:44 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:30:44 2021
+ after 0.001059 s, 1.765e-05 min, 2.94167e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:31:28 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:31:28 2021
+ after 0.001036 s, 1.72667e-05 min, 2.87778e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:32:14 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:32:14 2021
+ after 0.001037 s, 1.72833e-05 min, 2.88056e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:32:37 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:32:37 2021
+ after 0.000996 s, 1.66e-05 min, 2.76667e-07 hours
+Runs/testnew/inputs started at Wed Oct 27 11:37:19 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:37:19 2021
+ after 0.006576 s, 0.0001096 min, 1.82667e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:38:05 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:38:05 2021
+ after 0.006884 s, 0.000114733 min, 1.91222e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:38:16 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:38:16 2021
+ after 0.006995 s, 0.000116583 min, 1.94306e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:38:54 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:38:54 2021
+ after 0.006923 s, 0.000115383 min, 1.92306e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:40:04 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:40:04 2021
+ after 0.007014 s, 0.0001169 min, 1.94833e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:41:34 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:41:34 2021
+ after 0.00675 s, 0.0001125 min, 1.875e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:42:11 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:42:11 2021
+ after 0.007212 s, 0.0001202 min, 2.00333e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:43:06 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:43:06 2021
+ after 0.006895 s, 0.000114917 min, 1.91528e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:43:37 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:43:37 2021
+ after 0.007271 s, 0.000121183 min, 2.01972e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:44:11 2021
+
+Runs/testnew/inputs started at Wed Oct 27 11:44:36 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:44:36 2021
+ after 0.007412 s, 0.000123533 min, 2.05889e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:45:02 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:45:02 2021
+ after 0.00639 s, 0.0001065 min, 1.775e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:45:51 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:45:51 2021
+ after 0.007105 s, 0.000118417 min, 1.97361e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:48:00 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:48:00 2021
+ after 0.007015 s, 0.000116917 min, 1.94861e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:48:14 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:48:14 2021
+ after 0.007826 s, 0.000130433 min, 2.17389e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:49:05 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:49:05 2021
+ after 0.006858 s, 0.0001143 min, 1.905e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:49:26 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:49:26 2021
+ after 0.00697 s, 0.000116167 min, 1.93611e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:50:07 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:50:07 2021
+ after 0.007147 s, 0.000119117 min, 1.98528e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:50:29 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:50:29 2021
+ after 0.006872 s, 0.000114533 min, 1.90889e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:51:13 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:51:13 2021
+ after 0.006455 s, 0.000107583 min, 1.79306e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:51:40 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:51:40 2021
+ after 0.008509 s, 0.000141817 min, 2.36361e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:52:21 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:52:21 2021
+ after 0.006781 s, 0.000113017 min, 1.88361e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:53:08 2021
+
+Runs/testnew/inputs started at Wed Oct 27 11:53:17 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:53:17 2021
+ after 0.007012 s, 0.000116867 min, 1.94778e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 11:55:40 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 11:55:40 2021
+ after 0.00683 s, 0.000113833 min, 1.89722e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 12:01:19 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 12:01:19 2021
+ after 0.006741 s, 0.00011235 min, 1.8725e-06 hours
+Runs/testnew/inputs started at Wed Oct 27 12:02:10 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 12:02:11 2021
+ after 1.11321 s, 0.0185535 min, 0.000309224 hours
+Runs/testnew/inputs started at Wed Oct 27 12:02:36 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 12:02:37 2021
+ after 1.28542 s, 0.0214237 min, 0.000357062 hours
+Runs/testnew/inputs started at Wed Oct 27 12:04:31 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 12:04:33 2021
+ after 1.44018 s, 0.024003 min, 0.000400049 hours
+Runs/testnew/inputs started at Wed Oct 27 12:04:47 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 12:04:48 2021
+ after 1.05076 s, 0.0175127 min, 0.000291879 hours
+Runs/testnew/inputs started at Wed Oct 27 12:06:00 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 12:06:01 2021
+ after 1.39608 s, 0.0232681 min, 0.000387801 hours
+Runs/testnew/inputs started at Wed Oct 27 12:07:23 2021
+
+Runs/testnew/inputs started at Wed Oct 27 12:07:41 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 12:08:16 2021
+ after 35.252 s, 0.587533 min, 0.00979222 hours
+Runs/testnew/inputs started at Wed Oct 27 12:10:36 2021
+
+	Runs/testnew/inputs finished at Wed Oct 27 12:24:00 2021
+ after 803.816 s, 13.3969 min, 0.223282 hours
+Runs/long/inputs started at Wed Oct 27 12:56:53 2021
+
+Runs/testwm/inputs started at Mon Nov  1 10:17:34 2021
+
+	Runs/testwm/inputs finished at Mon Nov  1 10:17:39 2021
+ after 5.54328 s, 0.092388 min, 0.0015398 hours
+Runs/testwmlong/inputs started at Mon Nov  1 10:24:08 2021
+
+	Runs/testwmlong/inputs finished at Mon Nov  1 10:32:47 2021
+ after 518.741 s, 8.64569 min, 0.144095 hours
+Runs/testwmlong/inputs started at Mon Nov  1 10:40:01 2021
+
+	Runs/testwmlong/inputs finished at Mon Nov  1 10:47:57 2021
+ after 475.217 s, 7.92028 min, 0.132005 hours
+Runs/testsmf/inputs started at Mon Nov  1 11:30:29 2021
+
+	Runs/testsmf/inputs finished at Mon Nov  1 11:30:33 2021
+ after 4.65153 s, 0.0775256 min, 0.00129209 hours
+Runs/ratios/inputs started at Mon Nov  1 12:38:42 2021
+
+	Runs/ratios/inputs finished at Mon Nov  1 14:01:11 2021
+ after 4949.04 s, 82.484 min, 1.37473 hours
+Runs/ratios/inputs started at Mon Nov  1 14:12:07 2021
+
+	Runs/ratios/inputs finished at Mon Nov  1 15:41:14 2021
+ after 5346.95 s, 89.1159 min, 1.48526 hours
+Runs/foo/inputs started at Mon Nov  1 16:59:56 2021
+
+Runs/iceline/inputs started at Tue Nov  2 09:30:19 2021
+
+	Runs/iceline/inputs finished at Tue Nov  2 09:51:46 2021
+ after 1286.54 s, 21.4423 min, 0.357372 hours
+Runs/iceline2/inputs started at Tue Nov  2 10:12:40 2021
+
+	Runs/iceline2/inputs finished at Tue Nov  2 10:13:02 2021
+ after 22.7924 s, 0.379873 min, 0.00633121 hours
+Runs/iceline2/inputs started at Tue Nov  2 10:14:31 2021
+
+	Runs/iceline2/inputs finished at Tue Nov  2 10:15:20 2021
+ after 48.9204 s, 0.81534 min, 0.013589 hours
+Runs/subli/inputs started at Wed Nov  3 11:31:13 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 11:31:21 2021
+ after 7.93212 s, 0.132202 min, 0.00220337 hours
+Runs/subli/inputs started at Wed Nov  3 11:32:04 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 11:32:10 2021
+ after 5.23027 s, 0.0871712 min, 0.00145285 hours
+Runs/subli/inputs started at Wed Nov  3 11:55:31 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 11:55:37 2021
+ after 5.60276 s, 0.0933793 min, 0.00155632 hours
+Runs/subli/inputs started at Wed Nov  3 11:56:24 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 11:56:29 2021
+ after 5.51672 s, 0.0919453 min, 0.00153242 hours
+Runs/subli/inputs started at Wed Nov  3 11:57:41 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 11:57:45 2021
+ after 3.90108 s, 0.065018 min, 0.00108363 hours
+Runs/subli/inputs started at Wed Nov  3 12:00:46 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 12:00:54 2021
+ after 7.41965 s, 0.123661 min, 0.00206101 hours
+Runs/subli/inputs started at Wed Nov  3 12:05:26 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 12:05:33 2021
+ after 7.05124 s, 0.117521 min, 0.00195868 hours
+Runs/subli/inputs started at Wed Nov  3 12:06:49 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:07:25 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 12:07:35 2021
+ after 9.70398 s, 0.161733 min, 0.00269555 hours
+Runs/subli/inputs started at Wed Nov  3 12:09:08 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:09:53 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:10:04 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:13:37 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:14:26 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 12:14:32 2021
+ after 6.15951 s, 0.102659 min, 0.00171098 hours
+Runs/subl/inputs started at Wed Nov  3 12:15:18 2021
+
+	Runs/subl/inputs finished at Wed Nov  3 12:15:25 2021
+ after 6.95019 s, 0.115836 min, 0.00193061 hours
+Runs/subi/inputs started at Wed Nov  3 12:16:24 2021
+
+	Runs/subi/inputs finished at Wed Nov  3 12:16:30 2021
+ after 5.09663 s, 0.0849438 min, 0.00141573 hours
+Runs/sub/inputs started at Wed Nov  3 12:18:17 2021
+
+	Runs/sub/inputs finished at Wed Nov  3 12:18:22 2021
+ after 5.21966 s, 0.0869943 min, 0.0014499 hours
+Runs/sbli/inputs started at Wed Nov  3 12:20:36 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:22:43 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:23:17 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:24:13 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:24:31 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:25:09 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:26:57 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 12:27:07 2021
+ after 9.6342 s, 0.16057 min, 0.00267617 hours
+Runs/subli/inputs started at Wed Nov  3 12:27:56 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:29:11 2021
+
+Runs/subli/inputs started at Wed Nov  3 12:29:46 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 12:29:47 2021
+ after 1.75998 s, 0.029333 min, 0.000488884 hours
+Runs/subli/inputs started at Wed Nov  3 12:31:29 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 12:31:30 2021
+ after 0.776194 s, 0.0129366 min, 0.000215609 hours
+Runs/subli/inputs started at Wed Nov  3 12:32:17 2021
+
+	Runs/subli/inputs finished at Wed Nov  3 12:32:18 2021
+ after 0.680874 s, 0.0113479 min, 0.000189132 hours
+Runs/testembryo/inputs started at Mon Nov  8 17:29:47 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 17:29:47 2021
+ after 0.260845 s, 0.00434742 min, 7.24569e-05 hours
+Runs/testembryo/inputs started at Mon Nov  8 17:34:08 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 17:34:09 2021
+ after 0.520711 s, 0.00867852 min, 0.000144642 hours
+Runs/testembryo/inputs started at Mon Nov  8 17:37:16 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 17:37:16 2021
+ after 0.679491 s, 0.0113248 min, 0.000188747 hours
+Runs/testembryo/inputs started at Mon Nov  8 17:38:06 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 17:38:07 2021
+ after 0.921581 s, 0.0153597 min, 0.000255995 hours
+Runs/testembryo/inputs started at Mon Nov  8 17:41:25 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 17:41:26 2021
+ after 0.85895 s, 0.0143158 min, 0.000238597 hours
+Runs/testembryo/inputs started at Mon Nov  8 17:41:50 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 17:41:51 2021
+ after 0.320291 s, 0.00533818 min, 8.89697e-05 hours
+Runs/testembryo/inputs started at Mon Nov  8 17:43:22 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 17:43:22 2021
+ after 0.293225 s, 0.00488708 min, 8.14514e-05 hours
+Runs/testembryo/inputs started at Mon Nov  8 17:47:29 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 17:47:34 2021
+ after 5.34002 s, 0.0890003 min, 0.00148334 hours
+Runs/testembryo/inputs started at Mon Nov  8 17:51:02 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 17:51:07 2021
+ after 5.26401 s, 0.0877336 min, 0.00146223 hours
+Runs/testembryo/inputs started at Mon Nov  8 17:52:43 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 17:52:44 2021
+ after 0.601587 s, 0.0100264 min, 0.000167108 hours
+Runs/testembryo/inputs started at Mon Nov  8 18:03:58 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 18:03:59 2021
+ after 0.831289 s, 0.0138548 min, 0.000230914 hours
+Runs/testembryo/inputs started at Mon Nov  8 18:06:19 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 18:06:19 2021
+ after 0.584484 s, 0.0097414 min, 0.000162357 hours
+Runs/testembryo/inputs started at Mon Nov  8 18:10:06 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 18:10:07 2021
+ after 0.617563 s, 0.0102927 min, 0.000171545 hours
+Runs/testembryo/inputs started at Mon Nov  8 18:10:27 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 18:10:28 2021
+ after 0.58759 s, 0.00979317 min, 0.000163219 hours
+Runs/testembryo/inputs started at Mon Nov  8 18:10:51 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 18:10:52 2021
+ after 0.822528 s, 0.0137088 min, 0.00022848 hours
+Runs/testembryo/inputs started at Mon Nov  8 18:11:05 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 18:11:06 2021
+ after 0.681974 s, 0.0113662 min, 0.000189437 hours
+Runs/testembryo/inputs started at Mon Nov  8 18:20:13 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 18:20:13 2021
+ after 0.63241 s, 0.0105402 min, 0.000175669 hours
+Runs/testembryo/inputs started at Mon Nov  8 18:28:40 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 18:28:41 2021
+ after 0.626549 s, 0.0104425 min, 0.000174041 hours
+Runs/testembryo/inputs started at Mon Nov  8 18:29:56 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 18:29:56 2021
+ after 0.615645 s, 0.0102608 min, 0.000171012 hours
+Runs/testembryo/inputs started at Mon Nov  8 18:31:00 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 18:31:01 2021
+ after 0.606522 s, 0.0101087 min, 0.000168478 hours
+Runs/testembryo/inputs started at Mon Nov  8 18:58:09 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 18:58:10 2021
+ after 0.675559 s, 0.0112593 min, 0.000187655 hours
+Runs/testembryo/inputs started at Mon Nov  8 19:02:59 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 19:03:38 2021
+ after 38.735 s, 0.645584 min, 0.0107597 hours
+Runs/testembryo/inputs started at Mon Nov  8 19:05:54 2021
+
+	Runs/testembryo/inputs finished at Mon Nov  8 19:06:32 2021
+ after 38.5913 s, 0.643189 min, 0.0107198 hours
+Runs/testembryo/inputs started at Tue Nov  9 10:43:28 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 10:44:07 2021
+ after 38.5728 s, 0.64288 min, 0.0107147 hours
+Runs/testembryo/inputs started at Tue Nov  9 10:48:56 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 10:49:16 2021
+ after 19.8183 s, 0.330305 min, 0.00550508 hours
+Runs/testembryo/inputs started at Tue Nov  9 10:51:30 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 10:51:31 2021
+ after 0.793774 s, 0.0132296 min, 0.000220493 hours
+Runs/testembryo/inputs started at Tue Nov  9 10:51:59 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 10:52:00 2021
+ after 0.522939 s, 0.00871565 min, 0.000145261 hours
+Runs/testembryo/inputs started at Tue Nov  9 10:52:19 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 10:52:19 2021
+ after 0.379099 s, 0.00631832 min, 0.000105305 hours
+Runs/testembryo/inputs started at Tue Nov  9 10:54:35 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 10:54:35 2021
+ after 0.325923 s, 0.00543205 min, 9.05342e-05 hours
+Runs/testembryo/inputs started at Tue Nov  9 10:55:04 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 10:55:04 2021
+ after 0.225298 s, 0.00375497 min, 6.25828e-05 hours
+Runs/testembryo/inputs started at Tue Nov  9 10:55:21 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 10:55:21 2021
+ after 0.262668 s, 0.0043778 min, 7.29633e-05 hours
+Runs/testembryo/inputs started at Tue Nov  9 10:58:11 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 10:58:11 2021
+ after 0.278696 s, 0.00464493 min, 7.74156e-05 hours
+Runs/testembryo/inputs started at Tue Nov  9 10:58:53 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 10:59:11 2021
+ after 18.1289 s, 0.302149 min, 0.00503581 hours
+Runs/testembryo/inputs started at Tue Nov  9 11:02:20 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 11:02:38 2021
+ after 17.7466 s, 0.295776 min, 0.0049296 hours
+Runs/testembryo/inputs started at Tue Nov  9 11:03:07 2021
+
+Runs/testembryo/inputs started at Tue Nov  9 11:09:52 2021
+
+Runs/testembryo/inputs started at Tue Nov  9 11:10:58 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 11:12:06 2021
+ after 68.4037 s, 1.14006 min, 0.019001 hours
+Runs/testembryo/inputs started at Tue Nov  9 11:26:12 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 11:26:12 2021
+ after 0.296409 s, 0.00494015 min, 8.23358e-05 hours
+Runs/testembryo/inputs started at Tue Nov  9 11:26:33 2021
+
+	Runs/testembryo/inputs finished at Tue Nov  9 11:26:33 2021
+ after 0.29161 s, 0.00486017 min, 8.10028e-05 hours
+Runs/testembryo/inputs started at Tue Nov  9 11:27:49 2021
+

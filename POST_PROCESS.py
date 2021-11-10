@@ -18,5 +18,5 @@ if __name__ == "__main__":
 
     current_run.plot_accretion()
 
-    current_run.plot_wm()
+    #current_run.plot_wm()
 

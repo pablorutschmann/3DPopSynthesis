@@ -21,10 +21,10 @@ class SatelliteModel
 public:
 
     SatelliteModel();
-    SatelliteModel(int id, char type, double mass, double x, double y, double z, double rho, double mu, double time, double Tsubli);
+    SatelliteModel(int id, bool type, double mass, double x, double y, double z, double rho, double mu, double time, double Tsubli);
     
     int ID, Index;
-    char Type;
+    bool Type;
     double Mass;
     double WM;
     double SWM;

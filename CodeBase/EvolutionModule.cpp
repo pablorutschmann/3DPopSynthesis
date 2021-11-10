@@ -321,7 +321,7 @@ void EvolutionModel::SatelliteInitialization()
 
     int ID, N;
     double mass, rho, wm, swm, x, y, z, vx, vy, vz, init_time, form_time, a, e, inc, dt, p;
-    char type;
+    bool type;
     ifstream InputFile;
     InputFile.open(OutputAddress + "/restart/satellites.txt");
 
@@ -331,7 +331,7 @@ void EvolutionModel::SatelliteInitialization()
         
         while(InputFile >> ID >> type >> mass >> wm  >> swm >>  x >> y >> z >> vx >> vy >> vz >> a >> e >> inc >> N >> dt >> init_time >> form_time >> p)    // search satellites in the restart file
         {
-            if (type == 'E') {
+            if (type == 1) {
                 rho = EmbryoRho;
             }
             else {
@@ -363,10 +363,10 @@ void EvolutionModel::SatelliteInitialization()
         for(j = 0; j < NSatellites; j++)
         {
             if (j < NEmbryos){
-                CreateSatellite(j, true);
+                CreateSatellite(j, 1);
             }
             else{
-                CreateSatellite(j, false);
+                CreateSatellite(j, 0);
             }
 
             ComputeParameters(j);
@@ -381,7 +381,7 @@ void EvolutionModel::SatelliteInitialization()
 }
 
 
-void EvolutionModel::CreateSatellite(int index, char type)
+void EvolutionModel::CreateSatellite(int index, bool type)
 {
     /*-- CREATE ONE SATELLITE IN SPECIFIC POSITION --*/
 
@@ -397,34 +397,38 @@ void EvolutionModel::CreateSatellite(int index, char type)
     }
     ID++;
 
-
-    if (ID == 1 and type == 'E'){
-        r = R_min + ((-0.1 * Spacing)  + (rand() % 10) / 10. * (0.2 * Spacing));
-        r_prev = r;
-        mass = EmbryoInitMass;
-        rho = EmbryoRho;
-        Satellites[index] = SatelliteModel(ID, type, InitMass, r * cos(theta), r * sin(theta), z, Rho, Disk.G * Disk.MP, Time, Tsubli);
-
-    }
-    if (ID > 1 and type == 'E') {
-        r = r_prev + Spacing + ((-0.1 * Spacing) + (rand() % 10) / 10. * (0.2 * Spacing));
-        r_prev = r;
-        mass = EmbryoInitMass;
-        rho = EmbryoRho;
-        Satellites[index] = SatelliteModel(ID, type, InitMass, r * cos(theta), r * sin(theta), z, Rho, Disk.G * Disk.MP, Time, Tsubli);
-    }
-
     theta = (rand() % 10000) / 10000. * 2 * M_PI;
-    z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
 
-    if (type == 'P'){
-        mass = InitMass;
-        rho = Rho;
+
+    if (ID == 1 and type == 1){
+        r = R_min + 0.1 * R_min;
+        cout << "CHECK: " << r << '\n';
+        z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
+        r_prev = r;
+        Satellites[index] = SatelliteModel(ID, type, EmbryoInitMass, r * cos(theta), r * sin(theta), z, EmbryoRho, Disk.G * Disk.MP, Time, Tsubli);
+        ComputeParameters(index);
+        RHill_prev = Satellites[index].ComputeRHill();
+
+    }
+    if (ID > 1 and type == 1) {
+        r = r_prev + Spacing * RHill_prev + ((-0.1 * Spacing  * RHill_prev) + (rand() % 10) / 10. * (0.2 * Spacing * RHill_prev));
+        cout <<"CHECK" << r << '\n';
+        z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
+        r_prev = r;
+        Satellites[index] = SatelliteModel(ID, type, EmbryoInitMass, r * cos(theta), r * sin(theta), z, EmbryoRho, Disk.G * Disk.MP, Time, Tsubli);
+        ComputeParameters(index);
+        RHill_prev = Satellites[index].ComputeRHill();
+    }
+
+
+
+    if (type == 0){
         bool invalid = true;
         while (invalid == true) {
             expr = log10(R_min) + (rand() % 10000) / 10000. * (log10(R_max) - log10(R_min));
             r = pow(10, expr);
-            Satellites[index] = SatelliteModel(ID, type, mass, r * cos(theta), r * sin(theta), z, rho, Disk.G * Disk.MP, Time, Tsubli);
+            z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
+            Satellites[index] = SatelliteModel(ID, type, InitMass, r * cos(theta), r * sin(theta), z, Rho, Disk.G * Disk.MP, Time, Tsubli);
             ComputeParameters(index);
             invalid = CheckInvalidity(index);
         }
@@ -488,7 +492,7 @@ void EvolutionModel::WriteSnapshot(string FolderName, bool header)
     {
         if(Satellites[i].Active)
         {
-            OutputFile << Satellites[i].ID << '\t' << Satellites[i].Mass << '\t' << Satellites[i].WM <<  '\t' << Satellites[i].SWM << '\t' << Satellites[i].X << '\t' << Satellites[i].Y << '\t' << Satellites[i].Z << '\t' << Satellites[i].Vx << '\t' << Satellites[i].Vy << '\t' << Satellites[i].Vz << '\t' << Satellites[i].ComputeA() << '\t' << Satellites[i].ComputeEcc() << '\t' << Satellites[i].ComputeInc() << '\t' << Satellites[i].N << '\t' << Satellites[i].Dt << '\t' <<  Satellites[i].InitTime << '\t' << Satellites[i].FormationTime << '\t' << Satellites[i].P << '\n';
+            OutputFile << Satellites[i].ID << '\t' << Satellites[i].Type << '\t' << Satellites[i].Mass << '\t' << Satellites[i].WM <<  '\t' << Satellites[i].SWM << '\t' << Satellites[i].X << '\t' << Satellites[i].Y << '\t' << Satellites[i].Z << '\t' << Satellites[i].Vx << '\t' << Satellites[i].Vy << '\t' << Satellites[i].Vz << '\t' << Satellites[i].ComputeA() << '\t' << Satellites[i].ComputeEcc() << '\t' << Satellites[i].ComputeInc() << '\t' << Satellites[i].N << '\t' << Satellites[i].Dt << '\t' <<  Satellites[i].InitTime << '\t' << Satellites[i].FormationTime << '\t' << Satellites[i].P << '\n';
         }
     }
 
@@ -559,16 +563,18 @@ void EvolutionModel::ComputeParameters(int index)
         Satellites[index].Opacity = Disk.Opacity[Satellites[index].Index];
         Satellites[index].Temp = Disk.Temp[Satellites[index].Index];
         Satellites[index].P = Satellites[index].ComputeP(Disk.Alpha);
-//        cout << Satellites[index].Index;
+
         if (Satellites[index].WM < 0.) {
 
             Satellites[index].WM = Disk.WMF[Satellites[index].Index] * Satellites[index].Mass;
+            cout << "WMF" << '\n';
         }
         Satellites[index].R = Disk.R[Satellites[index].Index];
 
         if (Satellites[index].SWM < 0.) {
 
             Satellites[index].SWM = Disk.SWMF[Satellites[index].Index] * Satellites[index].Mass;
+            cout << "WMF" << '\n';
         }
         Satellites[index].R = Disk.R[Satellites[index].Index];
 
@@ -1471,9 +1477,9 @@ void EvolutionModel::CheckCollision(int index)
                 }
 
                 Satellites[save_index].Mass = TotalMass;
-                if (Satellites[save_index].Type == 'E' or Satellites[dest_index].Type == 'E'){
+                if (Satellites[save_index].Type == 1 or Satellites[dest_index].Type == 1){
                     Satellites[save_index].Rho = EmbryoRho;
-                    Satellites[save_index].Type = 'E';
+                    Satellites[save_index].Type = 1;
                 }
 
                 OutputFile << Satellites[save_index].ID << '\t' << Satellites[save_index].Type << '\t' << Satellites[save_index].Mass << '\t' << Satellites[save_index].WM << '\t' << Satellites[save_index].SWM << '\t' << Satellites[save_index].X << '\t' << Satellites[save_index].Y << '\t' << Satellites[save_index].Z << '\t' << Satellites[save_index].Vx << '\t' << Satellites[save_index].Vy << '\t' << Satellites[save_index].Vz << '\n';

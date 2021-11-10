@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     print(mass / M_S)
 
-    print(0.1 * M_E /M_S)
+    print(0.01 * M_E /M_S)
 
     # radi = (mass * 3 / 4 / np.pi / 2)**(1/3) / 100 / 1000
     #
@@ -522,7 +522,7 @@ class disk:
         elif 2 <= r_au < 2.5:
             wmf = 0.2
         elif 2.5 <= r_au:
-            wmf = 0.5
+            wmf = 0.4
 
         return wmf
 
@@ -534,7 +534,7 @@ class disk:
         #     wmf = 0.1
         # elif 2.5 <= r_au:
         #     wmf = 0.5
-        swmf = 0.2
+        swmf = 0.1
 
         return swmf
 

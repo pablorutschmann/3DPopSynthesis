@@ -13,7 +13,7 @@
 #include "DiskModule.hpp"
 #include "SatelliteModule.hpp"
 
-const int TotalNumberSatellites = 100;
+const int TotalNumberSatellites = 3000;
 using namespace std;
 
 
@@ -54,6 +54,7 @@ public:
     double TimeStopFormation;
 
     double r_prev;
+    double RHill_prev;
 
     int TotalSubticks;
     int CloseSubticks;
@@ -68,7 +69,7 @@ public:
     void SetParameters();
 
     void SatelliteInitialization();
-    void CreateSatellite(int index, char type = 'P');
+    void CreateSatellite(int index, bool type = 0);
     void CreateSnapshot();
     void WriteSnapshot(string FolderName, bool header);
     void ComputeParameters(int index);

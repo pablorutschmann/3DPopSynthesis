@@ -24,7 +24,7 @@ const bool TypeIIMigration = true;  // take into account gap opening effects
 SatelliteModel::SatelliteModel() {
 }
 
-SatelliteModel::SatelliteModel(int id, char type, double mass, double x, double y, double z, double rho, double mu, double time, double sublimationtime)
+SatelliteModel::SatelliteModel(int id, bool type, double mass, double x, double y, double z, double rho, double mu, double time, double sublimationtime)
 {
     /*
     Initialize satellite model
