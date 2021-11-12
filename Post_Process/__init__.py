@@ -1,5 +1,5 @@
 # __init__.py
-from .snapshot import snapshot
 from .run import run
+from .snapshot import snapshot
 from .satellite import satellite
 from .units import *

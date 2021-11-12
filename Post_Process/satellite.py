@@ -1,7 +1,7 @@
+# satellite.py
 import pandas as pd
 import matplotlib.pyplot as plt
 from Post_Process.units import *
-
 
 class satellite:
     def __init__(self, ID, run):

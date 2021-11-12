@@ -3,7 +3,7 @@ RP                  9.73115873104683
 Tmin                130.0
 DustToGas           0.01
 NEmbryos            7
-NPlanetesimals      600
+NPlanetesimals      100
 R_min               107
 R_max               6450
 EmbryoInitMass      3.0e-07

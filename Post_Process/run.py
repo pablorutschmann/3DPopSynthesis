@@ -1,12 +1,11 @@
+# run.py
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os.path
-import snapshot
-import satellite
-from Post_Process.units import *
 from collections import OrderedDict
-
+import Post_Process as PP
+from Post_Process.units import *
 
 class run:
     def __init__(self, path, types = 'embryo'):
@@ -46,7 +45,7 @@ class run:
         snaps_unordered = {}
         # iterate through list of Snapshot directory name and create class instance Snapshot and save it to dictionary
         for snap_path in [f.path for f in os.scandir(self.output_path) if (f.is_dir() and 'Snapshot' in f.path)]:
-            shot = snapshot.snapshot(snap_path)
+            shot = PP.snapshot(snap_path)
             snaps_unordered[shot.index] = shot
         self.snaps = OrderedDict(sorted(snaps_unordered.items(), key=lambda t: t[0]))
 
@@ -60,16 +59,16 @@ class run:
     def get_satellites(self, types = 'embryo'):
         for index in self.satellite_list.index:
             if types == 'embryo' and self.satellite_list.loc[index, 'Type'] == 1:
-                self.embryos[index] = satellite.satellite(index, self)
+                self.embryos[index] = PP.satellite(index, self)
                 continue
             elif types == 'planetesimal' and self.satellite_list.loc[index, 'Type'] == 0:
-                self.planetesimals[index] = satellite.satellite(index, self)
+                self.planetesimals[index] = PP.satellite(index, self)
                 continue
             elif types == 'all':
                 if self.satellite_list.loc[index, 'Type'] == 0:
-                    self.planetesimals[index] = satellite.satellite(index, self)
+                    self.planetesimals[index] = PP.satellite(index, self)
                 elif self.satellite_list.loc[index, 'Type'] == 1:
-                    self.embryos[index] = satellite.satellite(index, self)
+                    self.embryos[index] = PP.satellite(index, self)
 
         self.satellites.update(self.embryos)
         self.satellites.update(self.planetesimals)
