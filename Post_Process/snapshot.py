@@ -21,6 +21,8 @@ class snapshot:
         df.index = df.index.astype(int)
         self.satellites = df
 
+        self.satellites_mass = np.sum(self.satellites['M'])
+
         # import parameters.txt
         path = self.path + "/parameters.txt"
         dic = {}
@@ -33,6 +35,8 @@ class snapshot:
         self.index = int(dic['SaveIndex'])
         self.timestopformation = dic['TimeStopFormation']
         self.globaldt = dic['GlobalDt']
+        self.IceLineID	= int(dic['IceLineID'])
+        self.IceLineRadius	= np.double(dic['IceLineRadius'])
 
         # import disk.txt
         path = self.path + "/disk.txt"
@@ -40,6 +44,10 @@ class snapshot:
         df.sort_index(inplace=True)
         df.index = df.index.astype(int)
         self.disk = df
+        self.gas_mass = np.dot(self.disk['Area'], self.disk['SigmaGas'])
+        self.dust_mass = np.dot(self.disk['Area'], self.disk['SigmaDust'])
+
+        self.total_mass = self.satellites_mass + self.gas_mass + self.dust_mass
 
     def plot_satellites(self):
         fig, ax = plt.subplots(ncols=1)
@@ -129,6 +137,8 @@ class snapshot:
         return fig, ax
 
 
+
+
 # Helper Functions
 
 def get_parent(path):
@@ -136,7 +146,16 @@ def get_parent(path):
 
 
 if __name__ == "__main__":
-    test = snapshot('/Users/prut/CLionProjects/3DPopSynthesis/Runs/testsmf/outputs/Snapshot_0009')
+    test0 = snapshot('/Users/prut/CLionProjects/3DPopSynthesis/Runs/testembryo/outputs/Snapshot_0000')
+    test1 = snapshot('/Users/prut/CLionProjects/3DPopSynthesis/Runs/testembryo/outputs/Snapshot_0001')
     # # test.plot()
     #
-    test.plot_satellites_ratio()
+    print(test0.satellites_mass)
+    print(test0.gas_mass)
+    print(test0.dust_mass)
+    print(test0.total_mass)
+    print(test1.satellites_mass)
+    print(test1.gas_mass)
+    print(test1.dust_mass)
+    print(test1.total_mass)
+

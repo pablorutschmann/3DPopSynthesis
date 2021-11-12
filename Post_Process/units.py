@@ -47,4 +47,4 @@ rtoau = R_S / au
 mtome = M_S / M_E
 
 # Solar Mass to Jupiter Mass Conversion Factor
-mtome = M_S / M_J
+mtomj = M_S / M_J

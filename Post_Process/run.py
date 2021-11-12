@@ -2,14 +2,14 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os.path
-from . import snapshot
-from . import satellite
+import snapshot
+import satellite
 from Post_Process.units import *
 from collections import OrderedDict
 
 
 class run:
-    def __init__(self, path):
+    def __init__(self, path, types = 'embryo'):
         self.path = path
         self.output_path = os.path.join(self.path, 'outputs')
         self.input_path = os.path.join(self.path, 'inputs')
@@ -46,14 +46,33 @@ class run:
         snaps_unordered = {}
         # iterate through list of Snapshot directory name and create class instance Snapshot and save it to dictionary
         for snap_path in [f.path for f in os.scandir(self.output_path) if (f.is_dir() and 'Snapshot' in f.path)]:
-            shot = snapshot(snap_path)
+            shot = snapshot.snapshot(snap_path)
             snaps_unordered[shot.index] = shot
         self.snaps = OrderedDict(sorted(snaps_unordered.items(), key=lambda t: t[0]))
 
         # transform data to satellite specific
         self.satellites = {}
+        self.embryos = {}
+        self.planetesimals = {}
+        self.get_satellites(types)
+
+
+    def get_satellites(self, types = 'embryo'):
         for index in self.satellite_list.index:
-            self.satellites[index] = satellite.satellite(index, self)
+            if types == 'embryo' and self.satellite_list.loc[index, 'Type'] == 1:
+                self.embryos[index] = satellite.satellite(index, self)
+                continue
+            elif types == 'planetesimal' and self.satellite_list.loc[index, 'Type'] == 0:
+                self.planetesimals[index] = satellite.satellite(index, self)
+                continue
+            elif types == 'all':
+                if self.satellite_list.loc[index, 'Type'] == 0:
+                    self.planetesimals[index] = satellite.satellite(index, self)
+                elif self.satellite_list.loc[index, 'Type'] == 1:
+                    self.embryos[index] = satellite.satellite(index, self)
+
+        self.satellites.update(self.embryos)
+        self.satellites.update(self.planetesimals)
 
     def plot_snapshots(self, ids=None):
         if ids == None:
@@ -98,25 +117,40 @@ class run:
         self.plot_disk_evol(field="SigmaDust", N=N)
         self.plot_disk_evol(field="Temp", N=N)
 
-    def plot_accretion(self):
+    def plot_accretion(self, types = 'embryo'):
         fig, ax = plt.subplots()
         ax.set_xlabel('time in years')
         ax.set_ylabel('mass in [Units]')
         ax.set_title('Mass Evolution of remaining satellites')
 
         for item in self.satellites.values():
-            fig, ax = item.fig_accretion(fig, ax)
-        savepath = os.path.join(self.plot_path, 'accretion.png')
+            if types == 'embryo' and item.type == 1:
+                fig, ax = item.fig_accretion(fig, ax)
+                continue
+            elif types == 'planetesimal' and item.type == 0:
+                fig, ax = item.fig_accretion(fig, ax)
+                continue
+            else:
+                fig, ax = item.fig_accretion(fig, ax)
+
+        filename = 'accretion_' + types + '.png'
+        savepath = os.path.join(self.plot_path, filename)
         fig.savefig(savepath)
         plt.close(fig)
 
     def plot_wm(self):
-        for item in self.satellites.values():
+        for item in self.embryos.values():
             item.wm_time(self.plot_path)
 
 
 
 if __name__ == "__main__":
-    test = run('/Users/prut/CLionProjects/3DPopSynthesis/Runs/fulltest')
+    test = run('/Users/prut/CLionProjects/3DPopSynthesis/Runs/testembryo')
     # test.satellites.
-    test.plot_accretion()
+    print(test.embryos[7].acc)
+    print(test.embryos[7].data['a'])
+    print(rtoau * 1547.68)
+
+    for key, item in test.snaps.items():
+        rad = rtoau * item.IceLineRadius
+        print(rad)
