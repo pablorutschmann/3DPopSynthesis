@@ -17,18 +17,18 @@ const int TotalNumberSatellites = 3000;
 using namespace std;
 
 
-class EvolutionModel
-{
+class EvolutionModel {
 
 public:
-    
+
     EvolutionModel();
+
     EvolutionModel(string input_address, string output_address);
-    
+
     DiskModel Disk;
     SatelliteModel Satellites[TotalNumberSatellites];
     SatelliteModel SatellitesBackUp[TotalNumberSatellites];
-    
+
     string InputAddress, OutputAddress, MigrationType;
     double Time, MaxTime;
     int NEmbryos;
@@ -58,49 +58,72 @@ public:
 
     int TotalSubticks;
     int CloseSubticks;
-    
+
     std::map<std::string, double> Options;
-    
+
     // Functions
 
     void Simulation();
-    
+
     void SetOptions();
+
     void SetParameters();
 
     void SatelliteInitialization();
+
     void CreateSatellite(int index, bool type = 0);
+
     void CreateSnapshot();
+
     void WriteSnapshot(string FolderName, bool header);
+
     void ComputeParameters(int index);
+
     void SortSatellites();
+
     void CheckCollision(int index);
+
     bool CheckInvalidity(int index);
+
     void CheckAndCreate();
+
     void Accretion(int index, double dt);
 
     int Tick();
+
     int SubTick();
+
     void I(int i, double factor);
+
     void K(int i, double factor);
+
     void KEncounter(int id_group, double factor);
+
     double InitialTimeStep(int id_group);
+
     double HPC(int id_group, double dt);
+
     double ComputeK(int i, int j, int der);
+
     int ComputeIDGroup(int whichcond);
 
     int ActiveSatellites();
+
     void DestroySatellite(int index, int code, int index2);
 
     void PrintFlags(bool all);
+
     double Energy();
-    
-  
+
+
 };
 
 string ZeroPadNumber(int num, int length);
+
 double Kij(double y);
+
 double dKijdy(double y);
+
 double d2Kijdy2(double y);
 
 #endif /* EvolutionModule_hpp */

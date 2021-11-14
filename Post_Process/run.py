@@ -115,7 +115,6 @@ class run:
             item.wm_time(self.plot_path)
 
 
-
 if __name__ == "__main__":
     test = run('/Users/prut/CLionProjects/3DPopSynthesis/Runs/fulltest')
     # test.satellites.

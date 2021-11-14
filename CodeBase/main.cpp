@@ -14,15 +14,14 @@
 #include <stdlib.h>
 #include <string>
 #include <stdio.h>
-#include <sys/stat.h> 
+#include <sys/stat.h>
 #include <chrono>
 #include <ctime>
 #include <time.h>
 
 using namespace std;
 
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
     /*-- READ ARGUMENTS --*/
 
     string InputAddress = argv[1];
@@ -35,7 +34,7 @@ int main(int argc, char** argv)
     /*-- INITIALIZE EVOLUTION --*/
 
     EvolutionModel evo(InputAddress, OutputAddress);
-    
+
     cout << "Input = " << evo.InputAddress << '\n';
     cout << "Output = " << evo.OutputAddress << '\n' << '\n';
     cout << "NSatellites = " << evo.NSatellites << '\n';
@@ -64,13 +63,13 @@ int main(int argc, char** argv)
 
     auto end = chrono::system_clock::now();
 
-    chrono::duration<double> elapsed_seconds = end-start;
+    chrono::duration<double> elapsed_seconds = end - start;
     time_t end_time = chrono::system_clock::to_time_t(end);
 
     double RunTime = elapsed_seconds.count();
 
     cout << "finished computation at " << ctime(&end_time)
-              << "elapsed time: " << RunTime << " s, " << RunTime/60 << " min, " << RunTime/3600 << " hours\n\n";
+         << "elapsed time: " << RunTime << " s, " << RunTime / 60 << " min, " << RunTime / 3600 << " hours\n\n";
 
     HistoryFile << '\t' << InputAddress << " finished at " << ctime(&end_time) << " after " << RunTime << " s, ";
     HistoryFile << RunTime / 60 << " min, " << RunTime / 3600 << " hours\n";

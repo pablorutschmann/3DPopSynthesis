@@ -51,7 +51,7 @@ class satellite:
         fig, ax = plt.subplots(ncols=1)
         fig.set_size_inches(15.5, 10.5)
 
-        ax.scatter(self.data.index, self.data['WM']/self.data['M'])
+        ax.scatter(self.data.index, self.data['WM'] / self.data['M'])
 
         ax.set_xlabel('Time in Years', fontsize=15)
         ax.set_ylabel('Water Mass', fontsize=15)

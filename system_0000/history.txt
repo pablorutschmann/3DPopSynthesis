@@ -1218,3 +1218,17 @@ Runs/testembryo/inputs started at Tue Nov  9 11:26:33 2021
  after 0.29161 s, 0.00486017 min, 8.10028e-05 hours
 Runs/testembryo/inputs started at Tue Nov  9 11:27:49 2021
 
+Runs/embryo_long/inputs started at Fri Nov 12 18:31:18 2021
+
+Runs/embryo_long/inputs started at Fri Nov 12 19:52:07 2021
+
+Runs/embryo_long/inputs started at Fri Nov 12 19:56:11 2021
+
+	Runs/embryo_long/inputs finished at Fri Nov 12 22:45:02 2021
+ after 10131.5 s, 168.858 min, 2.8143 hours
+Runs/embryo1/inputs started at Sat Nov 13 12:15:17 2021
+
+	Runs/embryo1/inputs finished at Sun Nov 14 03:52:36 2021
+ after 56238.9 s, 937.316 min, 15.6219 hours
+Runs/embryo2/inputs started at Sun Nov 14 10:17:03 2021
+

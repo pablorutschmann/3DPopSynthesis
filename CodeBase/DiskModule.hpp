@@ -20,13 +20,13 @@ const double TIce = 1;
 
 // Defining class for disks
 
-class DiskModel
-{
+class DiskModel {
 public:
-    
+
     DiskModel();
+
     DiskModel(string input_address, string output_address, std::map<std::string, double> Options);
-    
+
     string InputAddress, OutputAddress;
 
 
@@ -35,9 +35,9 @@ public:
     double RCavity;
     double TDisp, TTemp, TRefilling;
     int GasDrop, DustDrop, TempDrop, Refilling;
-    
+
     double G, Cv, SigmaBoltz, KbMuMp, Alpha, Gamma;
-    
+
     int Length;
     int IceLineID;
     double R[DiskLength];
@@ -53,28 +53,36 @@ public:
     double Opacity[DiskLength];
     double WMF[DiskLength];
     double SWMF[DiskLength];
-    
+
     // Setting functions
     void SetDisk();
 
     // Scalar functions
     double GasMass();
+
     double DustMass();
+
     double DustBarMass();
+
     int ComputeIceLine();
 
     // Vector functions
     double ComputeCs(int i);
+
     double ComputeH(int i);
+
     double ComputeMaxMass(int i);
+
     double ComputeOpacity(int i);
+
     double ComputeTmin(int i);
 
     // Evolution functions
     void DiskEvolution(double dt);
+
     void DiskRefilling(double dt);
 
-    
+
 };
 
 #endif /* DiskModule_hpp */

@@ -46,7 +46,7 @@ class snapshot:
         fig.set_size_inches(15.5, 10.5)
 
         cmap = 'turbo_r'
-        WMF_satellites = self.satellites['WM']/self.satellites['M']
+        WMF_satellites = self.satellites['WM'] / self.satellites['M']
         cmin = min(WMF_satellites)
         cmax = max(WMF_satellites)
         norm = colors.Normalize(cmin, cmax)
@@ -65,7 +65,6 @@ class snapshot:
         plt.close(fig)
         print('Plot saved at: ' + self.plot_path + '/satellites' + str(self.index).zfill(4) + '.png')
 
-
     def plot_satellites_ratio(self):
         fig, ax = plt.subplots(ncols=1)
         fig.set_size_inches(15.5, 10.5)
@@ -76,13 +75,13 @@ class snapshot:
         red_patch = patches.Patch(color='red', label='Solids')
         green_patch = patches.Patch(color='green', label='Hydrated Silica')
         blue_patch = patches.Patch(color='blue', label='Water/Ice')
-        handles = [red_patch,green_patch,blue_patch]
+        handles = [red_patch, green_patch, blue_patch]
 
         mean_mass = np.min(mtome * self.satellites['M'])
         mass_scaling = mean_mass / 90000
         mass_scaling = 0.000000001
 
-        def pie_1d(r1,r2):
+        def pie_1d(r1, r2):
             # calculate the points of the first pie marker
             # these are just the origin (0, 0) + some (cos, sin) points on a circle
             x1 = np.cos(2 * np.pi * np.linspace(0, r1))
@@ -103,13 +102,13 @@ class snapshot:
             return xy1, s1, xy2, s2, xy3, s3
 
         def plot_one(row):
-            WMF_ratio = row['WM']/row['M']
-            SWMF_ratio = row['SWM']/row['M'] + WMF_ratio
+            WMF_ratio = row['WM'] / row['M']
+            SWMF_ratio = row['SWM'] / row['M'] + WMF_ratio
             xy1, s1, xy2, s2, xy3, s3 = pie_1d(WMF_ratio, SWMF_ratio)
 
-            ax.scatter(rtoau * row['a'], row['e'], marker=xy1, s=s1**2 * row['M'] / mass_scaling, facecolor='blue')
-            ax.scatter(rtoau * row['a'], row['e'], marker=xy2, s=s2**2 * row['M'] / mass_scaling, facecolor='green')
-            ax.scatter(rtoau * row['a'], row['e'], marker=xy3, s=s3**2 * row['M'] / mass_scaling, facecolor='red')
+            ax.scatter(rtoau * row['a'], row['e'], marker=xy1, s=s1 ** 2 * row['M'] / mass_scaling, facecolor='blue')
+            ax.scatter(rtoau * row['a'], row['e'], marker=xy2, s=s2 ** 2 * row['M'] / mass_scaling, facecolor='green')
+            ax.scatter(rtoau * row['a'], row['e'], marker=xy3, s=s3 ** 2 * row['M'] / mass_scaling, facecolor='red')
 
         for index, row in self.satellites.iterrows():
             plot_one(row)

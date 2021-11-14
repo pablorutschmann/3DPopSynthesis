@@ -3,7 +3,7 @@ RP                  9.73115873104683
 Tmin                130.0
 DustToGas           0.01
 NEmbryos            7
-NPlanetesimals      600
+NPlanetesimals      100
 R_min               107
 R_max               6450
 EmbryoInitMass      3.0e-07
@@ -12,8 +12,8 @@ Spacing             120
 InitMass            3.0e-08
 Rho                 0.93357
 FeedRadius          2.3
-ThresholdMass       4.0e-08
-MaxTime             100000.0
+ThresholdMass       1.0e-08
+MaxTime             1000000.0
 DtMax               1.0
 TDisp               100000.0
 TTemp               100000.0
@@ -39,4 +39,4 @@ GasDrop             1
 DustDrop            1
 Refilling           1
 Snapshots           1
-SeedFormation       1
+SeedFormation       0
