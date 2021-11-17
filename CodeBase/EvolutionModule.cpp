@@ -448,7 +448,7 @@ void EvolutionModel::WriteSnapshot(string FolderName, bool header) {
         OutputFile << i << '\t' << Disk.R[i] << '\t' << Disk.Dr[i] << '\t' << Disk.SigmaGas[i] << '\t'
                    << Disk.SigmaDust[i] << '\t' << Disk.SigmaDustBar[i] << '\t' << Disk.Temp[i] << '\t' << Disk.Area[i]
                    << '\t' << Disk.OmegaK[i] << '\t' << Disk.SigmaExponent[i] << '\t' << Disk.TempExponent[i] << '\t'
-                   << Disk.Opacity[i] << '\t' << Disk.WMF[i] << '\n';
+                   << Disk.Opacity[i] << '\t' << Disk.WMF[i] << Disk.SWMF << '\n';
     }
 
     OutputFile.close();
