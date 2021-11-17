@@ -1232,3 +1232,201 @@ Runs/embryo1/inputs started at Sat Nov 13 12:15:17 2021
  after 56238.9 s, 937.316 min, 15.6219 hours
 Runs/embryo2/inputs started at Sun Nov 14 10:17:03 2021
 
+	Runs/embryo2/inputs finished at Mon Nov 15 10:11:03 2021
+ after 86040 s, 1434 min, 23.9 hours
+Runs/embryo2/inputs started at Mon Nov 15 10:34:02 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 10:09:58 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 10:10:03 2021
+ after 4.53253 s, 0.0755422 min, 0.00125904 hours
+Runs/restart_test/inputs started at Tue Nov 16 10:10:29 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 10:10:33 2021
+ after 4.38824 s, 0.0731374 min, 0.00121896 hours
+Runs/restart_test/inputs started at Tue Nov 16 10:10:48 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 10:11:14 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 10:11:32 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 10:25:18 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 10:26:27 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 10:51:17 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 10:51:23 2021
+ after 5.79269 s, 0.0965448 min, 0.00160908 hours
+Runs/restart_test/inputs started at Tue Nov 16 10:58:59 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 10:59:05 2021
+ after 5.7571 s, 0.0959516 min, 0.00159919 hours
+Runs/restart_test/inputs started at Tue Nov 16 14:04:28 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 14:04:33 2021
+ after 4.2269 s, 0.0704483 min, 0.00117414 hours
+Runs/restart_test/inputs started at Tue Nov 16 14:11:20 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 14:11:27 2021
+ after 7.46228 s, 0.124371 min, 0.00207286 hours
+Runs/restart_test/inputs started at Tue Nov 16 14:11:54 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 14:12:06 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 14:18:33 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 14:19:39 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 14:19:44 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 14:22:03 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 14:23:09 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 14:23:16 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 14:23:23 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 14:35:05 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 14:37:05 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 14:39:04 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 14:39:22 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 14:39:42 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 14:40:27 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 15:22:55 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 15:23:00 2021
+ after 4.70291 s, 0.0783819 min, 0.00130636 hours
+Runs/restart_test/inputs started at Tue Nov 16 15:23:22 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 15:23:27 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 15:30:44 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs finished at Tue Nov 16 15:30:44 2021
+ after 0.041214 s, 0.0006869 min, 1.14483e-05 hours
+Runs/restart_test/inputs started at Tue Nov 16 15:43:12 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 15:46:47 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 15:48:54 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 15:48:56 2021
+ after 1.3428 s, 0.02238 min, 0.000373 hours
+Runs/restart_test/inputs started at Tue Nov 16 15:49:05 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 15:49:05 2021
+ after 0.238505 s, 0.00397508 min, 6.62514e-05 hours
+Runs/restart_test/inputs started at Tue Nov 16 15:49:08 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 15:49:30 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs finished at Tue Nov 16 15:49:32 2021
+ after 1.54831 s, 0.0258052 min, 0.000430086 hours
+Runs/restart_test/inputs started at Tue Nov 16 15:52:52 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 15:52:52 2021
+ after 0.23968 s, 0.00399467 min, 6.65778e-05 hours
+Runs/restart_test/inputs started at Tue Nov 16 15:52:54 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 15:52:57 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs finished at Tue Nov 16 15:52:58 2021
+ after 1.24664 s, 0.0207773 min, 0.000346288 hours
+Runs/restart_test/inputs started at Tue Nov 16 15:58:20 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 15:58:23 2021
+ after 3.45585 s, 0.0575975 min, 0.000959958 hours
+Runs/restart_test/inputs started at Tue Nov 16 15:58:27 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 15:58:28 2021
+ after 0.426157 s, 0.00710262 min, 0.000118377 hours
+Runs/restart_test/inputs started at Tue Nov 16 15:58:30 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 15:58:46 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs finished at Tue Nov 16 15:58:51 2021
+ after 4.82853 s, 0.0804756 min, 0.00134126 hours
+Runs/restart_test/inputs started at Tue Nov 16 15:59:38 2021
+
+	Runs/restart_test/inputs finished at Tue Nov 16 15:59:39 2021
+ after 0.78261 s, 0.0130435 min, 0.000217392 hours
+Runs/restart_test/inputs started at Tue Nov 16 15:59:52 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 15:59:54 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs finished at Tue Nov 16 15:59:55 2021
+ after 0.843694 s, 0.0140616 min, 0.000234359 hours
+Runs/restart_test/inputs started at Tue Nov 16 16:03:01 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 16:03:08 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:03:19 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 16:03:50 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:04:03 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 16:06:38 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:06:53 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:07:57 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs finished at Tue Nov 16 16:07:57 2021
+ after 0.064367 s, 0.00107278 min, 1.78797e-05 hours
+Runs/restart_test/inputs started at Tue Nov 16 16:15:06 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:15:11 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:17:08 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs finished at Tue Nov 16 16:17:08 2021
+ after 0.063944 s, 0.00106573 min, 1.77622e-05 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:18:11 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs finished at Tue Nov 16 16:18:11 2021
+ after 0.004154 s, 6.92333e-05 min, 1.15389e-06 hours
+Runs/restart_test/inputs started at Tue Nov 16 16:18:39 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:18:43 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 16:21:07 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:21:09 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 16:21:34 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:21:36 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:21:45 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 16:24:26 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 16:24:51 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:25:12 2021
+
+Runs/restart_test/inputs started at Tue Nov 16 16:25:48 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Tue Nov 16 16:25:56 2021
+
+Runs/restart_test/inputs started at Wed Nov 17 10:14:47 2021
+
+	Runs/restart_test/inputs finished at Wed Nov 17 10:14:47 2021
+ after 0.386089 s, 0.00643482 min, 0.000107247 hours
+Runs/restart_test/inputs started at Wed Nov 17 10:15:00 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Wed Nov 17 10:16:09 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs started at Wed Nov 17 10:16:29 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs finished at Wed Nov 17 10:16:29 2021
+ after 0.047911 s, 0.000798517 min, 1.33086e-05 hours

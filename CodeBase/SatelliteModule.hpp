@@ -64,7 +64,7 @@ public:
 
     double ComputeV();
 
-    double ComputeTheta();
+double ComputeTheta();
 
     void SetInitVel();
 

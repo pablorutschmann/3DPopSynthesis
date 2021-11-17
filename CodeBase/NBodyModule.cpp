@@ -62,11 +62,18 @@ int fgfull(double *x, double *y, double *z, double *vx, double *vy, double *vz, 
     vxi = *vx;
     vyi = *vy;
     vzi = *vz;
+//    cout << "vxi: " << *vx << '\t';
+//    cout << "vyi: " << *vy << '\t';
+//    cout << "vzi: " << *vz << '\n';
+
 
     rsq = xi * xi + yi * yi + zi * zi;
     vsq = vxi * vxi + vyi * vyi + vzi * vzi;
     u = xi * vxi + yi * vyi + zi * vzi;
     ir = 1.0 / sqrt(rsq);
+//    cout << "ir: " << ir << '\t';
+//    cout << "vsq: " << vsq << '\t';
+//    cout << "mu: " << mu << '\n';
     ia = 2.0 * ir - vsq / mu;
 
     if (ia > 0) /* Check if orbit is not hyperbolic */
@@ -165,6 +172,7 @@ int fgfull(double *x, double *y, double *z, double *vx, double *vy, double *vz, 
 
         return 0;
     } else {
+//        cout << ia << '\n';
         return 1;
     }
 }

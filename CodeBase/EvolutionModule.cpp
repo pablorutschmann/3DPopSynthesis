@@ -19,6 +19,7 @@
 #include <chrono>
 #include <ctime>
 #include <time.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -60,7 +61,6 @@ EvolutionModel::EvolutionModel(string input_address, string output_address) {
 
     SatelliteInitialization();
     SortSatellites();
-
     UpdateInterval = Disk.TDisp * DiskPrecision;     // set the disk update interval
 
 
@@ -144,6 +144,7 @@ void EvolutionModel::Simulation() {
 
 
         /*-- FORMATION OF NEW SATELLITES --*/
+
         if (Time <= TimeStopFormation) CheckAndCreate();
 
         /*-- DUST REFILLING --*/
@@ -301,14 +302,14 @@ void EvolutionModel::SatelliteInitialization() {
     double mass, rho, wm, swm, x, y, z, vx, vy, vz, init_time, form_time, a, e, inc, dt, p;
     bool type;
     ifstream InputFile;
+    cout << OutputAddress + "/restart/satellites.txt'\n";
     InputFile.open(OutputAddress + "/restart/satellites.txt");
 
     cout << "Searching satellites in " << OutputAddress << "/restart/satellites.txt\n";
 
     int i = 0;
 
-    while (InputFile >> ID >> type >> mass >> wm >> swm >> x >> y >> z >> vx >> vy >> vz >> a >> e >> inc >> N >> dt
-                     >> init_time >> form_time >> p)    // search satellites in the restart file
+    while (InputFile >> ID >> type >> mass >> wm >> swm >> x >> y >> z >> vx >> vy >> vz >> a >> e >> inc >> N >> dt >> init_time >> form_time >> p)    // search satellites in the restart file
     {
         if (type == 1) {
             rho = EmbryoRho;
@@ -376,7 +377,6 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
 
     if (ID == 1 and type == 1) {
         r = R_min + 0.1 * R_min;
-        cout << "CHECK: " << r << '\n';
         z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
         r_prev = r;
         Satellites[index] = SatelliteModel(ID, type, EmbryoInitMass, r * cos(theta), r * sin(theta), z, EmbryoRho,
@@ -388,7 +388,6 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
     if (ID > 1 and type == 1) {
         r = r_prev + Spacing * RHill_prev +
             ((-0.1 * Spacing * RHill_prev) + (rand() % 10) / 10. * (0.2 * Spacing * RHill_prev));
-        cout << "CHECK" << r << '\n';
         z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
         r_prev = r;
         Satellites[index] = SatelliteModel(ID, type, EmbryoInitMass, r * cos(theta), r * sin(theta), z, EmbryoRho,
@@ -414,7 +413,7 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
     ofstream OutputFile;
     OutputFile.open(OutputAddress + "/satellite_list.txt", ios_base::app);
     OutputFile << Satellites[index].ID << '\t' << Satellites[index].Type << '\t' << Satellites[index].InitTime << '\t'
-               << Satellites[index].Mass << '\t' << Satellites[index].WM << '\t' << Satellites[index].ComputeR2D()
+               << Satellites[index].Mass << '\t' << Satellites[index].WM << '\t' << Satellites[index].SWM << '\t' << Satellites[index].ComputeR2D()
                << '\t' << Satellites[index].ComputeTheta() << '\t' << Satellites[index].X << '\t' << Satellites[index].Y
                << '\t' << Satellites[index].Z << '\t' << Disk.Temp[Satellites[index].Index] << '\n';
     OutputFile.close();
@@ -509,13 +508,11 @@ void EvolutionModel::ComputeParameters(int index) {
     if (Satellites[index].Active) {
         // find satellite index in the disk grid 
         position = abs(Satellites[index].ComputeA() * cos(Satellites[index].ComputeInc()));
-//        cout << Disk.Length;
         if (position < Disk.R[0]) {
             Satellites[index].Index = 0;
-            //cout << "Smaller";
         } else if (position >= Disk.R[Disk.Length - 1]) {
             Satellites[index].Index = Disk.Length - 1;
-            //cout << "Larger";
+            //
         } else {
             for (int i = 0; i < Disk.Length - 1; i++) {
                 if (position < Disk.R[i + 1]) {
@@ -546,14 +543,12 @@ void EvolutionModel::ComputeParameters(int index) {
         if (Satellites[index].WM < 0.) {
 
             Satellites[index].WM = Disk.WMF[Satellites[index].Index] * Satellites[index].Mass;
-            cout << "WMF" << '\n';
         }
         Satellites[index].R = Disk.R[Satellites[index].Index];
 
         if (Satellites[index].SWM < 0.) {
 
             Satellites[index].SWM = Disk.SWMF[Satellites[index].Index] * Satellites[index].Mass;
-            cout << "WMF" << '\n';
         }
         Satellites[index].R = Disk.R[Satellites[index].Index];
 

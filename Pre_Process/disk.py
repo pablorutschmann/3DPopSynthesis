@@ -99,6 +99,8 @@ if __name__ == "__main__":
 
     print(0.01 * M_E /M_S)
 
+    print(5.1e-07 * M_S / M_E)
+
     # radi = (mass * 3 / 4 / np.pi / 2)**(1/3) / 100 / 1000
     #
     # print(radi)

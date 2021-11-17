@@ -18,6 +18,8 @@
 #include <chrono>
 #include <ctime>
 #include <time.h>
+#include <stdlib.h>
+
 
 using namespace std;
 
@@ -54,7 +56,7 @@ int main(int argc, char **argv) {
     HistoryFile.close();
 
     /*-- START SIMULATION --*/
-
+    evo.WriteSnapshot(OutputAddress, true);
     evo.Simulation();
 
     /*-- FINAL OPERATIONS --*/

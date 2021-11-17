@@ -292,6 +292,7 @@ void SatelliteModel::ComputeTdyn(string migtype, double fraction, double alpha, 
     if(b != 0)
     {
         Tmig = Twave / b / hr / hr * (P + P / abs(P) * (0.07 * ihr + 0.085 * ihr * ihr * ihr * ihr - 0.08 * ehr * ihr * ihr));
+        cout << "Satellite " << ID << ": " << b << '\n';
         if(abs(Tmig) < (10 * Dt / fraction))
 	{
 	  if(Tmig == 0) Tmig = 10 * Dt / fraction;
@@ -493,10 +494,6 @@ void SatelliteModel::UpdateWM(double dt) {
     */
 
     double factor = exp(- dt / Tsubli);
-//    cout << "CHECK" << '\n';
-//    cout << Tsubli << '\n';
-//    cout << dt << '\n';
-//    cout << factor << '\n';
     double WM_diff = WM * (1 - factor);
     Mass -= WM_diff;
     WM *= factor;
