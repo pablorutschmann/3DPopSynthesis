@@ -156,7 +156,8 @@ int DiskModel::ComputeIceLine() {
     int index = 0;
     if (Temp[0] < TIce) {
         index = 0;
-    } else {
+    }
+    else {
         for (int i = Length - 1; i > 0; i--) {
             if (Temp[i] < TIce) {
                 index = i;
