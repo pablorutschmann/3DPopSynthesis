@@ -1,13 +1,12 @@
-//
-//  DiskModule.hpp
+//  DiskModule.h
 //  DiskClass
 //
 //  Created by Marco Cilibrasi on 21/02/2019.
 //  Copyright © 2019 Marco Cilibrasi. All rights reserved.
 //
 
-#ifndef DiskModule_hpp
-#define DiskModule_hpp
+#ifndef SIMULATION_DISKMODULE_H
+#define SIMULATION_DISKMODULE_H
 
 #include <stdio.h>
 #include <string>
@@ -85,4 +84,4 @@ public:
 
 };
 
-#endif /* DiskModule_hpp */
+#endif //SIMULATION_DISKMODULE_H

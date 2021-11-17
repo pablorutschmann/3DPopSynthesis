@@ -5,20 +5,31 @@
 //  Copyright © 2019 Marco Cilibrasi. All rights reserved.
 //
 
-#include "SatelliteModule.hpp"                        //file with the definition of the classes and functions
-#include "DiskModule.hpp"
-#include "EvolutionModule.hpp"
+//#include "EvolutionModule.h"
+//#include <iostream>
+//#include <fstream>
+//#include <cmath>
+//#include <stdlib.h>
+//#include <string>
+//#include <stdio.h>
+//#include <sys/stat.h>
+//#include <chrono>
+//#include <ctime>
+//#include <time.h>
+//#include <stdlib.h>
+
+#include "EvolutionModule.h"
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
-#include <stdio.h>
+#include <cstdio>
 #include <sys/stat.h>
 #include <chrono>
 #include <ctime>
-#include <time.h>
-#include <stdlib.h>
+#include <ctime>
+#include <cstdlib>
 
 
 using namespace std;

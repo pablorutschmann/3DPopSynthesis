@@ -6,20 +6,10 @@
 //  Copyright © 2019 Marco Cilibrasi. All rights reserved.
 //
 
-#include "EvolutionModule.hpp"
-#include "DiskModule.hpp"
-#include "NBodyModule.hpp"
-#include <cmath>
-#include <fstream>
-#include <string>
-#include <iostream>
-#include <map>
-#include <sys/stat.h>
-#include <stdlib.h>
-#include <chrono>
-#include <ctime>
-#include <time.h>
-#include <stdlib.h>
+#include "EvolutionModule.h"
+//#include "DiskModule.h"
+//#include "NBodyModule.h"
+
 
 using namespace std;
 
@@ -506,7 +496,7 @@ void EvolutionModel::ComputeParameters(int index) {
     double position;
 
     if (Satellites[index].Active) {
-        // find satellite index in the disk grid 
+        // find satellite index in the disk grid
         position = abs(Satellites[index].ComputeA() * cos(Satellites[index].ComputeInc()));
         if (position < Disk.R[0]) {
             Satellites[index].Index = 0;
@@ -759,7 +749,7 @@ int EvolutionModel::SubTick() {
     SincCheck = ComputeIDGroup(1);
     if (SincCheck == 1) return 1;
 
-    // Flags for debugging 
+    // Flags for debugging
     PrintFlags(true);
 
     if (flags) {

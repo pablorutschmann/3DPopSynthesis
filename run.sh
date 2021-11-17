@@ -25,7 +25,7 @@ cp disks/disk_log_1000.txt Runs/$name/inputs/disk.txt
 cp system_0000/options.txt Runs/$name/inputs/options.txt
 
 # Start Simulation
-Executable/3DPopSyn Runs/$name/inputs Runs/$name/outputs system_0000/history.txt
+cmake-build-debug/3DPopSynthesis Runs/$name/inputs Runs/$name/outputs system_0000/history.txt
 
 # Star Post-Processing
 echo "Starting Plotting!"

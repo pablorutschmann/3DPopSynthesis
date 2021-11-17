@@ -1,4 +1,0 @@
-system_0000/inputs started at Wed Oct 27 11:15:55 2021
-
-	system_0000/inputs finished at Wed Oct 27 11:15:55 2021
- after 0.003179 s, 5.29833e-05 min, 8.83056e-07 hours

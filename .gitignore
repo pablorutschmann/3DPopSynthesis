@@ -1,16 +1,7 @@
 .DS_Store
 .idea/
-Executable/3DPopSyn
-CMakeLists.txt
-Executable/DiskModule.o
-Executable/EvolutionModule.o
-Executable/NBodyModule.o
-Executable/SatelliteModule.o
 cmake-build-debug/
-Executable/main.o
 ppd/
-Executable/
 /Disk_Plots/
-__pycache__/plotting.cpython-38.pyc
 /Runs/
 /restart/

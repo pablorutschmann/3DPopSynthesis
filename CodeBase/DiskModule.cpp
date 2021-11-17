@@ -6,7 +6,7 @@
 //  Copyright © 2019 Marco Cilibrasi. All rights reserved.
 //
 
-#include "DiskModule.hpp"
+#include "DiskModule.h"
 #include <cmath>
 #include <fstream>
 #include <string>
@@ -268,3 +268,4 @@ double DiskModel::DustBarMass() {
     }
     return sum;
 }
+

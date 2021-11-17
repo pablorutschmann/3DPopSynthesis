@@ -1430,3 +1430,11 @@ Runs/restart_test/inputs started at Wed Nov 17 10:15:00 2021
 
 	/Users/prut/CLionProjects/3DPopSynthesis/Runs/restart_test/inputs finished at Wed Nov 17 10:16:29 2021
  after 0.047911 s, 0.000798517 min, 1.33086e-05 hours
+Runs/test_cmake/inputs started at Wed Nov 17 11:52:09 2021
+
+	Runs/test_cmake/inputs finished at Wed Nov 17 11:52:19 2021
+ after 10.5916 s, 0.176528 min, 0.00294212 hours
+Runs/test_cmake/inputs started at Wed Nov 17 11:53:07 2021
+
+	Runs/test_cmake/inputs finished at Wed Nov 17 11:53:08 2021
+ after 0.869888 s, 0.0144981 min, 0.000241636 hours

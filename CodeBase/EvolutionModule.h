@@ -1,17 +1,42 @@
 //
-//  EvolutionModule.hpp
+//  EvolutionModule.h
 //
 //  Created by Marco Cilibrasi on 21/02/2019.
 //  Copyright © 2019 Marco Cilibrasi. All rights reserved.
 //
 
-#ifndef EvolutionModule_hpp
-#define EvolutionModule_hpp
+#ifndef SIMULATION_EVOLUTIONMODULE_H
+#define SIMULATION_EVOLUTIONMODULE_H
 
-#include <stdio.h>
+//#include "DiskModule.h"
+//#include "SatelliteModule.h"
+//#include "NBodyModule.h"
+//#include <cmath>
+//#include <fstream>
+//#include <string>
+//#include <iostream>
+//#include <stdio.h>
+//#include <map>
+//#include <sys/stat.h>
+//#include <stdlib.h>
+//#include <chrono>
+//#include <ctime>
+//#include <time.h>
+
+#include "DiskModule.h"
+#include "SatelliteModule.h"
+#include "NBodyModule.h"
+#include <cmath>
+#include <fstream>
+#include <string>
+#include <iostream>
+#include <cstdio>
 #include <map>
-#include "DiskModule.hpp"
-#include "SatelliteModule.hpp"
+#include <sys/stat.h>
+#include <chrono>
+#include <ctime>
+#include <ctime>
+#include <cstdlib>
 
 const int TotalNumberSatellites = 3000;
 using namespace std;
@@ -126,4 +151,4 @@ double dKijdy(double y);
 
 double d2Kijdy2(double y);
 
-#endif /* EvolutionModule_hpp */
+#endif //SIMULATION_EVOLUTIONMODULE_H

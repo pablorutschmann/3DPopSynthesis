@@ -1,5 +1,5 @@
 //
-//  SatelliteModule.hpp
+//  SatelliteModule.h
 //  SatelliteClass
 //
 //  Defining satellite class
@@ -8,8 +8,8 @@
 //  Copyright © 2019 Marco Cilibrasi. All rights reserved.
 //
 
-#ifndef SatelliteModule_hpp
-#define SatelliteModule_hpp
+#ifndef SIMULATION_SATELLITEMODULE_H
+#define SIMULATION_SATELLITEMODULE_H
 
 #include <stdio.h>
 #include <string>
@@ -64,7 +64,7 @@ public:
 
     double ComputeV();
 
-double ComputeTheta();
+    double ComputeTheta();
 
     void SetInitVel();
 
@@ -106,4 +106,4 @@ double z(double x, double n);
 double GapDepth(double P);
 
 
-#endif /* SatelliteModule_hpp */
+#endif //SIMULATION_SATELLITEMODULE_H

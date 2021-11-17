@@ -6,9 +6,7 @@
 //  Copyright © 2019 Marco Cilibrasi. All rights reserved.
 //
 
-#include "SatelliteModule.hpp"
-
-
+#include "SatelliteModule.h"
 #include <iostream>
 #include <cmath>
 #include <string>
@@ -55,14 +53,14 @@ SatelliteModel::SatelliteModel(int id, bool type, double mass, double x, double 
     Tsubli = sublimationtime;    // Sublimation timescale
 
     // clockes for individual timesteps, see Saha & Tremaine (1992, 1994)
-    IClock = 0;             
+    IClock = 0;
     KClock = 0;
     AdvanceI = false;
-    
+
     Active = true;              // whether the satellite is active or destroyed
-    
+
     GroupID = -1;               // group ID for close-encounters
-    
+
     SetInitVel();               // setting initial keplerian velocity
     Radius = ComputeRadius();   // it computes the satellite physical radius
 
@@ -134,7 +132,7 @@ void SatelliteModel::SetInitVel()
     double theta = ComputeTheta();
     double r = ComputeR();
     double v = sqrt(Mu / r);
-    
+
     Vx = -sin(theta) * v;
     Vy = cos(theta) * v;
     Vz = 0.;
@@ -148,7 +146,7 @@ double SatelliteModel::ComputeEnergy()
     */
     double r = ComputeR();
     double v2 = Vx*Vx + Vy*Vy + Vz*Vz;
-    
+
     return v2/2. - Mu/r;
 }
 
@@ -163,10 +161,10 @@ double SatelliteModel::ComputeEcc()
 
     double A = v2 - Mu/r;
     double B = X*Vx + Y*Vy + Z*Vz;
-    
+
     double C2 = (A*X - B*Vx)*(A*X - B*Vx) + (A*Y - B*Vy)*(A*Y - B*Vy) + (A*Z - B*Vz)*(A*Z - B*Vz);
     double C = sqrt(C2);
-    
+
     return C / Mu;
 }
 
@@ -187,13 +185,13 @@ double SatelliteModel::ComputeInc()
     Compute inclination
     */
     double h, hx, hy, hz;
-    
+
     hx = Y*Vz - Z*Vy;
     hy = Z*Vx - X*Vz;
     hz = X*Vy - Y*Vx;
-    
+
     h = sqrt(hx*hx + hy*hy + hz*hz);
-    
+
     return acos(hz / h);
 }
 
@@ -230,29 +228,29 @@ void SatelliteModel::SetDt(double global_dt, double rotation_fraction)
     {
         double dt = 2 * M_PI * a / sqrt(Mu / a) * rotation_fraction;    // period * rotation_fraction
         if(dt < global_dt)
-	    {
-	        N = 2;                              // 2 is the minimum index, in order to allow for sub-steps if necessary
-	        dt = global_dt;
-	    }
+        {
+            N = 2;                              // 2 is the minimum index, in order to allow for sub-steps if necessary
+            dt = global_dt;
+        }
         else
         {
-            
+
             double n = log2(dt / global_dt);
-            int n1 = (int) n + 1;               // round n to the upper index and 
+            int n1 = (int) n + 1;               // round n to the upper index and
             N_new = pow(2., n1);
             if(N == 0) N = N_new;
             else if (N_new < N) N = N_new;
-            if(N > Nmax) N = Nmax;  
-            Dt = N * global_dt / 2;   
+            if(N > Nmax) N = Nmax;
+            Dt = N * global_dt / 2;
         }
     }
     else
-    {   
+    {
         // minimum dt if the semi-major axis is < 1
         N = 2;
         Dt = global_dt;
     }
-    
+
 }
 
 void SatelliteModel::ComputeTdyn(string migtype, double fraction, double alpha, double gamma, double kbmump, double sigma_boltz)
@@ -272,7 +270,7 @@ void SatelliteModel::ComputeTdyn(string migtype, double fraction, double alpha, 
 
     double hr, e, i, ihr, ehr, P;
     double b;
-    
+
     hr = H / R;
     i = ComputeInc();
     e = ComputeEcc();
@@ -286,32 +284,31 @@ void SatelliteModel::ComputeTdyn(string migtype, double fraction, double alpha, 
     if(abs(Tecc) < (10 * Dt / fraction)) Tecc = 10 * Dt / fraction;
     Tinc = Twave / 0.544 * (1 - 0.3 * ihr * ihr + 0.24 * ihr * ihr * ihr + 0.14 * ehr * ehr * ihr);
     if(abs(Tinc) < (10 * Dt / fraction)) Tinc = 10 * Dt / fraction;
-    
+
     b = ComputeBmig(migtype, alpha, gamma, kbmump, sigma_boltz);
 
     if(b != 0)
     {
         Tmig = Twave / b / hr / hr * (P + P / abs(P) * (0.07 * ihr + 0.085 * ihr * ihr * ihr * ihr - 0.08 * ehr * ihr * ihr));
-        cout << "Satellite " << ID << ": " << b << '\n';
         if(abs(Tmig) < (10 * Dt / fraction))
-	{
-	  if(Tmig == 0) Tmig = 10 * Dt / fraction;
-	  else Tmig = 10 * Dt / fraction * Tmig / abs(Tmig);
-	  cout << "Satellite " << ID << " has limited migration\n";
-	}
-	
+        {
+            if(Tmig == 0) Tmig = 10 * Dt / fraction;
+            else Tmig = 10 * Dt / fraction * Tmig / abs(Tmig);
+            cout << "Satellite " << ID << " has limited migration\n";
+        }
+
     }
     else
     {
         Tmig = 1e300;
     }
-    
+
 }
 
 
 
 double SatelliteModel::ComputeBmig(string migtype, double alpha, double gamma, double kbmump, double sigma_boltz)
-{   
+{
 
     /*
     Compute the bI parameter for type I migration together with the bII parameter
@@ -332,10 +329,10 @@ double SatelliteModel::ComputeBmig(string migtype, double alpha, double gamma, d
         double q = Mass, h = H/R;
         double Alpha = -SigmaExp, Beta = -TempExp;
         double rho = SigmaGas / H / sqrt(2. * M_PI);
-    
+
         double chi = 16. * (gamma - 1) * sigma_boltz * Temp * Temp * Temp / (3. * rho * rho * Opacity * kbmump);
         double chi_C = R * R * h * h * OmegaK;
-    
+
         // bL
         double bL = -(2.34 - 0.1 * Alpha + 1.5 * Beta) * f(chi / chi_C, gamma);
 
@@ -351,7 +348,7 @@ double SatelliteModel::ComputeBmig(string migtype, double alpha, double gamma, d
         double Pv = 2. * Px / 3.;
         double p = -SigmaExp, q = -TempExp;
 
-	    b1 = 2.5 + 1.7 * q - 0.1 * p; 
+        b1 = 2.5 + 1.7 * q - 0.1 * p;
         b2 = - 1.1 * F(Pv) * G(Px) * (1.5 - p);
         b3 = - 0.7 * (1 - K(Pv)) * (1.5 - p);
         b4 = - 7.9 * (q - (gamma - 1)*p) / gamma * F(Pv) * F(Px) * sqrt(G(Pv)*G(Px));
@@ -364,68 +361,68 @@ double SatelliteModel::ComputeBmig(string migtype, double alpha, double gamma, d
         double q = Mass, h = H/R;
         double Alpha = -SigmaExp, Beta = -TempExp;
         double rho = SigmaGas / H / sqrt(2. * M_PI);
-    
+
         double chi = 16. * (gamma - 1) * sigma_boltz * Temp * Temp * Temp / (3. * rho * rho * Opacity * kbmump);
         double chi_C = R * R * h * h * OmegaK;
-    
+
         // bL
         double bL = -(2.34 - 0.1 * Alpha + 1.5 * Beta) * f(chi / chi_C, gamma);
-        
+
         // bV_CR
         double h1 = h / sqrt(gamma);
         double xs = R * (1.05 * sqrt(q/h1) + 3.4 * pow(q, (7/3)) * pow(h1, -6.)) / (1 + 2 * pow(q, 2.) * pow(h1, -6.));
-    
+
         double nu = alpha * Cs * H;
         double zv = R * nu / (OmegaK * xs * xs * xs);
-    
+
         double eb = 1. / (1 + 30. * h * zv);
-    
+
         double bV_lin = (0.976 - 0.640 * Alpha) / gamma;
-    
+
         double FV = 8. * M_PI / 3. * zv * FJ(zv);
         double bV_UHD = 3./4. * (3./2. - Alpha) * pow((xs / R), 4.) * (h/q) * (h/q);
         double bV_HD = FV * bV_UHD;
-    
+
         double bV = eb * bV_HD + (1. - eb) * bV_lin;
 
         // bS_CR
-    
+
         double zx = R * chi / (OmegaK * xs * xs * xs);
         double ev = 1. / (1. + (6. * h * zv) * (6. * h * zv));
         double ex = 1. / (1. + 15. * h * zx);
-    
+
         double csi = (Beta - 0.4 * Alpha - 0.64);
-    
+
         double bS_lin = 0.8 * csi / gamma;
-    
+
         double fs = 1.2 * min(1., 1.4 * sqrt(zx)) * min(1., 1.8 * sqrt(zv));
         double bS_UHD = 3.3 * csi * pow((xs / R), 4.) * (h / q) * (h / q);
         double bS_HD = fs * bS_UHD;
-    
+
         double bS = ev * ex * bS_HD + (1. - ev * ex) * bS_lin;
 
         // bT_CR
-    
+
         double bT_lin = 1.0 * Beta / gamma;
-    
+
         double FT = 1.2 * min(1., 1.8 * sqrt(zv));
         double bT_UHD = 0.73 * Beta * pow((xs / R), 4.) * (h/q) * (h/q);
         double bT_HD = FT * bT_UHD;
-    
+
         double bT = ev * bT_HD + (1. - ev) * bT_lin;
 
         // bVCT_CR
-    
+
         double bVCT = 4. * M_PI * csi / gamma * pow((xs / R), 4.) * (h/q) * (h/q) * eb * zv * (zv * FJ(zv) - zx * FJ(zx)) / (zv - zx);
-    
+
         // b
-    
+
         double bC = bV + bS + bT + bVCT;
         bI = bL + bC;
         bI = -bI;
     }
     else bI = 0;
-    
+
     // bII
 
     if(TypeIIMigration)
@@ -434,9 +431,9 @@ double SatelliteModel::ComputeBmig(string migtype, double alpha, double gamma, d
 
         double B = 4 * M_PI * A * A * SigmaGas;
         double FII = 1 + Mass / B;
-            
+
         double factor = 3 * (2 + SigmaExp + TempExp);
-            
+
         bII = factor / FII * (Cs * Cs * Cs * Cs * alpha) / (OmegaK * OmegaK * OmegaK * OmegaK * A * A * A * A * A * A * SigmaGas * Mass);
 
         b = z(1/P, 30.) * bI + (1 - z(1/P, 30.)) * bII;
@@ -451,7 +448,7 @@ void SatelliteModel::ComputeAcc(int MigOption, int EccOption, int IncOption)
 {
     /*
     Compute the acceleration components due to migration, eccentricity and inclination damping (Cresswell & Nelson 2008)
-    
+
     INPUTS
     - migration, eccentricity damping and inclination damping switch (1 if active, 0 if not)
     */
@@ -569,7 +566,7 @@ double z(double x, double n)
 
 
 double GapDepth(double P)
-{   
+{
     if(P>2.4646) return 1 - exp(-pow(P, 0.75) / 3);
     else return (P-0.541)/4;
 }

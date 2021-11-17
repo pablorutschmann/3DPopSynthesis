@@ -1,3 +1,4 @@
+#include "NBodyModule.h"
 #include <cmath>
 #include <fstream>
 #include <string>
