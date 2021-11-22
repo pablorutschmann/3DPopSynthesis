@@ -101,7 +101,7 @@ class run:
     def plot_accretion(self):
         fig, ax = plt.subplots()
         ax.set_xlabel('time in years')
-        ax.set_ylabel('mass in [Units]')
+        ax.set_ylabel('mass in Earth Masses')
         ax.set_title('Mass Evolution of remaining satellites')
 
         for item in self.satellites.values():

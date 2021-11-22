@@ -1510,3 +1510,63 @@ Runs/test_iceline/inputs started at Wed Nov 17 18:04:06 2021
 
 	Runs/test_iceline/inputs finished at Wed Nov 17 18:04:07 2021
  after 0.86819 s, 0.0144698 min, 0.000241164 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/test_iceline/inputs started at Wed Nov 17 18:35:15 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/test_iceline/inputs finished at Wed Nov 17 18:35:16 2021
+ after 0.832824 s, 0.0138804 min, 0.00023134 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/test_iceline/inputs started at Wed Nov 17 18:35:47 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/test_iceline/inputs finished at Wed Nov 17 18:35:52 2021
+ after 4.77614 s, 0.0796022 min, 0.0013267 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/laura/inputs started at Wed Nov 17 21:34:39 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/laura/inputs finished at Wed Nov 17 21:34:41 2021
+ after 2.42434 s, 0.0404057 min, 0.000673429 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/test/inputs started at Thu Nov 18 10:07:39 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/test/inputs finished at Thu Nov 18 10:08:04 2021
+ after 25.4712 s, 0.424521 min, 0.00707534 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/test_seed/inputs started at Thu Nov 18 10:12:56 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/test_seed/inputs finished at Thu Nov 18 10:13:26 2021
+ after 29.8531 s, 0.497552 min, 0.00829253 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/test_seed/inputs started at Thu Nov 18 10:34:02 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/test_seed/inputs finished at Thu Nov 18 10:34:28 2021
+ after 25.8114 s, 0.430191 min, 0.00716985 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs//inputs started at Thu Nov 18 11:47:54 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs//inputs finished at Thu Nov 18 11:48:17 2021
+ after 23.361 s, 0.38935 min, 0.00648917 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs//inputs started at Thu Nov 18 11:48:39 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs//inputs finished at Thu Nov 18 11:49:00 2021
+ after 21.6606 s, 0.36101 min, 0.00601683 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs started at Mon Nov 22 09:59:39 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs finished at Mon Nov 22 09:59:43 2021
+ after 3.61424 s, 0.0602374 min, 0.00100396 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs started at Mon Nov 22 10:21:58 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs finished at Mon Nov 22 10:22:01 2021
+ after 2.93456 s, 0.0489093 min, 0.000815155 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs started at Mon Nov 22 10:27:28 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs finished at Mon Nov 22 10:27:32 2021
+ after 3.66083 s, 0.0610139 min, 0.0010169 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs started at Mon Nov 22 10:28:50 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs finished at Mon Nov 22 10:28:52 2021
+ after 2.45596 s, 0.0409327 min, 0.000682211 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs started at Mon Nov 22 10:33:11 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs finished at Mon Nov 22 10:33:15 2021
+ after 3.90466 s, 0.0650776 min, 0.00108463 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs started at Mon Nov 22 10:33:55 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs finished at Mon Nov 22 10:33:57 2021
+ after 2.4453 s, 0.0407549 min, 0.000679249 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs started at Mon Nov 22 10:34:49 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/quick/inputs finished at Mon Nov 22 10:34:53 2021
+ after 4.15581 s, 0.0692635 min, 0.00115439 hours

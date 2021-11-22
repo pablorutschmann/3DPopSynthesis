@@ -52,7 +52,6 @@ int main(int argc, char **argv) {
     cout << "Output = " << evo.OutputAddress << '\n' << '\n';
     cout << "NSatellites = " << evo.NSatellites << '\n';
 
-
     cout << '\n';
 
     /*-- UPDATE HISTORY FILE --*/
@@ -67,7 +66,6 @@ int main(int argc, char **argv) {
     HistoryFile.close();
 
     /*-- START SIMULATION --*/
-    evo.WriteSnapshot(OutputAddress, true);
     evo.Simulation();
 
     /*-- FINAL OPERATIONS --*/

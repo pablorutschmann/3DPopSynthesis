@@ -50,13 +50,14 @@ class snapshot:
         cmin = min(WMF_satellites)
         cmax = max(WMF_satellites)
         norm = colors.Normalize(cmin, cmax)
-        mean_mass = np.min(mtome * self.satellites['M']) / 50000
 
-        ax.scatter(rtoau * self.satellites['a'], self.satellites['e'], c=WMF_satellites, cmap=cmap, norm=norm,
-                   s=self.satellites['M'] / mean_mass, alpha=1)
-        # ax1.scatter(init_sma, init_e, c=init_sma, cmap='cividis', s=init_s * scaling, alpha=1)
-        fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label="Water Mass Fraction",
-                     ax=ax)
+        # Scale the masses to the marker sizes
+        interval_min = 40
+        interval_max = 320
+        ss = (self.satellites['M'] - np.min(self.satellites['M'])) / (np.max(self.satellites['M']) - np.min(self.satellites['M'])) * (interval_max - interval_min) + interval_min
+
+        ax.scatter(rtoau * self.satellites['a'], self.satellites['e'], c=WMF_satellites, cmap=cmap, norm=norm, s=ss, alpha=1)
+        fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label="Water Mass Fraction",ax=ax)
         ax.set_ylim(-1 * min(self.satellites['e']), 1.1 * max(self.satellites['e']))
         ax.set_xlabel('Semi Mayor Axis in AU', fontsize=15)
         ax.set_ylabel('Eccentricity', fontsize=15)
@@ -81,6 +82,8 @@ class snapshot:
         mass_scaling = mean_mass / 90000
         mass_scaling = 0.000000001
 
+
+
         def pie_1d(r1, r2):
             # calculate the points of the first pie marker
             # these are just the origin (0, 0) + some (cos, sin) points on a circle
@@ -101,14 +104,22 @@ class snapshot:
 
             return xy1, s1, xy2, s2, xy3, s3
 
+        # cale the masses to the marker sizes
+        def point_scaling(row):
+            interval_min = 40
+            interval_max = 320
+            ss = (row - np.min(self.satellites['M'])) / (np.max(self.satellites['M']) - np.min(self.satellites['M'])) * (interval_max - interval_min) + interval_min
+            return ss
+
         def plot_one(row):
             WMF_ratio = row['WM'] / row['M']
             SWMF_ratio = row['SWM'] / row['M'] + WMF_ratio
             xy1, s1, xy2, s2, xy3, s3 = pie_1d(WMF_ratio, SWMF_ratio)
+            scale = point_scaling(row['M'])
 
-            ax.scatter(rtoau * row['a'], row['e'], marker=xy1, s=s1 ** 2 * row['M'] / mass_scaling, facecolor='blue')
-            ax.scatter(rtoau * row['a'], row['e'], marker=xy2, s=s2 ** 2 * row['M'] / mass_scaling, facecolor='green')
-            ax.scatter(rtoau * row['a'], row['e'], marker=xy3, s=s3 ** 2 * row['M'] / mass_scaling, facecolor='red')
+            ax.scatter(rtoau * row['a'], row['e'], marker=xy1, s=s1 ** 2 * scale, facecolor='blue')
+            ax.scatter(rtoau * row['a'], row['e'], marker=xy2, s=s2 ** 2 * scale, facecolor='green')
+            ax.scatter(rtoau * row['a'], row['e'], marker=xy3, s=s3 ** 2 * scale, facecolor='red')
 
         for index, row in self.satellites.iterrows():
             plot_one(row)

@@ -48,3 +48,13 @@ mtome = M_S / M_E
 
 # Solar Mass to Jupiter Mass Conversion Factor
 mtome = M_S / M_J
+
+# Earth Ocean in Earth Masses
+
+OE = 2.4E-4 * M_E
+
+# Solar Mass to Earths Ocean
+
+mtooe = M_S / OE
+
+print(mtooe)

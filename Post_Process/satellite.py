@@ -1,5 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from Post_Process.units import *
+
 
 
 class satellite:
@@ -44,7 +46,7 @@ class satellite:
         self.acc.sort_index(inplace=True)
 
     def fig_accretion(self, fig, ax):
-        ax.step(list(self.acc.index), self.acc['mass'], where='post')
+        ax.step(list(self.acc.index), mtome * self.acc['mass'], where='post')
         return fig, ax
 
     def wm_time(self, path):

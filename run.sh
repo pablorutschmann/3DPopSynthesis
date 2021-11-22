@@ -1,31 +1,28 @@
 name=$1
 
-# Create Directory Sructure
+# Create Directory Structure
 
 # Remove Run directory if it exists
-[[ -d Runs/$name ]] && rm -r Runs/$name
+[[ -d $PWD/Runs/$name ]] && rm -r $PWD/Runs/$name
 
-#[[ -d Runs/testnew ]] && rm -r Runs/testnew
-#mkdir -p Runs/testnew/
-#
-#mkdir -p Runs/testnew/outputs/
-#mkdir -p Runs/testnew/inputs/
+# Set Path Variables
+run=$PWD/Runs/$name
+input=$run/inputs
+output=$run/outputs
 
+mkdir -p $run
 
-
-mkdir -p Runs/$name/
-
-mkdir -p Runs/$name/outputs/
-mkdir -p Runs/$name/inputs/
+mkdir -p $output
+mkdir -p $input
 
 # copy disk to inputs
-cp disks/disk_log_1000.txt Runs/$name/inputs/disk.txt
+cp $PWD/disks/disk_log_1000.txt $input/disk.txt
 
 # copy options to inputs
-cp system_0000/options.txt Runs/$name/inputs/options.txt
+cp $PWD/system_0000/options.txt $input/options.txt
 
 # Start Simulation
-cmake-build-debug/3DPopSynthesis Runs/$name/inputs Runs/$name/outputs system_0000/history.txt
+$PWD/3DPopSynthesis $input $output $PWD/system_0000/history.txt
 
 # Star Post-Processing
 echo "Starting Plotting!"
