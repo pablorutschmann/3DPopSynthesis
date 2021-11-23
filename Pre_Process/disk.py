@@ -109,6 +109,10 @@ if __name__ == "__main__":
     #
     # print(mass)
 
+    total_plaenetsima_mass = 3.0e-08 * 1000;
+    print(total_plaenetsima_mass)
+
+
 
 
 

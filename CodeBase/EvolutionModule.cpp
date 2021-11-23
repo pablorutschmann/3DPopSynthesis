@@ -310,7 +310,7 @@ void EvolutionModel::SatelliteInitialization() {
         } else {
             rho = Rho;
         }
-        Satellites[i] = SatelliteModel(ID, type, mass, x, y, z, rho, Disk.G, Disk.MP, Disk.StokesNumber, init_time, Tsubli);
+        Satellites[i] = SatelliteModel(ID, type, mass, x, y, z, rho, Disk.G, Disk.MP, StokesNumber, init_time, Tsubli);
         Satellites[i].Vx = vx;
         Satellites[i].Vy = vy;
         Satellites[i].Vz = vz;
@@ -385,7 +385,7 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
         z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
         r_prev = r;
         Satellites[index] = SatelliteModel(ID, type, EmbryoInitMass, r * cos(theta), r * sin(theta), z, EmbryoRho,
-                                           Disk.G * Disk.MP, Time, Tsubli);
+                                           Disk.G, Disk.MP, StokesNumber, Time, Tsubli);
         ComputeParameters(index);
         RHill_prev = Satellites[index].ComputeRHill();
     }
@@ -398,7 +398,7 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
             r = pow(10, expr);
             z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
             Satellites[index] = SatelliteModel(ID, type, InitMass, r * cos(theta), r * sin(theta), z, Rho,
-                                               Disk.G * Disk.MP, Time, Tsubli);
+                                               Disk.G, Disk.MP, StokesNumber, Time, Tsubli);
             ComputeParameters(index);
             invalid = CheckInvalidity(index);
         }
@@ -529,7 +529,7 @@ void EvolutionModel::ComputeParameters(int index) {
         Satellites[index].Rfeed = Satellites[index].RHill * FeedRadius;
         Satellites[index].Cs = Disk.ComputeCs(Satellites[index].Index);
         Satellites[index].H = Disk.ComputeH(Satellites[index].Index);
-        Satellites[index].Eta = Disk.Eta[Satellites[index].Index]
+        Satellites[index].Eta = Disk.Eta[Satellites[index].Index];
         Satellites[index].SigmaGas = Disk.SigmaGas[Satellites[index].Index];
         Satellites[index].SetDt(GlobalDt, RotationFraction);
         Satellites[index].Opacity = Disk.Opacity[Satellites[index].Index];

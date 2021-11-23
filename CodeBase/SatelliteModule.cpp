@@ -23,7 +23,7 @@ SatelliteModel::SatelliteModel() {
 }
 
 SatelliteModel::SatelliteModel(int id, bool type, double mass, double x, double y, double z, double rho, double g,
-                               double mp, double sn
+                               double mp, double sn,
                                double time, double sublimationtime) {
     /*
     Initialize satellite model
@@ -48,7 +48,7 @@ SatelliteModel::SatelliteModel(int id, bool type, double mass, double x, double 
     Rho = rho;
     MP = mp;
     Mu = g / mp;                // G * M
-    StokesNumber = sn           // Pebble StokesNumber
+    StokesNumber = sn;           // Pebble StokesNumber
     N = 0;                      // individual timestep index
     Twave = 1e10;               // timescale for migration, eccentricity and inclination damping
     InitTime = time;            // time at which it is initiated
@@ -205,9 +205,9 @@ double SatelliteModel::ComputeE2D() {
 
     double vstar = cbrt(MP / Mass / StokesNumber) * OmegaK;
 
-    double fset = exp(-0.5 * (dv / vstar) * (dv / vstar);
+    double fset = exp(-0.5 * (dv / vstar) * (dv / vstar));
 
-    return 0.32 / Eta * sqrt(qp * dv / OmegaK / StokesNumber) * fset
+    return 0.32 / Eta * sqrt(qp * dv / OmegaK / StokesNumber) * fset;
 }
 
 double SatelliteModel::ComputeP(double alpha) {
