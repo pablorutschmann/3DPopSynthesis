@@ -405,8 +405,11 @@ class disk:
         #out['Power Coefficient Temperature'] = np.full(self.N, -0.5)
         out['Gas Opacity []'] = np.full(self.N, 0)
 
+        #Headwind Factor
+        out["Headwind Factor []"] = self.eta_peb(self.out['r [R_S]'])
 
-        for key in ['r [R_S]', 'dr [R_S]', 'sigma gas [M_S/R_S^2]', 'sigma dust [M_S/R_S^2]', 'sigma dustbar [M_S/R_S^2]', 'T [K]', 'Area [R_S^2]', 'Keplerian Velocity [R_S / yr]', 'Power Coefficient Density', 'Power Coefficient Temperature', 'Gas Opacity []', 'WMF []', 'SWMF []']:
+
+        for key in ['r [R_S]', 'dr [R_S]', 'sigma gas [M_S/R_S^2]', 'sigma dust [M_S/R_S^2]', 'sigma dustbar [M_S/R_S^2]', 'T [K]', 'Area [R_S^2]', 'Keplerian Velocity [R_S / yr]', 'Power Coefficient Density', 'Power Coefficient Temperature', 'Gas Opacity []', 'WMF []', 'SWMF []', 'Headwind Factor []']:
             #self.out = self.out.pop[key]
             out[key] = out.pop(key)
 
@@ -494,6 +497,11 @@ class disk:
         y = 280 * (au / (r * R_S))**(0.5)
         return y
 
+    def eta_peb(self,r):
+        r_au = r / au * R_S
+        y = 1.5e-3 * r**(0.5)
+        return y
+
     def get_extrapolate(self, x_init, y_init):
         # Fit the linear function to log log data
         popt, pcov = curve_fit(self.func, np.log(x_init), np.log(y_init))
@@ -539,5 +547,8 @@ class disk:
         swmf = 0.1
 
         return swmf
+
+
+
 
 

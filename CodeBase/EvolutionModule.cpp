@@ -206,6 +206,9 @@ void EvolutionModel::SetOptions() {
     Snapshots = Options["Snapshots"];
     SaveInterval = Options["SaveInterval"];
     AccCoeff = Options["AccCoeff"];
+    PebbleAccretion = Options["PebbleAccretion"];
+    StokesNumber = Options["StokesNumber"];
+    PebbleFlux = Options["PebbleFlux"];
     RotationFraction = Options["RotationFraction"];
     DiskPrecision = Options["DiskPrecision"];
     MaxRunTime = Options["MaxRunTime"];
@@ -299,14 +302,15 @@ void EvolutionModel::SatelliteInitialization() {
 
     int i = 0;
 
-    while (InputFile >> ID >> type >> mass >> wm >> swm >> x >> y >> z >> vx >> vy >> vz >> a >> e >> inc >> N >> dt >> init_time >> form_time >> p)    // search satellites in the restart file
+    while (InputFile >> ID >> type >> mass >> wm >> swm >> x >> y >> z >> vx >> vy >> vz >> a >> e >> inc >> N >> dt
+                     >> init_time >> form_time >> p)    // search satellites in the restart file
     {
         if (type == 1) {
             rho = EmbryoRho;
         } else {
             rho = Rho;
         }
-        Satellites[i] = SatelliteModel(ID, type, mass, x, y, z, rho, Disk.G * Disk.MP, init_time, Tsubli);
+        Satellites[i] = SatelliteModel(ID, type, mass, x, y, z, rho, Disk.G, Disk.MP, Disk.StokesNumber, init_time, Tsubli);
         Satellites[i].Vx = vx;
         Satellites[i].Vy = vy;
         Satellites[i].Vz = vz;
@@ -370,7 +374,7 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
         z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
         r_prev = r;
         Satellites[index] = SatelliteModel(ID, type, EmbryoInitMass, r * cos(theta), r * sin(theta), z, EmbryoRho,
-                                           Disk.G * Disk.MP, Time, Tsubli);
+                                           Disk.G, Disk.MP, Disk.StokesNumber, Time, Tsubli);
         ComputeParameters(index);
         RHill_prev = Satellites[index].ComputeRHill();
 
@@ -403,7 +407,8 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
     ofstream OutputFile;
     OutputFile.open(OutputAddress + "/satellite_list.txt", ios_base::app);
     OutputFile << Satellites[index].ID << '\t' << Satellites[index].Type << '\t' << Satellites[index].InitTime << '\t'
-               << Satellites[index].Mass << '\t' << Satellites[index].WM << '\t' << Satellites[index].SWM << '\t' << Satellites[index].ComputeR2D()
+               << Satellites[index].Mass << '\t' << Satellites[index].WM << '\t' << Satellites[index].SWM << '\t'
+               << Satellites[index].ComputeR2D()
                << '\t' << Satellites[index].ComputeTheta() << '\t' << Satellites[index].X << '\t' << Satellites[index].Y
                << '\t' << Satellites[index].Z << '\t' << Disk.Temp[Satellites[index].Index] << '\n';
     OutputFile.close();
@@ -442,13 +447,13 @@ void EvolutionModel::WriteSnapshot(string FolderName, bool header) {
 
     if (header)
         OutputFile
-                << "#index\tr\tdr\tSigmaGas\tSigmaDust\tSigmaDustBar\tTemp\tArea\tOmegaK\tSigmaExponent\tTExponent\tOpacity\tWMF\tSWMF\n";
+                << "#index\tr\tdr\tSigmaGas\tSigmaDust\tSigmaDustBar\tTemp\tArea\tOmegaK\tSigmaExponent\tTExponent\tOpacity\tWMF\tSWMF\tEta\n";
 
     for (int i = 0; i < Disk.Length; i++) {
         OutputFile << i << '\t' << Disk.R[i] << '\t' << Disk.Dr[i] << '\t' << Disk.SigmaGas[i] << '\t'
                    << Disk.SigmaDust[i] << '\t' << Disk.SigmaDustBar[i] << '\t' << Disk.Temp[i] << '\t' << Disk.Area[i]
                    << '\t' << Disk.OmegaK[i] << '\t' << Disk.SigmaExponent[i] << '\t' << Disk.TempExponent[i] << '\t'
-                   << Disk.Opacity[i] << '\t' << Disk.WMF[i] << '\t' << Disk.SWMF[i] << '\n';
+                   << Disk.Opacity[i] << '\t' << Disk.WMF[i] << '\t' << Disk.SWMF[i] << '\t' << Disk.Eta[i] << '\n';
     }
 
     OutputFile.close();
@@ -524,6 +529,7 @@ void EvolutionModel::ComputeParameters(int index) {
         Satellites[index].Rfeed = Satellites[index].RHill * FeedRadius;
         Satellites[index].Cs = Disk.ComputeCs(Satellites[index].Index);
         Satellites[index].H = Disk.ComputeH(Satellites[index].Index);
+        Satellites[index].Eta = Disk.Eta[Satellites[index].Index]
         Satellites[index].SigmaGas = Disk.SigmaGas[Satellites[index].Index];
         Satellites[index].SetDt(GlobalDt, RotationFraction);
         Satellites[index].Opacity = Disk.Opacity[Satellites[index].Index];

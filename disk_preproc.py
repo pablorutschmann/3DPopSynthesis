@@ -1,6 +1,6 @@
 from Pre_Process import disk, plotting
 
-mydisk = disk.disk('ppd/', pick=True)
+mydisk = disk.disk('ppd/', pick=False)
 
 mydisk.gas.to_pickle('ppd/lev0_gas.dat.pickle')
 mydisk.dust.to_pickle('ppd/lev0_dust.dat.pickle')

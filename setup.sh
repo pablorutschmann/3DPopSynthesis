@@ -30,4 +30,10 @@ bsub -oo $HOME/3DPopSynthesis/Runs/test/log CodeBase/3DPopSyn $HOME/3DPopSynthes
 bsub -W 23:50 -oo $HOME/3DPopSynthesis/Runs/test/log $HOME/3DPopSynthesis/CodeBase/3DPopSyn $HOME/3DPopSynthesis/Runs/long/inputs $HOME/3DPopSynthesis/Runs/long/outputs /home/rupablo/3DPopSynthesis/history.txt
 
 #Restart
-bsub -W 23:50 -o $HOME/3DPopSynthesis/Runs/long/log $HOME/3DPopSynthesis/CodeBase/3DPopSyn $HOME/3DPopSynthesis/Runs/long/inputs $HOME/3DPopSynthesis/Runs/long/outputs /home/rupablo/3DPopSynthesis/history.txt
+bsub -W 23:59 -o $HOME/3DPopSynthesis/Runs/long/log $HOME/3DPopSynthesis/CodeBase/3DPopSyn $HOME/3DPopSynthesis/Runs/long/inputs $HOME/3DPopSynthesis/Runs/long/outputs /home/rupablo/3DPopSynthesis/history.txt
+
+bsub -J job1 -W 23:59 -o $HOME/3DPopSynthesis/Runs/long/log $HOME/3DPopSynthesis/CodeBase/3DPopSyn $HOME/3DPopSynthesis/Runs/long/inputs $HOME/3DPopSynthesis/Runs/long/outputs /home/rupablo/3DPopSynthesis/history.txt
+bsub -J job2 -w "done(job1)" -W 23:59 -o $HOME/3DPopSynthesis/Runs/long/log $HOME/3DPopSynthesis/CodeBase/3DPopSyn $HOME/3DPopSynthesis/Runs/long/inputs $HOME/3DPopSynthesis/Runs/long/outputs /home/rupablo/3DPopSynthesis/history.txt
+bsub -J job3 -w "done(job2)" -W 23:59 -o $HOME/3DPopSynthesis/Runs/long/log $HOME/3DPopSynthesis/CodeBase/3DPopSyn $HOME/3DPopSynthesis/Runs/long/inputs $HOME/3DPopSynthesis/Runs/long/outputs /home/rupablo/3DPopSynthesis/history.txt
+
+rm -r $PWD/Runs/debug_test/outputs/*

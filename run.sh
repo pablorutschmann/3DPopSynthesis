@@ -22,7 +22,10 @@ cp $PWD/disks/disk_log_1000.txt $input/disk.txt
 cp $PWD/system_0000/options.txt $input/options.txt
 
 # Start Simulation
-$PWD/3DPopSynthesis $input $output $PWD/system_0000/history.txt
+echo $input
+echo $output
+
+$PWD/3DPopSyn $input $output $PWD/system_0000/history.txt
 
 # Star Post-Processing
 echo "Starting Plotting!"

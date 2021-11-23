@@ -21,7 +21,7 @@ public:
 
     SatelliteModel();
 
-    SatelliteModel(int id, bool type, double mass, double x, double y, double z, double rho, double mu, double time,
+    SatelliteModel(int id, bool type, double mass, double x, double y, double z, double rho, double g, double mp, double sn, double time,
                    double Tsubli);
 
     int ID, Index;
@@ -38,7 +38,9 @@ public:
     double Radius;
 
     double Rho;
+    double MP;
     double Mu;
+    double StokesNumber;
     double Dt;
     double InitTime;
     double FormationTime;
@@ -51,7 +53,7 @@ public:
     bool AdvanceI;
     int GroupID;
 
-    double A, Ecc, Inc, R, OmegaK, SigmaExp, TempExp, Rfeed, RHill, Cs, H, SigmaGas, SigmaDust, Twave, Tmig, Tecc, Tinc, Opacity, Temp, P;
+    double A, Ecc, Inc, R, OmegaK, SigmaExp, TempExp, Rfeed, RHill, Cs, H, Eta, SigmaGas, SigmaDust, Twave, Tmig, Tecc, Tinc, Opacity, Temp, P;
 
     // Functions
     double ComputeRadius();
@@ -85,6 +87,8 @@ public:
     double ComputeBmig(string migtype, double alpha, double gamma, double kbmump, double sigma_boltz);
 
     void ComputeAcc(int MigOption, int EccOption, int IncOption);
+
+    double ComputeE2D();
 
     void UpdateWM(double dt);
 

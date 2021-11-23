@@ -20,6 +20,8 @@ TTemp               1000000.0
 TRefilling          1000.0
 Tsubli              10000.0
 AccCoeff            1.0
+PebbleFlux          100
+StokesNumber        0.1
 RCavity             1.0
 RDistruction        1.0
 SaveInterval        10.0
@@ -34,6 +36,7 @@ NBody               1
 EccDamping          1
 IncDamping          1
 Accretion           1
+PebbleAccretion     1
 TempDrop            1
 GasDrop             1
 DustDrop            1

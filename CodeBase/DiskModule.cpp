@@ -45,6 +45,7 @@ DiskModel::DiskModel(string input_address, string output_address, std::map<std::
     DustDrop = Options["DustDrop"];
     Refilling = Options["Refilling"];
     TempDrop = Options["TempDrop"];
+    StokesNumber = Options["StokesNumber"];
 
 
     SetDisk();
@@ -75,7 +76,7 @@ void DiskModel::SetDisk() {
 
     /*-- reading from file. Dustbar is the dust profile without satellite accretion, it is used for refilling calculation --*/
     while (InputFile >> index >> R[i] >> Dr[i] >> SigmaGas[i] >> SigmaDust[i] >> SigmaDustBar[i] >> Temp[i] >> Area[i]
-                     >> OmegaK[i] >> SigmaExponent[i] >> TempExponent[i] >> Opacity[i] >> WMF[i] >> SWMF[i]) {
+                     >> OmegaK[i] >> SigmaExponent[i] >> TempExponent[i] >> Opacity[i] >> WMF[i] >> SWMF[i] >> Eta[i]) {
         if (RCavity > R[i]) {
             SigmaGas[i] = 0;
             SigmaDust[i] = 0;
@@ -92,7 +93,7 @@ void DiskModel::SetDisk() {
         InputFile.open(InputAddress + "/disk.txt");
         while (InputFile >> index >> R[i] >> Dr[i] >> SigmaGas[i] >> SigmaDust[i] >> SigmaDustBar[i] >> Temp[i]
                          >> Area[i] >> OmegaK[i] >> SigmaExponent[i] >> TempExponent[i] >> Opacity[i] >> WMF[i]
-                         >> SWMF[i]) {
+                         >> SWMF[i] >> Eta[i]) {
             if (RCavity > R[i]) {
                 SigmaGas[i] = 0;
                 SigmaDust[i] = 0;
@@ -117,6 +118,11 @@ double DiskModel::ComputeCs(int i) {
 double DiskModel::ComputeH(int i) {
     /*-- SCALE HEIGHT --*/
     return ComputeCs(i) / OmegaK[i];
+}
+
+double DiskModel::ComputeHPeb(int i) {
+    /*-- PEBBLE SCALE HEIGHT --*/
+    return sqrt(Alpha / (Alpha + StokesNumber)) * ComputeH(i);
 }
 
 double DiskModel::ComputeOpacity(int i) {
@@ -156,8 +162,7 @@ int DiskModel::ComputeIceLine() {
     int index = 0;
     if (Temp[0] < TIce) {
         index = 0;
-    }
-    else {
+    } else {
         for (int i = Length - 1; i > 0; i--) {
             if (Temp[i] < TIce) {
                 index = i;

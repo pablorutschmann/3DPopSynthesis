@@ -66,6 +66,8 @@ public:
     double DtMax, GlobalDt;
     double RDistruction;
     double AccCoeff, FeedRadius, ThresholdMass;
+    int PebbleAccretion;
+    double StokesNumber, PebbleFlux;
     double DiskPrecision, RotationFraction;
     double UpdateInterval, UpdateTime;
     double SaveInterval;

@@ -33,6 +33,7 @@ public:
     double DustToGas;
     double RCavity;
     double TDisp, TTemp, TRefilling;
+    double StokesNumber;
     int GasDrop, DustDrop, TempDrop, Refilling;
 
     double G, Cv, SigmaBoltz, KbMuMp, Alpha, Gamma;
@@ -52,6 +53,7 @@ public:
     double Opacity[DiskLength];
     double WMF[DiskLength];
     double SWMF[DiskLength];
+    double Eta[DiskLength];
 
     // Setting functions
     void SetDisk();
@@ -69,6 +71,8 @@ public:
     double ComputeCs(int i);
 
     double ComputeH(int i);
+
+    double ComputeHPeb(int i);
 
     double ComputeMaxMass(int i);
 
