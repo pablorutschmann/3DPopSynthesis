@@ -161,6 +161,13 @@ if __name__ == "__main__":
 
     print(dmdt(T))
 
+    print(1.1061960808000799E-22 * 10e6)
+
+    print(300 * M_E / M_S / 1000000)
+    print(300 / 1000000)
+    print(1.4849409446705092E-17 * R_S / year)
+    print(15 * 100 / R_S * year)
+
 
 
 
@@ -618,7 +625,7 @@ class disk:
             wmf = 0.4
             swmf = 0.2
 
-        return wmf, swmf
+        return 0.2, 0.2
 
     WMF = np.vectorize(wmf)
 

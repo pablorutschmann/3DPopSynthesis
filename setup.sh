@@ -37,3 +37,5 @@ bsub -J job2 -w "done(job1)" -W 23:59 -o $HOME/3DPopSynthesis/Runs/long/log $HOM
 bsub -J job3 -w "done(job2)" -W 23:59 -o $HOME/3DPopSynthesis/Runs/long/log $HOME/3DPopSynthesis/CodeBase/3DPopSyn $HOME/3DPopSynthesis/Runs/long/inputs $HOME/3DPopSynthesis/Runs/long/outputs /home/rupablo/3DPopSynthesis/history.txt
 
 rm -r $PWD/Runs/debug_test/outputs ;mkdir $PWD/Runs/debug_test/outputs
+
+cp disks/disk_log_1000.txt Runs/debug_test/inputs/disk.txt

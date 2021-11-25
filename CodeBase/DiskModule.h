@@ -32,9 +32,9 @@ public:
     double MP, RP;
     double DustToGas;
     double RCavity;
-    double TDisp, TTemp, TRefilling;
+    double DispersionTime, CoolingTime, RefillingTime;
     double StokesNumber;
-    int GasDrop, DustDrop, TempDrop, Refilling;
+    int GasDispersion, DustDispersion, Cooling, Refilling;
 
     double G, Cv, SigmaBoltz, KbMuMp, Alpha, Gamma;
 

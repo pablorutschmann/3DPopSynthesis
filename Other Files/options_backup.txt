@@ -28,7 +28,7 @@ EccDamping	   0
 IncDamping	   0
 Accretion	   0
 TempDrop	   0
-GasDrop	           0
+GasDispersion	           0
 DustDrop	   0
 Refilling	   0
 Snapshots	   1

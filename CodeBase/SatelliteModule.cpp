@@ -23,8 +23,7 @@ SatelliteModel::SatelliteModel() {
 }
 
 SatelliteModel::SatelliteModel(int id, bool type, double mass, double x, double y, double z, double rho, double g,
-                               double mp, double sn,
-                               double time, double sublimationtime) {
+                               double mp, double rp, double sn, double time) {
     /*
     Initialize satellite model
 
@@ -47,13 +46,13 @@ SatelliteModel::SatelliteModel(int id, bool type, double mass, double x, double 
     Z = z;
     Rho = rho;
     MP = mp;
+    RP = rp;
     Mu = g * mp;                // G * M
     StokesNumber = sn;           // Pebble StokesNumber
     N = 0;                      // individual timestep index
     Twave = 1e10;               // timescale for migration, eccentricity and inclination damping
     InitTime = time;            // time at which it is initiated
     FormationTime = 0.;         // formation time, updated when the satellites grow to the threshold mass
-    Tsubli = sublimationtime;    // Sublimation timescale
 
     // clockes for individual timesteps, see Saha & Tremaine (1992, 1994)
     IClock = 0;
@@ -74,7 +73,7 @@ SatelliteModel::SatelliteModel(int id, bool type, double mass, double x, double 
     Adddx = Adddy = Adddz = 0.;
 
     // K boltzmann
-    kb = 1.380649e−23 / MP / RP / RP * 31536000;
+    kb = 1.380649e-23 / MP / RP / RP * 31536000;
 
 }
 
@@ -196,10 +195,10 @@ double SatelliteModel::ComputeE2D() {
     /*
     Compute the 2D Pebble Accretion efficiency (Liu & Ormel, 2018)
     */
-
-    double qp =  Mass / MP;
+    double vk = OmegaK * RP / 31536000;
+    double qp = Mass / MP;
     double qhwsh = Eta * Eta * Eta / StokesNumber;
-    double vhw = Eta * OmegaK;
+    double vhw = Eta * vk;
     double vsh = 0.52 * cbrt(qp * StokesNumber) * OmegaK;
     double vcir = 1 / (1 - 5.7 * qp / qhwsh) * vhw + vsh;
 
@@ -207,13 +206,13 @@ double SatelliteModel::ComputeE2D() {
 
     double dv = max(vcir, vecc);
 
-    double vstar = cbrt(MP / Mass / StokesNumber) * OmegaK;
+    double vstar = cbrt(1 / qp / StokesNumber) * vk;
 
     double dv2 = (dv / vstar) * (dv / vstar);
 
     double fset = exp(-0.5 * dv2);
 
-    double eset = 0.32 / Eta * sqrt(qp * dv / OmegaK / StokesNumber) * fset;
+    double eset = 0.32 / Eta * sqrt(qp * dv / vk / StokesNumber) * fset;
 
     double rr = ComputeR() / ComputeR2D();
 
@@ -495,7 +494,7 @@ double SatelliteModel::ComputeSublimationRate(double T) {
     double period = sqrt((2 * M_PI) * (2 * M_PI) * ComputeA() * ComputeA() * ComputeA() / Mu);
     double Area = 4 * M_PI * ComputeRadius() * ComputeRadius();
     double a = 2.9209178477680004e-13;
-    double factor = a / sqrt(T) * exp(-1865/T);
+    double factor = a / sqrt(T) * exp(-1865 / T);
     double dmdt = factor * Area * period;
     return dmdt;
 }
@@ -511,7 +510,7 @@ void SatelliteModel::Print(float time, string message) {
     cout << "Mass = " << Mass << '\n';
     cout << "WM = " << WM << '\n';
     cout << "SWM = " << SWM << '\n';
-    cout << "Physical r = " << ComputeR2D() << '\n';
+    cout << "Physical r = " << ComputeRadius() << '\n';
     cout << "Disk r = " << R << '\n';
     cout << "X = " << X << '\n';
     cout << "Y = " << Y << '\n';

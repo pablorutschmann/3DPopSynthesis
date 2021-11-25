@@ -38,13 +38,13 @@ DiskModel::DiskModel(string input_address, string output_address, std::map<std::
     MP = Options["MP"];
     RP = Options["RP"];
     RCavity = Options["RCavity"];
-    TDisp = Options["TDisp"];
-    TTemp = Options["TTemp"];
-    TRefilling = Options["TRefilling"];
-    GasDrop = Options["GasDrop"];
-    DustDrop = Options["DustDrop"];
+    DispersionTime = Options["DispersionTime"];
+    CoolingTime = Options["CoolingTime"];
+    RefillingTime = Options["RefillingTime"];
+    GasDispersion = Options["GasDispersion"];
+    DustDispersion = Options["DustDispersion"];
     Refilling = Options["Refilling"];
-    TempDrop = Options["TempDrop"];
+    Cooling = Options["Cooling"];
     StokesNumber = Options["StokesNumber"];
 
 
@@ -185,18 +185,18 @@ void DiskModel::DiskEvolution(double dt) {
     double DiskFactor, TempFactor;
 
     // exponential factors to be implemented
-    DiskFactor = exp(-dt / TDisp);
-    TempFactor = exp(-dt / TTemp);
+    DiskFactor = exp(-dt / DispersionTime);
+    TempFactor = exp(-dt / CoolingTime);
 
     for (i = 0; i < Length; i++) {
         double sigma_gas = SigmaGas[i] / 2.;
-        if (GasDrop) SigmaGas[i] *= DiskFactor;
-        if (DustDrop) {
+        if (GasDispersion) SigmaGas[i] *= DiskFactor;
+        if (DustDispersion) {
             SigmaDust[i] *= DiskFactor;
             SigmaDustBar[i] *= DiskFactor;
         }
         sigma_gas += SigmaGas[i] / 2.;      // average gas density before and after if RadiativeCooling is ON
-        if ((TempDrop) && (Temp[i] > ComputeTmin(i))) {
+        if ((Cooling) && (Temp[i] > ComputeTmin(i))) {
             if (RadiativeCooling) {
                 double tau = sqrt(2. * M_PI) * SigmaGas[i] * ComputeOpacity(i);
                 double T = Temp[i];
@@ -220,7 +220,7 @@ void DiskModel::DiskEvolution(double dt) {
                 Temp[i] = temp;
             }
         }
-        if ((GasDrop) || (TempDrop)) Opacity[i] = ComputeOpacity(i);
+        if ((GasDispersion) || (Cooling)) Opacity[i] = ComputeOpacity(i);
     }
     IceLineID = ComputeIceLine();
 }
@@ -233,9 +233,9 @@ void DiskModel::DiskRefilling(double dt) {
         double rate;
 
         for (int i = 0; i < Length; i++) {
-            if (dt > TRefilling) SigmaDust[i] = SigmaDustBar[i];
+            if (dt > RefillingTime) SigmaDust[i] = SigmaDustBar[i];
             else {
-                rate = (SigmaDustBar[i] - SigmaDust[i]) / TRefilling;
+                rate = (SigmaDustBar[i] - SigmaDust[i]) / RefillingTime;
                 SigmaDust[i] += (rate * dt);
             }
         }

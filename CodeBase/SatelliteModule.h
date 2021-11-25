@@ -21,8 +21,7 @@ public:
 
     SatelliteModel();
 
-    SatelliteModel(int id, bool type, double mass, double x, double y, double z, double rho, double g, double mp, double sn, double time,
-                   double Tsubli);
+    SatelliteModel(int id, bool type, double mass, double x, double y, double z, double rho, double g, double mp, double rp, double sn, double time);
 
     int ID, Index;
     bool Type;
@@ -39,6 +38,7 @@ public:
 
     double Rho;
     double MP;
+    double RP;
     double Mu;
     double StokesNumber;
     double Dt;
@@ -92,8 +92,6 @@ public:
     void ComputeAcc(int MigOption, int EccOption, int IncOption);
 
     double ComputeE2D();
-
-    void UpdateWM(double dt);
 
     void Print(float time, string message);
 };

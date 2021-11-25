@@ -51,7 +51,7 @@ EvolutionModel::EvolutionModel(string input_address, string output_address) {
 
     SatelliteInitialization();
     SortSatellites();
-    UpdateInterval = Disk.TDisp * DiskPrecision;     // set the disk update interval
+    UpdateInterval = Disk.DispersionTime * DiskPrecision;     // set the disk update interval
 
 
     CreateSnapshot();
@@ -204,14 +204,13 @@ void EvolutionModel::SetOptions() {
     DtMax = Options["DtMax"];
     Snapshots = Options["Snapshots"];
     SaveInterval = Options["SaveInterval"];
-    AccCoeff = Options["AccCoeff"];
+    AccCoeff = Options["AccretionCoeff"];
     StokesNumber = Options["StokesNumber"];
     PebbleFlux = Options["PebbleFlux"];
     RotationFraction = Options["RotationFraction"];
     DiskPrecision = Options["DiskPrecision"];
     MaxRunTime = Options["MaxRunTime"];
-    TraceWM = Options["TraceWM"];
-    Tsubli = Options["Tsubli"];
+    SublimationTime = Options["SublimationTime"];
     if (Options.find("MigrationType") != Options.end()) {
         int MigIndex = Options["MigrationType"];
         if (MigIndex == 0) MigrationType = "Tanaka";
@@ -272,7 +271,7 @@ void EvolutionModel::SetParameters() {
         Disk.IceLineID = Disk.ComputeIceLine();
 
         double DustMass = Disk.DustBarMass();
-        TimeStopFormation = Time + Disk.TDisp * log(DustMass * FormationPerc / InitMass);
+        TimeStopFormation = Time + Disk.DispersionTime * log(DustMass * FormationPerc / InitMass);
         cout << "\nTimeStopFormation = " << TimeStopFormation << '\n';
     } else {
         Time = Parameters["Time"];
@@ -307,7 +306,7 @@ void EvolutionModel::SatelliteInitialization() {
         } else {
             rho = Rho;
         }
-        Satellites[i] = SatelliteModel(ID, type, mass, x, y, z, rho, Disk.G, Disk.MP, StokesNumber, init_time, Tsubli);
+        Satellites[i] = SatelliteModel(ID, type, mass, x, y, z, rho, Disk.G, Disk.MP, Disk.RP, StokesNumber, init_time);
         Satellites[i].Vx = vx;
         Satellites[i].Vy = vy;
         Satellites[i].Vz = vz;
@@ -371,7 +370,7 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
         z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
         r_prev = r;
         Satellites[index] = SatelliteModel(ID, type, EmbryoInitMass, r * cos(theta), r * sin(theta), z, EmbryoRho,
-                                           Disk.G, Disk.MP, Disk.StokesNumber, Time, Tsubli);
+                                           Disk.G, Disk.MP, Disk.RP, Disk.StokesNumber, Time);
         ComputeParameters(index);
         RHill_prev = Satellites[index].ComputeRHill();
 
@@ -382,7 +381,7 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
         z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
         r_prev = r;
         Satellites[index] = SatelliteModel(ID, type, EmbryoInitMass, r * cos(theta), r * sin(theta), z, EmbryoRho,
-                                           Disk.G, Disk.MP, StokesNumber, Time, Tsubli);
+                                           Disk.G, Disk.MP, Disk.RP, StokesNumber, Time);
         ComputeParameters(index);
         RHill_prev = Satellites[index].ComputeRHill();
     }
@@ -395,7 +394,7 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
             r = pow(10, expr);
             z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
             Satellites[index] = SatelliteModel(ID, type, InitMass, r * cos(theta), r * sin(theta), z, Rho,
-                                               Disk.G, Disk.MP, StokesNumber, Time, Tsubli);
+                                               Disk.G, Disk.MP, Disk.RP, StokesNumber, Time);
             ComputeParameters(index);
             invalid = CheckInvalidity(index);
         }
@@ -776,7 +775,7 @@ int EvolutionModel::SubTick() {
                 if (Satellites[i].Active) Accretion(i, Satellites[i].Dt * 0.5);
             }
             if (Options["PebbleAccretion"]) {
-                if (Satellites[i].Active) AccretionPebble(i, Satellites[i].Dt * 0.5);
+                if (Satellites[i].Active) PebbleAccretion(i, Satellites[i].Dt * 0.5);
             }
         }
 
@@ -826,7 +825,7 @@ int EvolutionModel::SubTick() {
                 if (Satellites[i].Active) Accretion(i, Satellites[i].Dt * 0.5);
             }
             if (Options["PebbleAccretion"]) {
-                if (Satellites[i].Active) AccretionPebble(i, Satellites[i].Dt * 0.5);
+                if (Satellites[i].Active) PebbleAccretion(i, Satellites[i].Dt * 0.5);
             }
         }
         if (flags)
@@ -1252,7 +1251,7 @@ void EvolutionModel::I(int i, double factor) {
     if (Options["Sublimation"] == true) {
         double position = abs(Satellites[i].ComputeA() * cos(Satellites[i].ComputeInc()));
         if (position < Disk.R[Disk.IceLineID]) {
-            Satellites[i].UpdateWM(dt);
+            Sublimation(i, dt);
         }
     }
 
@@ -1483,7 +1482,9 @@ void EvolutionModel::PebbleAccretion(int index, double dt) {
 void EvolutionModel::Sublimation(int index, double dt) {
     /*-- UPDATE WATER MASS ACCORDING TO SUBLIMATION RATE --*/
     if (Satellites[index].WM > 0) {
-        double dmdt = Satellites[index].ComputeSublimationRate(Disk.Temp[[Satellites[index].Index]]);
+        int id = Satellites[index].Index;
+        double T = Disk.Temp[id];
+        double dmdt = Satellites[index].ComputeSublimationRate(T);
         double WM_loss = dmdt * dt;
         if (Satellites[index].WM > WM_loss) {
             Satellites[index].Mass -= WM_loss;

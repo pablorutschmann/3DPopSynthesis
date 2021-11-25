@@ -38,7 +38,7 @@
 #include <ctime>
 #include <cstdlib>
 
-const int TotalNumberSatellites = 1100;
+const int TotalNumberSatellites = 111;
 using namespace std;
 
 
@@ -56,12 +56,10 @@ public:
 
     string InputAddress, OutputAddress, MigrationType;
     double Time, MaxTime;
-    int NEmbryos;
-    int NPlanetesimals;
-    int NSatellites;
+    int NEmbryos, NPlanetesimals, NSatellites;
     double R_min, R_max;
-    double EmbryoInitMass, EmbryoRho;
     double Spacing;
+    double EmbryoInitMass, EmbryoRho;
     double InitMass, Rho;
     double DtMax, GlobalDt;
     double RDistruction;
@@ -73,7 +71,7 @@ public:
     double Snapshots;
     double MaxRunTime;
     int SaveIndex;
-    double Tsubli;
+    double SublimationTime;
 
     double TimeStopFormation;
 
@@ -115,7 +113,7 @@ public:
 
     void PebbleAccretion(int index, double dt);
 
-    void Sublimation(int index, double dt)
+    void Sublimation(int index, double dt);
 
     int Tick();
 

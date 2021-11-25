@@ -1,9 +1,9 @@
 .DS_Store
 .idea/
 cmake-build-debug/
-ppd/
+/ppd/
 /Disk_Plots/
 /Runs/
 /restart/
-3DPopSynthesis
 /3DPopSyn
+/disks/
