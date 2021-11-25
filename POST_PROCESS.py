@@ -11,6 +11,8 @@ if __name__ == "__main__":
 
     current_run = post.run(pathname)
 
+    current_run.Print_Sigma(0)
+
     current_run.plot_snapshots()
 
     current_run.plot_disk_evol_all()

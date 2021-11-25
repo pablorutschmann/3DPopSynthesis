@@ -41,6 +41,12 @@ class snapshot:
         df.index = df.index.astype(int)
         self.disk = df
 
+        self.Mass = np.sum(self.satellites['M']) * M_S
+        #pi (R^2 - r^2)
+        self.Area = np.pi * ( max(self.satellites['a'])**2 - min(self.satellites['a'])**2) * R_S2
+
+        self.Sigma = self.Mass / self.Area
+
     def plot_satellites(self):
         fig, ax = plt.subplots(ncols=1)
         fig.set_size_inches(15.5, 10.5)
@@ -137,7 +143,6 @@ class snapshot:
         ax.plot(rtoau * self.disk['r'], self.disk[field], label=self.time)
 
         return fig, ax
-
 
 # Helper Functions
 

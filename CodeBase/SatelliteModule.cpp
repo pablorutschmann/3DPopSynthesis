@@ -47,7 +47,7 @@ SatelliteModel::SatelliteModel(int id, bool type, double mass, double x, double 
     Z = z;
     Rho = rho;
     MP = mp;
-    Mu = g / mp;                // G * M
+    Mu = g * mp;                // G * M
     StokesNumber = sn;           // Pebble StokesNumber
     N = 0;                      // individual timestep index
     Twave = 1e10;               // timescale for migration, eccentricity and inclination damping
@@ -193,7 +193,7 @@ double SatelliteModel::ComputeE2D() {
     Compute the 2D Pebble Accretion efficiency (Liu & Ormel, 2018)
     */
 
-    double qp = MP / Mass;
+    double qp =  Mass / MP;
     double qhwsh = Eta * Eta * Eta / StokesNumber;
     double vhw = Eta * OmegaK;
     double vsh = 0.52 * cbrt(qp * StokesNumber) * OmegaK;
@@ -205,9 +205,19 @@ double SatelliteModel::ComputeE2D() {
 
     double vstar = cbrt(MP / Mass / StokesNumber) * OmegaK;
 
-    double fset = exp(-0.5 * (dv / vstar) * (dv / vstar));
+    double dv2 = (dv / vstar) * (dv / vstar);
 
-    return 0.32 / Eta * sqrt(qp * dv / OmegaK / StokesNumber) * fset;
+    double fset = exp(-0.5 * dv2);
+
+    double eset = 0.32 / Eta * sqrt(qp * dv / OmegaK / StokesNumber) * fset;
+
+    double rr = ComputeR() / ComputeR2D();
+
+    double sqr = sqrt(2 * qp / rr + dv2);
+
+    double ebal = rr / (2 * M_PI * StokesNumber * Eta) * sqr * (1 - fset);
+
+    return eset + ebal;
 }
 
 double SatelliteModel::ComputeP(double alpha) {

@@ -70,9 +70,13 @@ if __name__ == "__main__":
     def temp(r):
         return (5780 * (1 / r)**0.5 * 0.7520883995742579)
 
-    r_ice = fsolve(temp,3)
+    def temp_ronco(r):
+        y = 280 * (au / r)**(0.5) - 170
+        return y
 
-    print(r_ice)
+    r_ice = fsolve(temp_ronco,3)
+    print("ICE LIne Radius")
+    print(r_ice/au)
 
     temps = [temp(x) for x in np.linspace(0.5,30,100)]
 
@@ -109,8 +113,16 @@ if __name__ == "__main__":
     #
     # print(mass)
 
-    total_plaenetsima_mass = 3.0e-08 * 1000;
-    print(total_plaenetsima_mass)
+    total_plaenetsima_mass = 3.0e-08 * 100;
+    print("TPM")
+    print(total_plaenetsima_mass * M_S / M_E)
+
+    # 100 ME / Myrs
+    # = 100 ME / (1000000 Yrs)
+    # = (100 ME / 1000000) / Yrs
+    print(100 * M_E / M_S / 1000000)
+
+    print(year * 9.47834e-07)
 
 
 
@@ -120,9 +132,10 @@ if __name__ == "__main__":
 
 
 class disk:
-    def __init__(self, path, pick = True):
-        self.wmf = np.vectorize(self.wmf_1d)
-        self.swmf = np.vectorize(self.swmf_1d)
+    def __init__(self, path, pick = False):
+        #self.wmf = np.vectorize(self.wmf_1d)
+        #self.swmf = np.vectorize(self.swmf_1d)
+        self.WMF = np.vectorize(self.wmf)
 
         # Parameters
         self.inpath = path
@@ -330,11 +343,8 @@ class disk:
         dx.pop(-1)
         self.out['dr [R_S]'] = np.array(dx)
 
-        # Get Water Mass Fraction
-        self.out['WMF []'] = self.wmf(x)
-
-        # Get Solid Water Mass Fraction
-        self.out['SWMF []'] = self.swmf(x)
+        # Get Water Mass Fractions
+        self.out['WMF []'],self.out['SWMF []'] = self.WMF(x)
 
         # Calculate Keplerian Veloctiy
         def kepl_velo(r):
@@ -551,6 +561,37 @@ class disk:
         swmf = 0.1
 
         return swmf
+
+    def wmf(self, r):
+        # From Morbidelli et al, 2012
+        IceLine = 2.71280277
+        r_au = r / au * R_S
+
+        if r_au < IceLine:
+            wmf = 0.0
+            if r_au < 1.5:
+                swmf = 0.0
+            elif 1.5 <= r_au < 2.0:
+                swmf = 0.01
+            else:
+                swmf = 0.1
+
+        elif IceLine <= r_au < IceLine + 0.3 :
+            wmf = 0.2
+            swmf = 0.2
+
+        elif IceLine + 0.3 <= r_au:
+            wmf = 0.4
+            swmf = 0.2
+
+        return wmf, swmf
+
+    WMF = np.vectorize(wmf)
+
+
+
+
+
 
 
 

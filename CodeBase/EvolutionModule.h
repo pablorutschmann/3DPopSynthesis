@@ -38,7 +38,7 @@
 #include <ctime>
 #include <cstdlib>
 
-const int TotalNumberSatellites = 3000;
+const int TotalNumberSatellites = 1100;
 using namespace std;
 
 
@@ -115,6 +115,8 @@ public:
     void CheckAndCreate();
 
     void Accretion(int index, double dt);
+
+    void AccretionPebble(int index, double dt);
 
     int Tick();
 

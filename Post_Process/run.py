@@ -55,6 +55,11 @@ class run:
         for index in self.satellite_list.index:
             self.satellites[index] = satellite.satellite(index, self)
 
+    def Print_Sigma(self, id):
+        print("Total Mass and Surface Density for Snapshot: " + str(id))
+        print("Total Mass: " + str(self.snaps[id].Mass / M_S))
+        print("Surface Density: " + str(self.snaps[id].Sigma))
+
     def plot_snapshots(self, ids=None):
         if ids == None:
             ids = [list(self.snaps.keys())[0], list(self.snaps.keys())[-1]]

@@ -778,6 +778,9 @@ int EvolutionModel::SubTick() {
             if (Options["Accretion"]) {
                 if (Satellites[i].Active) Accretion(i, Satellites[i].Dt * 0.5);
             }
+            if (Options["PebbleAccretion"]) {
+                if (Satellites[i].Active) AccretionPebble(i, Satellites[i].Dt * 0.5);
+            }
         }
 
         if (flags)
@@ -825,6 +828,9 @@ int EvolutionModel::SubTick() {
             if (Options["Accretion"]) {
                 if (Satellites[i].Active) Accretion(i, Satellites[i].Dt * 0.5);
             }
+            if (Options["PebbleAccretion"]) {
+                if (Satellites[i].Active) AccretionPebble(i, Satellites[i].Dt * 0.5);
+            }
         }
         if (flags)
             cout << Satellites[i].ID << ": K = " << Satellites[i].KClock << '\t' << "I = " << Satellites[i].IClock
@@ -870,7 +876,8 @@ void EvolutionModel::K(int i, double factor) {
     check = fgfull(x, y, z, vx, vy, vz, dt, mu);
 
     /* Destroy Satellites with hyperbolic trajectory */
-    if (check && Satellites[i].Active) DestroySatellite(i, 2, -1);
+    if (check && Satellites[i].Active)
+        DestroySatellite(i, 2, -1);
 }
 
 
@@ -1468,6 +1475,13 @@ void EvolutionModel::Accretion(int index, double dt) {
 
 }
 
+void EvolutionModel::AccretionPebble(int index, double dt) {
+    /*-- COMPUTE PEBBLE ACCRETION ONTO SATELLITES --*/
+    double eff = Satellites[index].ComputeE2D();
+    double Mdot = eff * PebbleFlux;
+    double DM = Mdot * dt;
+    Satellites[index].Mass += DM;
+}
 
 int EvolutionModel::ActiveSatellites() {
     int sum = 0;
