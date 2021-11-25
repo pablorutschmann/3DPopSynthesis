@@ -124,8 +124,42 @@ if __name__ == "__main__":
 
     print(year * 9.47834e-07)
 
+    kb = 1.380649e-23 * 1000 * 100 * 100 / M_S / R_S2 * 31536000
+
+    kb = 1.380649e-23 * 1000 * 100 * 100
+    print(kb)
+
+    mh20 = 18.02
+
+    Pascal = 1000 / 100 / M_S * R_S * 31536000**2
+    print(Pascal)
+
+    wm = 1.0e-8 * 0.2
+
+    T = 203.15
+
+    def P_Vap(T):
+        A = -2663.5
+        B = 12.537
+        P_PA = np.power(10, A/T + B)
+        return P_PA
+
+    print(P_Vap(T))
+
+    def Vap_Rate(T):
+        return np.sqrt(mh20/ ( 2 * np.pi * kb * T)) * P_Vap(T)/10
 
 
+    print(Vap_Rate(T))
+
+    a1 = 0.12 / M_S * R_S2
+    print(a1)
+    def dmdt(T):
+        # g / cm**2 / orbital period
+        return a1/np.sqrt(T) * np.exp(-1865/T)
+
+
+    print(dmdt(T))
 
 
 

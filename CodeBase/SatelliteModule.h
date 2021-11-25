@@ -45,6 +45,7 @@ public:
     double InitTime;
     double FormationTime;
     double Tsubli;
+    double kb;
 
     int N;
     int IClock, KClock;
@@ -79,6 +80,8 @@ public:
     double ComputeInc();
 
     double ComputeP(double alpha);
+
+    double ComputeSublimationRate(double T);
 
     void SetDt(double global_dt, double rotation_fraction);
 

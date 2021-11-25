@@ -64,8 +64,7 @@ EvolutionModel::EvolutionModel(string input_address, string output_address) {
     cout << "Eta = " << eta << '\n';
     cout << "EtaS = " << etaS << '\n';
     cout << "Migration factor = " << MigrationFactor << '\n' << '\n';
-    cout << "Tracing of WM: " << TraceWM << '\n';
-
+    cout << "Tracing of WM: " << Options["TraceWM"] << '\n';
 
 }
 
@@ -206,14 +205,12 @@ void EvolutionModel::SetOptions() {
     Snapshots = Options["Snapshots"];
     SaveInterval = Options["SaveInterval"];
     AccCoeff = Options["AccCoeff"];
-    PebbleAccretion = Options["PebbleAccretion"];
     StokesNumber = Options["StokesNumber"];
     PebbleFlux = Options["PebbleFlux"];
     RotationFraction = Options["RotationFraction"];
     DiskPrecision = Options["DiskPrecision"];
     MaxRunTime = Options["MaxRunTime"];
     TraceWM = Options["TraceWM"];
-    Sublimation = Options["Sublimation"];
     Tsubli = Options["Tsubli"];
     if (Options.find("MigrationType") != Options.end()) {
         int MigIndex = Options["MigrationType"];
@@ -862,7 +859,7 @@ void EvolutionModel::K(int i, double factor) {
 
         double position = abs(Satellites[i].ComputeA() * cos(Satellites[i].ComputeInc()));
         if (position < Disk.R[Disk.IceLineID]) {
-            Satellites[i].UpdateWM(dt);
+            Sublimation(i, dt);
         }
     }
 
@@ -1221,7 +1218,7 @@ double EvolutionModel::HPC(int id_group, double dt) {
             if (Options["Sublimation"] == true) {
                 double position = abs(Satellites[i].ComputeA() * cos(Satellites[i].ComputeInc()));
                 if (position < Disk.R[Disk.IceLineID]) {
-                    Satellites[i].UpdateWM(dt);
+                    Sublimation(i, dt);
                 }
             }
 
@@ -1394,7 +1391,7 @@ void EvolutionModel::CheckCollision(int index) {
                 Satellites[save_index].Vz = (Satellites[save_index].Mass * Satellites[save_index].Vz +
                                              Satellites[dest_index].Mass * Satellites[dest_index].Vz) / TotalMass;
 
-                if (TraceWM) {
+                if (Options["TraceWM"]) {
                     double TotalWM = Satellites[save_index].WM + Satellites[dest_index].WM;
                     Satellites[save_index].WM = TotalWM;
 
@@ -1475,12 +1472,27 @@ void EvolutionModel::Accretion(int index, double dt) {
 
 }
 
-void EvolutionModel::AccretionPebble(int index, double dt) {
+void EvolutionModel::PebbleAccretion(int index, double dt) {
     /*-- COMPUTE PEBBLE ACCRETION ONTO SATELLITES --*/
     double eff = Satellites[index].ComputeE2D();
     double Mdot = eff * PebbleFlux;
     double DM = Mdot * dt;
     Satellites[index].Mass += DM;
+}
+
+void EvolutionModel::Sublimation(int index, double dt) {
+    /*-- UPDATE WATER MASS ACCORDING TO SUBLIMATION RATE --*/
+    if (Satellites[index].WM > 0) {
+        double dmdt = Satellites[index].ComputeSublimationRate(Disk.Temp[[Satellites[index].Index]]);
+        double WM_loss = dmdt * dt;
+        if (Satellites[index].WM > WM_loss) {
+            Satellites[index].Mass -= WM_loss;
+            Satellites[index].WM -= WM_loss;
+        } else {
+            Satellites[index].Mass -= Satellites[index].WM;
+            Satellites[index].WM = 0.0;
+        }
+    }
 }
 
 int EvolutionModel::ActiveSatellites() {

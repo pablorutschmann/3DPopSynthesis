@@ -72,6 +72,10 @@ SatelliteModel::SatelliteModel(int id, bool type, double mass, double x, double 
     Adx = Ady = Adz = 0.;
     Addx = Addy = Addz = 0.;
     Adddx = Adddy = Adddz = 0.;
+
+    // K boltzmann
+    kb = 1.380649e−23 / MP / RP / RP * 31536000;
+
 }
 
 double SatelliteModel::ComputeRadius() {
@@ -484,19 +488,16 @@ void SatelliteModel::ComputeAcc(int MigOption, int EccOption, int IncOption) {
     }
 }
 
-void SatelliteModel::UpdateWM(double dt) {
+double SatelliteModel::ComputeSublimationRate(double T) {
     /*
-    Update the Water Mass according to exponential decay with timescale TSublimation,
-    also update the total mass of the satellite
-
-    INPUTS
-    - the timestep used for the current position and velocity update
+    From Brunini et al. 2018:
     */
-
-    double factor = exp(-dt / Tsubli);
-    double WM_diff = WM * (1 - factor);
-    Mass -= WM_diff;
-    WM *= factor;
+    double period = sqrt((2 * M_PI) * (2 * M_PI) * ComputeA() * ComputeA() * ComputeA() / Mu);
+    double Area = 4 * M_PI * ComputeRadius() * ComputeRadius();
+    double a = 2.9209178477680004e-13;
+    double factor = a / sqrt(T) * exp(-1865/T);
+    double dmdt = factor * Area * period;
+    return dmdt;
 }
 
 

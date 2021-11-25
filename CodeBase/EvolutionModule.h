@@ -66,7 +66,6 @@ public:
     double DtMax, GlobalDt;
     double RDistruction;
     double AccCoeff, FeedRadius, ThresholdMass;
-    int PebbleAccretion;
     double StokesNumber, PebbleFlux;
     double DiskPrecision, RotationFraction;
     double UpdateInterval, UpdateTime;
@@ -74,8 +73,6 @@ public:
     double Snapshots;
     double MaxRunTime;
     int SaveIndex;
-    int TraceWM;
-    int Sublimation;
     double Tsubli;
 
     double TimeStopFormation;
@@ -116,7 +113,9 @@ public:
 
     void Accretion(int index, double dt);
 
-    void AccretionPebble(int index, double dt);
+    void PebbleAccretion(int index, double dt);
+
+    void Sublimation(int index, double dt)
 
     int Tick();
 
