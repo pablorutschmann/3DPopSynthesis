@@ -71,7 +71,7 @@ public:
     double Snapshots;
     double MaxRunTime;
     int SaveIndex;
-    double SublimationTime;
+    double SublimationFactor;
 
     double TimeStopFormation;
 

@@ -210,7 +210,7 @@ void EvolutionModel::SetOptions() {
     RotationFraction = Options["RotationFraction"];
     DiskPrecision = Options["DiskPrecision"];
     MaxRunTime = Options["MaxRunTime"];
-    SublimationTime = Options["SublimationTime"];
+    SublimationFactor = Options["SublimationFactor"];
     if (Options.find("MigrationType") != Options.end()) {
         int MigIndex = Options["MigrationType"];
         if (MigIndex == 0) MigrationType = "Tanaka";

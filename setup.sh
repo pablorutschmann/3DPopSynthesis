@@ -16,8 +16,7 @@ ssh euler
 
 cd 3DPopSynthesis/CodeBase
 
-bsub -o job_history.txt make
-
+bsub -o ../job_history.txt "make CPPFLAGS=-O0"
 
 rsync -Pav /Users/prut/CLionProjects/3DPopSynthesis/system_0000/*  rupablo@euler.ethz.ch:/cluster/home/rupablo/3DPopSynthesis/
 

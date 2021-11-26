@@ -1,13 +1,18 @@
 import Post_Process as post
 import sys
-import os.path
+from os.path import join
+from os import getcwd
 
 if __name__ == "__main__":
     print(sys.argv[1])
 
     pathname = sys.argv[1]
 
-    pathname = os.path.join('/Users/prut/CLionProjects/3DPopSynthesis/Runs/', pathname)
+    CWD = getcwd()
+
+    Runs = join(CWD, 'Runs')
+
+    pathname = join(Runs, pathname)
 
     current_run = post.run(pathname)
 

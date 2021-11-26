@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 name=$1
 
 # Create Directory Structure
