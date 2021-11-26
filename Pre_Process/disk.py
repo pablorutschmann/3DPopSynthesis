@@ -48,7 +48,7 @@ year = 31536000
 
 rho = 5.513 / M_S * R_S**3
 
-G_jup = (G / R_S**3) * M_S * year**2
+G_S = (G / R_S**3) * M_S * year**2
 
 
 if __name__ == "__main__":
@@ -163,11 +163,20 @@ if __name__ == "__main__":
 
     print(1.1061960808000799E-22 * 10e6)
 
-    print(300 * M_E / M_S / 1000000)
+
     print(300 / 1000000)
     print(1.4849409446705092E-17 * R_S / year)
     print(15 * 100 / R_S * year)
 
+    def kepl_velo(r):
+        # convert r to cgs
+        v_kep = np.sqrt(G * M_S / r ** 3)
+        # convert back to Solar Units
+        return v_kep
+
+    print(kepl_velo(au))
+
+    print(300 * M_E / M_S / 1000000)
 
 
 
@@ -392,9 +401,8 @@ class disk:
             # convert r to cgs
             r = r * R_S
             v_kep = np.sqrt(G * M_S / r ** 3)
-            # convert back to Jupiter Units
-
-            return v_kep / year
+            # convert back to Solar Units
+            return v_kep * year
 
         vx = kepl_velo(x)
 

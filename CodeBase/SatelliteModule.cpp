@@ -195,7 +195,8 @@ double SatelliteModel::ComputeE2D() {
     /*
     Compute the 2D Pebble Accretion efficiency (Liu & Ormel, 2018)
     */
-    double vk = OmegaK * RP / 31536000;
+    // double vk = OmegaK * RP / 31536000;
+    double vk = OmegaK * ComputeR();
     double qp = Mass / MP;
     double qhwsh = Eta * Eta * Eta / StokesNumber;
     double vhw = Eta * vk;

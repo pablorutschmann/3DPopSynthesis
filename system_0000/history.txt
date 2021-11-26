@@ -1846,3 +1846,19 @@ Runs/test_iceline/inputs started at Wed Nov 17 18:04:06 2021
 
 	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Thu Nov 25 18:14:14 2021
  after 28.3202 s, 0.472004 min, 0.00786673 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Fri Nov 26 10:22:36 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Fri Nov 26 10:23:44 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Fri Nov 26 10:48:24 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Fri Nov 26 10:49:33 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Fri Nov 26 10:57:11 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Fri Nov 26 10:59:13 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Fri Nov 26 10:59:45 2021
+ after 31.2279 s, 0.520465 min, 0.00867441 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Fri Nov 26 11:01:28 2021
+
