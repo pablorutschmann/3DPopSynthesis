@@ -1477,9 +1477,9 @@ void EvolutionModel::Accretion(int index, double dt) {
 
 double EvolutionModel::PebbleAccretion(int index, double dt) {
     /*-- COMPUTE PEBBLE ACCRETION ONTO SATELLITES --*/
-    eff_bar_total /= (1 - Satellites[index].E2D_prev);
-    if (eff_bar_total > 1) {
-        eff_bar_total = 1;
+    eff_bar_total /= (1.0 - Satellites[index].E2D_prev);
+    if (eff_bar_total > 1.0) {
+        eff_bar_total = 1.0;
     }
     Satellites[index].E2D_prev = Satellites[index].ComputeE2D();
     double Filtered_PebbleFlux = eff_bar_total * Disk.PebbleFlux;
