@@ -44,6 +44,7 @@ SatelliteModel::SatelliteModel(int id, bool type, double mass, double x, double 
     X = x;
     Y = y;
     Z = z;
+    E2D_prev = 0.0;
     Rho = rho;
     MP = mp;
     RP = rp;

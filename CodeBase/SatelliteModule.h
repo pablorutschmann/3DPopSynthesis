@@ -35,8 +35,9 @@ public:
     double Addx, Addy, Addz;
     double Adddx, Adddy, Adddz;
     double Radius;
-
     double Rho;
+    double E2D_prev;
+
     double MP;
     double RP;
     double Mu;

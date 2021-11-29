@@ -77,6 +77,7 @@ public:
 
     double r_prev;
     double RHill_prev;
+    double eff_bar_total;
 
     int TotalSubticks;
     int CloseSubticks;
@@ -111,7 +112,7 @@ public:
 
     void Accretion(int index, double dt);
 
-    void PebbleAccretion(int index, double dt);
+    double PebbleAccretion(int index, double dt);
 
     void Sublimation(int index, double dt);
 

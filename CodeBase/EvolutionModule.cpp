@@ -37,6 +37,8 @@ EvolutionModel::EvolutionModel(string input_address, string output_address) {
     TotalSubticks = 0;
     CloseSubticks = 0;
 
+    eff_bar_total = 1.0;
+
     SetOptions();
 
     // initialize random seed for satellite formation
@@ -766,6 +768,7 @@ int EvolutionModel::SubTick() {
 
     // Proceed with the 1st Ks
 
+    double eff_bar = 1.0;  // to gather the previous pebble accretion efficiency for pebble filtering
     for (int i = 0; i < NSatellites; i++) {
         if (Satellites[i].KClock == Satellites[i].IClock) {
             if (Satellites[i].GroupID == -1) K(i, 0.5);
@@ -777,7 +780,7 @@ int EvolutionModel::SubTick() {
                 if (Satellites[i].Active) Accretion(i, Satellites[i].Dt * 0.5);
             }
             if (Options["PebbleAccretion"]) {
-                if (Satellites[i].Active) PebbleAccretion(i, Satellites[i].Dt * 0.5);
+                if (Satellites[i].Active) eff_bar *= (1 - PebbleAccretion(i, Satellites[i].Dt * 0.5));
             }
         }
 
@@ -785,6 +788,8 @@ int EvolutionModel::SubTick() {
             cout << Satellites[i].ID << ": K = " << Satellites[i].KClock << '\t' << "I = " << Satellites[i].IClock
                  << '\n';
     }
+
+    eff_bar_total = eff_bar; //updating the pebble filtering efficiency
 
     for (int i = 0; i < NSatellites; i++) {
         if ((Satellites[i].Active) && (Satellites[i].AdvanceI)) CheckCollision(i);
@@ -817,6 +822,7 @@ int EvolutionModel::SubTick() {
 
     PrintFlags(false);
 
+    eff_bar = 1.0;  // to gather the previous pebble accretion efficiency for pebble filtering
     for (int i = 0; i < NSatellites; i++) {
         if ((i == 0) || ((Satellites[i].IClock == Satellites[i - 1].IClock) && (Satellites[i - 1].AdvanceI))) {
             if (Satellites[i].GroupID == -1) K(i, 0.5);
@@ -827,13 +833,16 @@ int EvolutionModel::SubTick() {
                 if (Satellites[i].Active) Accretion(i, Satellites[i].Dt * 0.5);
             }
             if (Options["PebbleAccretion"]) {
-                if (Satellites[i].Active) PebbleAccretion(i, Satellites[i].Dt * 0.5);
+                if (Satellites[i].Active) eff_bar *= (1 - PebbleAccretion(i, Satellites[i].Dt * 0.5));
+
             }
         }
         if (flags)
             cout << Satellites[i].ID << ": K = " << Satellites[i].KClock << '\t' << "I = " << Satellites[i].IClock
                  << '\n';
     }
+
+    eff_bar_total = eff_bar; //updating the pebble filtering efficiency
 
     for (int i = 0; i < NSatellites; i++) {
         if ((Satellites[i].Active) && (Satellites[i].AdvanceI)) CheckCollision(i);
@@ -1250,13 +1259,6 @@ void EvolutionModel::I(int i, double factor) {
 
     double dt = Satellites[i].Dt * factor;
 
-    if (Options["Sublimation"] == true) {
-        double position = abs(Satellites[i].ComputeA() * cos(Satellites[i].ComputeInc()));
-        if (position < Disk.R[Disk.IceLineID]) {
-            Sublimation(i, dt);
-        }
-    }
-
     Satellites[i].Ax = 0.;
     Satellites[i].Ay = 0.;
     Satellites[i].Az = 0.;
@@ -1473,12 +1475,19 @@ void EvolutionModel::Accretion(int index, double dt) {
 
 }
 
-void EvolutionModel::PebbleAccretion(int index, double dt) {
+double EvolutionModel::PebbleAccretion(int index, double dt) {
     /*-- COMPUTE PEBBLE ACCRETION ONTO SATELLITES --*/
-    double eff = Satellites[index].ComputeE2D();
-    double Mdot = eff * Disk.PebbleFlux;
+    eff_bar_total /= (1 - Satellites[index].E2D_prev);
+    if (eff_bar_total > 1) {
+        eff_bar_total = 1;
+    }
+    Satellites[index].E2D_prev = Satellites[index].ComputeE2D();
+    double Filtered_PebbleFlux = eff_bar_total * Disk.PebbleFlux;
+    double Mdot = Satellites[index].E2D_prev * Filtered_PebbleFlux;
     double DM = Mdot * dt;
     Satellites[index].Mass += DM;
+
+    return Satellites[index].E2D_prev;
 }
 
 void EvolutionModel::Sublimation(int index, double dt) {
