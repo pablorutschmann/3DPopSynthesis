@@ -1476,14 +1476,24 @@ void EvolutionModel::Accretion(int index, double dt) {
 }
 
 double EvolutionModel::PebbleAccretion(int index, double dt) {
-    /*-- COMPUTE PEBBLE ACCRETION ONTO SATELLITES --*/
-    eff_bar_total /= (1.0 - Satellites[index].E2D_prev);
-    if (eff_bar_total > 1.0) {
-        eff_bar_total = 1.0;
+    /*-- COMPUTE PEBBLE ACCRETION ONTO SATELLITES AND PEBBLE FILTERING --*/
+
+    double Mdot;
+    double Eff = Satellites[index].ComputeE2D();
+
+    if (Options["PebbleFiltering"]) {
+        eff_bar_total /= (1.0 - Satellites[index].E2D_prev);
+        if (eff_bar_total > 1.0) {
+            eff_bar_total = 1.0;
+        }
+        double Filtered_PebbleFlux = eff_bar_total * Disk.PebbleFlux;
+        Mdot = Eff * Filtered_PebbleFlux;
+    } else {
+        Mdot = Eff * Disk.PebbleFlux;
     }
-    Satellites[index].E2D_prev = Satellites[index].ComputeE2D();
-    double Filtered_PebbleFlux = eff_bar_total * Disk.PebbleFlux;
-    double Mdot = Satellites[index].E2D_prev * Filtered_PebbleFlux;
+
+    Satellites[index].E2D_prev = Eff;
+
     double DM = Mdot * dt;
     Satellites[index].Mass += DM;
 

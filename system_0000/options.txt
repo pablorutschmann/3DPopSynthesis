@@ -13,7 +13,7 @@ InitMass            3.0e-08
 Rho                 0.93357
 FeedRadius          2.3
 ThresholdMass       9.0e-08
-MaxTime             100000.0
+MaxTime             10000.0
 SaveInterval        1000.0
 MaxRunTime          71.1
 RotationFraction    0.3
@@ -41,6 +41,7 @@ Cooling             0
 GasDispersion       1
 DustDispersion      1
 PebbleDispersion    1
+PebbleFiltering     1
 Refilling           0
 Snapshots           1
 SeedFormation       0
