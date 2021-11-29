@@ -33,8 +33,8 @@ public:
     double DustToGas;
     double RCavity;
     double DispersionTime, CoolingTime, RefillingTime;
-    double StokesNumber;
-    int GasDispersion, DustDispersion, Cooling, Refilling;
+    double PebbleFlux, StokesNumber;
+    int GasDispersion, DustDispersion, Cooling, Refilling, PebbleDispersion;
 
     double G, Cv, SigmaBoltz, KbMuMp, Alpha, Gamma;
 

@@ -203,7 +203,7 @@ double SatelliteModel::ComputeE2D() {
     double vsh = 0.52 * cbrt(qp * StokesNumber) * OmegaK;
     double vcir = 1 / (1 - 5.7 * qp / qhwsh) * vhw + vsh;
 
-    double vecc = 0.76 * Ecc * OmegaK;
+    double vecc = 0.76 * Ecc * OmegaK * ComputeR();
 
     double dv = max(vcir, vecc);
 

@@ -40,6 +40,7 @@ Sublimation         1
 Cooling             0
 GasDispersion       1
 DustDispersion      1
+PebbleDispersion    1
 Refilling           0
 Snapshots           1
 SeedFormation       0

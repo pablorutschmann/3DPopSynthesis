@@ -176,10 +176,7 @@ if __name__ == "__main__":
 
     print(kepl_velo(au))
 
-    print(300 * M_E / M_S / 1000000)
-
-
-
+    print(300 * 0.0001)
 
 class disk:
     def __init__(self, path, pick = False):

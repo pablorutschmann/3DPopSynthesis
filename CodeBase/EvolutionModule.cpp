@@ -206,7 +206,6 @@ void EvolutionModel::SetOptions() {
     SaveInterval = Options["SaveInterval"];
     AccCoeff = Options["AccretionCoeff"];
     StokesNumber = Options["StokesNumber"];
-    PebbleFlux = Options["PebbleFlux"];
     RotationFraction = Options["RotationFraction"];
     DiskPrecision = Options["DiskPrecision"];
     MaxRunTime = Options["MaxRunTime"];
@@ -280,6 +279,8 @@ void EvolutionModel::SetParameters() {
         TimeStopFormation = Parameters["TimeStopFormation"];
         cout << "\nTimeStopFormation = " << TimeStopFormation << '\n';
         Disk.IceLineID = Parameters["IceLineID"];
+        Disk.PebbleFlux = Parameters["PebbleFlux"];
+
     }
 }
 
@@ -484,6 +485,7 @@ void EvolutionModel::WriteSnapshot(string FolderName, bool header) {
     OutputFile << "GlobalDt" << '\t' << GlobalDt << '\n';
     OutputFile << "IceLineID" << '\t' << Disk.IceLineID << '\n';
     OutputFile << "IceLineRadius" << '\t' << Disk.R[Disk.IceLineID] << '\n';
+    OutputFile << "PebbleFlux" << '\t' << Disk.PebbleFlux << '\n';
 
     OutputFile.close();
 
@@ -1474,7 +1476,7 @@ void EvolutionModel::Accretion(int index, double dt) {
 void EvolutionModel::PebbleAccretion(int index, double dt) {
     /*-- COMPUTE PEBBLE ACCRETION ONTO SATELLITES --*/
     double eff = Satellites[index].ComputeE2D();
-    double Mdot = eff * PebbleFlux;
+    double Mdot = eff * Disk.PebbleFlux;
     double DM = Mdot * dt;
     Satellites[index].Mass += DM;
 }

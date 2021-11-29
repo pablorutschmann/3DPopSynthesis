@@ -43,8 +43,10 @@ DiskModel::DiskModel(string input_address, string output_address, std::map<std::
     RefillingTime = Options["RefillingTime"];
     GasDispersion = Options["GasDispersion"];
     DustDispersion = Options["DustDispersion"];
+    PebbleDispersion = Options["PebbleDispersion"];
     Refilling = Options["Refilling"];
     Cooling = Options["Cooling"];
+    PebbleFlux = Options["PebbleFlux"];
     StokesNumber = Options["StokesNumber"];
 
 
@@ -222,6 +224,11 @@ void DiskModel::DiskEvolution(double dt) {
         }
         if ((GasDispersion) || (Cooling)) Opacity[i] = ComputeOpacity(i);
     }
+
+    if (PebbleDispersion) {
+        PebbleFlux *= DiskFactor;
+    }
+
     IceLineID = ComputeIceLine();
 }
 
