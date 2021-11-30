@@ -496,6 +496,7 @@ double SatelliteModel::ComputeSublimationRate(double T) {
     double period = sqrt((2 * M_PI) * (2 * M_PI) * ComputeA() * ComputeA() * ComputeA() / Mu);
     double Area = 4 * M_PI * ComputeRadius() * ComputeRadius();
     double a = 2.9209178477680004e-13;
+    // double a = 0.12;
     double factor = a / sqrt(T) * exp(-1865 / T);
     double dmdt = factor * Area * period;
     return dmdt;

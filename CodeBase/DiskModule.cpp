@@ -10,6 +10,7 @@
 #include <cmath>
 #include <fstream>
 #include <string>
+#include <vector>
 #include <iostream>
 #include <map>
 
@@ -54,7 +55,7 @@ DiskModel::DiskModel(string input_address, string output_address, std::map<std::
 
     // constants with mu = 2.37 and gamma = 1.4 in the code units
     SigmaBoltz = 9.39e-13 / MP;
-    G = 3.69e8 * MP / (RP * RP * RP);
+    G = 3.45e8 * MP / (RP * RP * RP);
     KbMuMp = 709.14 / RP;
     Alpha = 0.004;
     Gamma = 7. / 5.;
@@ -235,18 +236,38 @@ void DiskModel::DiskEvolution(double dt) {
 
 void DiskModel::DiskRefilling(double dt) {
     /*-- COMPUTE REFILLING --*/
-
+    int N_window = 6;
     if (Refilling) {
-        double rate;
 
+        double weights [] = {0.000886, 0.00158, 0.00272, 0.00448, 0.00709, 0.0108, 0.0158, 0.0222, 0.0299, 0.0388, 0.0484, 0.0579, 0.0666, 0.0737, 0.0782, 0.0798, 0.0782, 0.0737, 0.0666, 0.0579, 0.0484, 0.0388, 0.0299, 0.0222, 0.0158, 0.0108, 0.00709, 0.00448, 0.00272, 0.00158, 0.000886};
+        vector<double> Padded;
+        vector<double>::iterator it;
+        double intermed[Length];
         for (int i = 0; i < Length; i++) {
-            if (dt > RefillingTime) SigmaDust[i] = SigmaDustBar[i];
-            else {
-                rate = (SigmaDustBar[i] - SigmaDust[i]) / RefillingTime;
-                SigmaDust[i] += (rate * dt);
-            }
+            it = Padded.begin() + i;
+            Padded.insert(it,SigmaDust[i]);
         }
+
+        for (int i = 0; i < N_window / 2; i++) {
+            it = Padded.begin();
+            Padded.insert(it, SigmaDust[0]);
+            it = Padded.end();
+            Padded.insert(it, SigmaDust[Length - 1]);
+        }
+
+
+        for (int i = int(N_window/2); i < Length + int(N_window/2); i++) {
+            double window_sum = 0.0;
+            for (signed int j = -int(N_window/2); i < (N_window/2 + 1); i++) {
+                window_sum += weights[j+int(N_window/2)] * Padded[i+j];
+            }
+            intermed[i] = window_sum;
+            double rate = (SigmaDustBar[i] - Padded[i+int(N_window/2)]) / RefillingTime;
+            SigmaDust[i] += (rate * dt);
+        }
+
     }
+
 }
 
 

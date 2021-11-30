@@ -1942,3 +1942,109 @@ Runs/test_iceline/inputs started at Wed Nov 17 18:04:06 2021
 
 /Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 14:06:20 2021
 
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 14:13:05 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 14:33:59 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 14:34:51 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 16:39:47 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 16:39:53 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 16:40:06 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 16:41:09 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 16:41:19 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 16:44:27 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 16:44:33 2021
+ after 6.92483 s, 0.115414 min, 0.00192356 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 16:46:32 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 16:46:39 2021
+ after 6.99097 s, 0.116516 min, 0.00194193 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 16:47:50 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 16:48:42 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 16:48:49 2021
+ after 7.18762 s, 0.119794 min, 0.00199656 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 16:49:32 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 16:49:37 2021
+ after 4.76569 s, 0.0794282 min, 0.0013238 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 16:50:53 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 16:51:00 2021
+ after 6.94368 s, 0.115728 min, 0.0019288 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 16:53:01 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:06:12 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:06:18 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:06:25 2021
+ after 6.92378 s, 0.115396 min, 0.00192327 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:07:03 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:07:10 2021
+ after 6.78617 s, 0.113103 min, 0.00188505 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:09:18 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:17:24 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:17:26 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:17:33 2021
+ after 6.90244 s, 0.115041 min, 0.00191734 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:21:51 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:21:58 2021
+ after 6.8173 s, 0.113622 min, 0.00189369 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:24:50 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:24:59 2021
+ after 9.71957 s, 0.161993 min, 0.00269988 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:25:50 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:25:57 2021
+ after 7.13716 s, 0.118953 min, 0.00198254 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:27:47 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:27:53 2021
+ after 6.0036 s, 0.10006 min, 0.00166767 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:29:18 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:30:21 2021
+ after 62.9616 s, 1.04936 min, 0.0174893 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:33:38 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:35:00 2021
+ after 82.685 s, 1.37808 min, 0.0229681 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:37:31 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:38:31 2021
+ after 60.0328 s, 1.00055 min, 0.0166758 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:39:35 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:40:41 2021
+ after 66.3257 s, 1.10543 min, 0.0184238 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:41:40 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:43:04 2021
+ after 84.2513 s, 1.40419 min, 0.0234031 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:44:34 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:46:08 2021
+ after 94.0048 s, 1.56675 min, 0.0261124 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Nov 29 17:47:19 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Mon Nov 29 17:48:31 2021
+ after 71.8045 s, 1.19674 min, 0.0199457 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Tue Nov 30 10:12:13 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Tue Nov 30 10:13:28 2021
+ after 75.2158 s, 1.2536 min, 0.0208933 hours

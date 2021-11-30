@@ -159,24 +159,45 @@ if __name__ == "__main__":
         return a1/np.sqrt(T) * np.exp(-1865/T)
 
 
-    print(dmdt(T))
+    print(dmdt(T)*10e6)
+    # print(1.1061960808000799E-22 * 10e6)
+    #
+    #
+    # print(300 / 1000000)
+    # print(1.4849409446705092E-17 * R_S / year)
+    # print(15 * 100 / R_S * year)
+    #
+    # def kepl_velo(r):
+    #     # convert r to cgs
+    #     v_kep = np.sqrt(G * M_S / r ** 3)
+    #     # convert back to Solar Units
+    #     return v_kep
+    #
+    # print(kepl_velo(au))
+    #
+    # print(300 * 0.0001)
 
-    print(1.1061960808000799E-22 * 10e6)
+    a1 = 0.12 / M_S * R_S2
+
+    print(G * year**2)
+    print(float(np.format_float_positional((G / R_J**3) * M_J * year**2, precision=4, unique=False, fractional=False,trim='k')))
+    rj = 69911 * 1000 * 100
+    print(float(np.format_float_positional((G / rj**3) * M_J * year**2, precision=4, unique=False, fractional=False,trim='k')))
 
 
-    print(300 / 1000000)
-    print(1.4849409446705092E-17 * R_S / year)
-    print(15 * 100 / R_S * year)
+    def gauss(n=11,sigma=1):
+        r = range(-int(n/2),int(n/2)+1)
+        return [1 / (sigma * np.sqrt(2*np.pi)) * np.exp(-float(x)**2/(2*sigma**2)) for x in r]
 
-    def kepl_velo(r):
-        # convert r to cgs
-        v_kep = np.sqrt(G * M_S / r ** 3)
-        # convert back to Solar Units
-        return v_kep
 
-    print(kepl_velo(au))
 
-    print(300 * 0.0001)
+    def sf(x,prec=3):
+        x = float(np.format_float_positional(x, precision=prec, unique=False, fractional=False,trim='k'))
+        return x
+    vec_sf = np.vectorize(sf)
+
+    print(list(vec_sf(gauss(30,5))))
+    print(np.sum(vec_sf(gauss(30,5))))
 
 class disk:
     def __init__(self, path, pick = False):
