@@ -185,7 +185,7 @@ void EvolutionModel::SetOptions() {
     cout << '\n' << '\n';
     while (InputFile >> key >> value) {
         Options[key] = value;
-        cout << key << '\t' << Options[key] << '\n';
+        cout << key << ' ' << Options[key] << '\n';
     }
 
     InputFile.close();
