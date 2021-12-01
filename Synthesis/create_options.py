@@ -1,14 +1,16 @@
 from random import randint
 import os.path as path
-import pkg_resources
+import pathlib
+
 
 def write_option_file(PATH):
 
     options = {}
-    stream = pkg_resources.resource_stream(__name__, 'options_template.txt')
-    for line in stream:
-        (key, val) = line.split()
-        options[key] = val
+    # stream = pkg_resources.resource_stream(__name__, 'options_template.txt')
+    with open(str(pathlib.Path(__file__).resolve().parent)+"/options_template.txt", 'r') as stream:
+        for line in stream:
+            (key, val) = line.split()
+            options[key] = val
 
     # Declaring Options
     #   Units: Mass [Solar Mass], Distance [Solar Radius], Time [year]

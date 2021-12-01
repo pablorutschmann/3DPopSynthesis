@@ -12,8 +12,8 @@ InitMass            -1
 Rho                 -1
 FeedRadius          2.3
 ThresholdMass       -1
-MaxTime             1e7
-SaveInterval        1e5
+MaxTime             1e2
+SaveInterval        1e1
 MaxRunTime          120
 RotationFraction    0.3
 DiskPrecision       1e-5

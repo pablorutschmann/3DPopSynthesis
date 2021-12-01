@@ -2,6 +2,7 @@ import sys
 import os.path as path
 from os import getcwd
 from os import makedirs
+from os import system
 from create_options import write_option_file
 import disk as dsk
 
@@ -47,16 +48,15 @@ def setup(NAME, N_sims):
     JI_OUTPUT = path.join(JI_SYSTEM, 'outputs/')
     JI_HISTORY = path.join(JI_SYSTEM, 'history.txt')
 
-    command = 'bsub -J "{name}[0-{N}]%100" -r -W 120:00 -o {run}/log "{exe} {input} {output} {history}"'.format(name=NAME,
-                                                                                                           N=str(N_SIMS - 1),
+    command = 'bsub -J "{name}[1-{N}]%100" -r -W 120:00 -o {run}/log "{exe} {input} {output} {history}"'.format(name=NAME,
+                                                                                                           N=str(N_SIMS),
                                                                                                            run=RUN,
                                                                                                            exe=EXECUTABLE,
                                                                                                            input=JI_INPUT,
                                                                                                            output=JI_OUTPUT,
-                                                                                                           history=JI_HISTORY)
-
+                                                                                                        history=JI_HISTORY)
+    system(command)
     return command
-
 
 if __name__ == "__main__":
     Name = sys.argv[1]

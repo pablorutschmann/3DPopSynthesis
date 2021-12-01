@@ -100,7 +100,7 @@ def kepl_velo(r):
     # convert back to Solar Units
     return v_kep * year
 
-#Calculate Area of Annulus
+# Calculate Area of Annulus
 def Areas(x,dx):
     A = np.zeros(len(dx))
     for i in range(len(dx)):
