@@ -2,8 +2,6 @@ from random import randint
 import os.path as path
 import pkg_resources
 
-
-
 def write_option_file(PATH):
 
     options = {}

@@ -4,24 +4,32 @@ from astropy import units as u
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
+from scipy.integrate import tplquad
 from math import log
+import os.path
+
+from scipy.optimize import fsolve
 
 # Defining Constants
-
 # AU in cm
 au = astroconst.au.decompose(u.cgs.bases).value
 
 # Jupiter Radius in cm
+#R_J = astroconst.R_jup.decompose(u.cgs.bases).value
 R_J = astroconst.R_jup.decompose(u.cgs.bases).value
 
 # Jupiter Radius squared
-R_J2 = (astroconst.R_jup.decompose(u.cgs.bases).value) ** 2
+R_J2 = R_J ** 2
 
 # Jupiter Mass in grams
+#M_J = astroconst.M_jup.decompose(u.cgs.bases).value
 M_J = astroconst.M_jup.decompose(u.cgs.bases).value
 
-# Solar Mass in grams
+# Solar Radius in grams
 R_S = astroconst.R_sun.decompose(u.cgs.bases).value
+
+# Solar Radius squared
+R_S2 = R_S ** 2
 
 # Solar Mass in grams
 M_S = astroconst.M_sun.decompose(u.cgs.bases).value
@@ -38,235 +46,155 @@ G = astroconst.G.decompose(u.cgs.bases).value
 # Seconds in a year
 year = 31536000
 
-# print(1.5 * 10 ** (-21) * M_J / R_J2 * 202799192448.87842)
+rho = 5.513 / M_S * R_S**3
 
-# Defining Parameters
-
-phi_cells = 680
-r_cells = 215
-th_cells = 20
-
-# Truncate Cells
-N_f = 7
-N_b = 6
-
-# New Disk Radii Limits
-R_min = 0.5
-R_max = 5
-N = 1000
-space ='log'
-
-print(R_min *  au / R_S)
-
-print(R_max *  au / R_S)
-
-# Helper Functions
-def cart2pol(x, y):
-    radius = np.sqrt(x ** 2 + y ** 2)
-    phi = np.arctan2(y, x)
-    return (radius, phi)
+G_S = (G / R_S**3) * M_S * year**2
 
 
-# Import Function, Saves Disk to Dataframe in cgs units
-def import_ppd(path):
-    # Initial Columns
-    columns = ['x [cm]', 'y [cm]', 'z [cm]', 'dens [g/cm3]', 'temp [K]', 'velo_x [cm/s]', 'velo_y [cm/s]',
-               'velo_z [cm/s]', 'opac[cm^2/g]']
+if __name__ == "__main__":
+    #Effective Temperature of Sun
+    T_S = 5780
 
-    # Read the file
-    disk = pd.read_csv(path, delim_whitespace=True, names=columns, index_col=False, dtype=np.float64)
+    T_J = 130
 
-    # Convert to cylindrcal coordinates
-    radius, phi = cart2pol(disk['x [cm]'], disk['y [cm]'])
-    disk['r [AU]'] = radius
-    disk['phi [rad]'] = phi + np.pi
-    print('Imported disk from: ' + path)
-    return disk
+    SMA_J = 5.2
+    #
+    print('alpha')
+    alpha = T_J/T_S * (SMA_J/(R_S/au))**0.5
+    print(alpha)
 
+    #inputs in au
+    def temp(r):
+        return (T_S * (R_S/au / r)**0.5 * alpha) - 170
 
-def integrate_1D(name, space, df, plot=False):
-    def truncate(arr, N_front, N_back):
-        trunc = arr[N_front:-N_back]
-        return trunc
+    def temp(r):
+        return (5780 * (1 / r)**0.5 * 0.7520883995742579)
 
-    # density
-    dens = np.reshape(df['dens [g/cm3]'].values, [phi_cells, r_cells, th_cells])
-    # height one cell 202799192448.87842
+    def temp_ronco(r):
+        y = 280 * (au / r)**(0.5) - 170
+        return y
 
-    # Integrate in z direction
-    sigma2d = np.sum(dens, axis=2) * 203599192448.87842
-    # Average azimutal direction
-    sigma1d = truncate(np.mean(sigma2d, axis=(0)), N_f, N_b)
-    # convert to Solar Radius and Mass units
-    sigma1d = sigma1d / M_J * R_J2
+    r_ice = fsolve(temp_ronco,3)
+    print("ICE LIne Radius")
+    print(r_ice/au)
 
-    # opacity
-    opac = np.reshape(df['opac[cm^2/g]'].values, [phi_cells, r_cells, th_cells])
-    # average in vertical and azimutal directions
-    opac1d = truncate(np.mean(opac, axis=(0, 2)), N_f, N_b)
-    # convert to Solar Radius and Mass units
-    opac1d = opac1d * M_J / R_J2
+    temps = [temp(x) for x in np.linspace(0.5,30,100)]
 
-    # temperature
-    temp = np.reshape(df['temp [K]'].values, [phi_cells, r_cells, th_cells])
-    # average in vertical and azimutal directions
-    temp1d = truncate(np.mean(temp, axis=(0, 2)), N_f, N_b)
-
-    # Radii of data values
-    rs = np.reshape(df['r [AU]'].values, [phi_cells, r_cells, th_cells])
-    rs = truncate(rs[0, :, 0], N_f, N_b) / R_J
-
-    r_all = np.linspace(R_max, rs.max() * R_J / au, N) * au / R_J
-
-    # Extrapolation linspace or logspace of radii in R_J, include one point more for N cells
-    if space == "lin":
-        x = np.linspace(R_min, R_max, N + 1) * au / R_J
-    elif space == 'log':
-        x = np.logspace(1, log(R_max, R_min), N + 1, base=R_min) * au / R_J
-
-    # calculate delta_x
-    dx = np.zeros(N)
-    for i in range(N):
-        dx[i] = x[i + 1] - x[i]
-
-    # remove last element
-    x = x[:-1]
-
-    # Calculate Keplerian Veloctiy
+    print(temps)
 
 
 
-    def kepl_velo(r):
-        # convert r to cgs
-        r = r * R_J
-        v_kep = np.sqrt(G * M_S / r ** 3)
-        # convert back to Jupiter Units
+    m1,m2 = 2.80226e-07, 2.80226e-07
+    wmf1, wmf2 = 0.1, 0.1
+    wm1 = m1 * wmf1
+    wm2 = m2 * wmf2
 
-        return v_kep / year
+    wmf = (wm1 + wm2)/(m1+m2)
+    print("WMF: ")
+    print(wmf)
 
-    vx = kepl_velo(x)
+    radius = 100 * 1000 * 100 #cm
 
-    # Calculate Area of Annulus
-    A = np.zeros(N)
-    for i in range(N):
-        A[i] = np.pi * ((x[i] + dx[i]) ** 2 - x[i] ** 2)
+    vol = 4/3 * np.pi * radius**3
 
-    def extrapolate(type, x_init, y_init):
+    mass = 5.513 * vol
 
-        def func(x, a, b):
-            return a * x + b
+    print(mass / M_S)
 
-        # Fit the linear function to log log data
-        popt, pcov = curve_fit(func, np.log(x_init), np.log(y_init))
+    print(0.01 * M_E /M_S)
 
-        pow_coeff = popt[0]
+    print(5.1e-07 * M_S / M_E)
 
-        # Retransformed function and parameters
-        def func_exp(x, a, b):
-            B = np.exp(b)
-            return B * x ** a
+    # radi = (mass * 3 / 4 / np.pi / 2)**(1/3) / 100 / 1000
+    #
+    # print(radi)
+    #
+    # mass = 2 * vol / M_E
+    #
+    # print(mass)
 
-        if plot == True:
-            def raymond(r):
-                y = 4000 * (au / (r * R_J))
-                return y / M_J * R_J2
+    total_plaenetsima_mass = 3.0e-08 * 100;
+    print("TPM")
+    print(total_plaenetsima_mass * M_S / M_E)
 
-            def binkert(r):
-                y = 80 * (au / (r * R_J))**0.5
-                return y / M_J * R_J2
+    # 100 ME / Myrs
+    # = 100 ME / (1000000 Yrs)
+    # = (100 ME / 1000000) / Yrs
+    print(100 * M_E / M_S / 1000000)
 
-            def temp_ronco (r):
-                y = 280 * (au / (r * R_J))
-                return y
+    print(year * 9.47834e-07)
 
-            fig, ax = plt.subplots()
+    kb = 1.380649e-23 * 1000 * 100 * 100 / M_S / R_S2 * 31536000
 
-            ax.set_xlabel('radius in Jupiter Radii')
+    kb = 1.380649e-23 * 1000 * 100 * 100
+    print(kb)
 
-            ax.set_title(type + ' profile')
-            # ax.loglog(r_resh[0,:,0]/au, sigma1d)
-            ax.plot(x_init, y_init, 'ko', label="Original Data")
-            ax.plot(x, func_exp(x, *popt), 'r-', label="Disk Model")
-            if type == 'Surface Density' and name == 'gas':
-                unit = ' in M_J / R_jup^2'
-                ax.plot(np.concatenate((x, r_all)), binkert(np.concatenate((x, r_all))), label="Raymond")
-            if type == 'Surface Density' and name == 'dust':
-                unit = ' in M_J / R_jup^2'
-                ax.plot(np.concatenate((x, r_all)), binkert(np.concatenate((x, r_all)))*0.01, label="Raymond")
-            if type == 'Temperature':
-                unit = ' Kelvin'
-                ax.plot(np.concatenate((x, r_all)), temp_ronco(np.concatenate((x, r_all))), label="Ronco")
-            else:
-                unit = ''
-            ax.set_ylabel(type + unit)
-            ax.plot(r_all, func_exp(r_all, *popt), label="Fitted Curve")
-            plt.legend()
-            plt.savefig('Disk_Plots/' + name + '_'  + type + '_' + space + '_' + str(N) + '.png')
+    mh20 = 18.02
 
-        return np.exp(func(np.log(x), *popt)), pow_coeff
+    Pascal = 1000 / 100 / M_S * R_S * 31536000**2
+    print(Pascal)
 
-    sigma_extra, pow_coeff_sigma = extrapolate('Surface Density', rs, sigma1d)
-    opac_extra, pow_coeff_opac = extrapolate('Opacity', rs, opac1d)
-    temp_extra, pow_coeff_temp = extrapolate('Temperature', rs, temp1d)
+    wm = 1.0e-8 * 0.2
 
-    pow_coeffs = [pow_coeff_sigma, pow_coeff_opac, pow_coeff_temp]
+    T = 203.15
 
-    print("Inter/Extrapolated values for " + name)
-    return x, dx, sigma_extra, opac_extra, temp_extra, A, vx, pow_coeffs
+    def P_Vap(T):
+        A = -2663.5
+        B = 12.537
+        P_PA = np.power(10, A/T + B)
+        return P_PA
+
+    print(P_Vap(T))
+
+    def Vap_Rate(T):
+        return np.sqrt(mh20/ ( 2 * np.pi * kb * T)) * P_Vap(T)/10
 
 
-def write_disk(space, dim=1):
-    gas = import_ppd('../ppd/lev0_gas.dat')
-    dust = import_ppd('../ppd/lev0_dust.dat')
+    print(Vap_Rate(T))
 
-    if dim == 1:
-        x, dx, sigma, opac, temp, Area, v_kepl, pow_coeffs = integrate_1D('gas', space, gas, True)
-        _, _, sigma_dust, _, temp_dust, _, _, pow_coeffs_dust = integrate_1D('dust', space, dust, True)
-    elif dim == 2:
-        x, dx, sigma, _, temp, Area, v_kepl, pow_coeffs = integrate_2D(dust)
-    else:
-        raise Exception('Not Possible Intergration')
-
-    # disk profile
-    # index 0-(N-1), radius R_J, delta radius R_J, sigma gas, sigma dust M_J R_J2, sigma dust bar, temperature, area of annulus, keplerian orbital velocity omega, sigma exponent, temp exponent, opacity
-
-    # sigma dust for now with gas to dust ratio of 0.01
-    sigma_dust = sigma * 0.01
-
-    out = {}
-    out['r [R_J]'] = x
-    out['dr [R_J]'] = dx
-    out['sigma gas [M_J/R_J^2]'] = sigma
-    out['sigma dust [M_J/R_J^2]'] = sigma_dust
-    out['sigma dustbar [M_J/R_J^2]'] = sigma_dust
-    out['T [K]'] = temp
-    out['Area [R_J^2]'] = Area
-    out['Keplerian Velocity [R_J / yr]'] = v_kepl
-    out['Power Coefficient Density'] = np.full(N, pow_coeffs[0])
-    out['Power Coefficient Temperature'] = np.full(N, pow_coeffs[-1])
-    out['Gas Opacity []'] = opac
-
-    df_out = pd.DataFrame.from_dict(out)
-    if space == 'log':
-        outpath = 'disks/disk_log_' + str(N) + '.txt'
-    else:
-        outpath = 'disks/disk_' + str(N) + '.txt'
-
-    df_out.to_csv(outpath, header=False, sep='\t', mode='w')
-
-    print("Written disk file")
-    return df_out
+    a1 = 0.12 / M_S * R_S2
+    print(a1)
+    def dmdt(T):
+        # g / cm**2 / orbital period
+        return a1/np.sqrt(T) * np.exp(-1865/T)
 
 
-# a = integrate_1D(gas,True)
-# b = integrate_1D(dust,True)
+    print(dmdt(T)*10e6)
+    # print(1.1061960808000799E-22 * 10e6)
+    #
+    #
+    # print(300 / 1000000)
+    # print(1.4849409446705092E-17 * R_S / year)
+    # print(15 * 100 / R_S * year)
+    #
+    # def kepl_velo(r):
+    #     # convert r to cgs
+    #     v_kep = np.sqrt(G * M_S / r ** 3)
+    #     # convert back to Solar Units
+    #     return v_kep
+    #
+    # print(kepl_velo(au))
+    #
+    # print(300 * 0.0001)
+
+    a1 = 0.12 / M_S * R_S2
+
+    print(G * year**2)
+    print(float(np.format_float_positional((G / R_J**3) * M_J * year**2, precision=4, unique=False, fractional=False,trim='k')))
+    rj = 69911 * 1000 * 100
+    print(float(np.format_float_positional((G / rj**3) * M_J * year**2, precision=4, unique=False, fractional=False,trim='k')))
 
 
-disk_out = write_disk(space)
+    def gauss(n=11,sigma=1):
+        r = range(-int(n/2),int(n/2)+1)
+        return [1 / (sigma * np.sqrt(2*np.pi)) * np.exp(-float(x)**2/(2*sigma**2)) for x in r]
 
-print('Solar Mass in Jupiter Masses: ' + str(M_S/M_J))
 
-print('Solar Radius in Jupiter Radii: ' + str(R_S/R_J))
 
-print(0.5 * au / R_J )
-print(5 * au / R_J)
+    def sf(x,prec=3):
+        x = float(np.format_float_positional(x, precision=prec, unique=False, fractional=False,trim='k'))
+        return x
+    vec_sf = np.vectorize(sf)
+
+    print(list(vec_sf(gauss(30,5))))
+    print(np.sum(vec_sf(gauss(30,5))))
