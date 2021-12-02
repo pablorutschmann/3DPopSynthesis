@@ -10,10 +10,13 @@ import disk as dsk
 def setup(NAME, N_sims):
     N_SIMS = int(N_sims)
 
+    # Current Working Directory
     CWD = getcwd()
 
+    # Path of the Executable
     EXECUTABLE = path.join(CWD, '3DPopSynth')
 
+    # Directory 0f the Synthesis Run
     RUN = path.join(CWD, 'SynthesisRuns', NAME)
 
     print(RUN)
@@ -32,7 +35,7 @@ def setup(NAME, N_sims):
     R_min = 0.5
     R_max = 30
     N = 1000
-    disk.prepare(spacing,R_min,R_max,N)
+    disk.prepare(spacing, R_min, R_max, N)
 
     for i in range(N_SIMS):
         INPUT, OUTPUT = dir_structure(i)
@@ -41,22 +44,24 @@ def setup(NAME, N_sims):
         # Create Options File
         write_option_file(INPUT)
 
-
     #  INPUT AND OUTPUT WITH $LSB_JOBINDEX
     JI_SYSTEM = path.join(RUN, 'system_\$LSB_JOBINDEX')
     JI_INPUT = path.join(JI_SYSTEM, 'inputs/')
     JI_OUTPUT = path.join(JI_SYSTEM, 'outputs/')
     JI_HISTORY = path.join(JI_SYSTEM, 'history.txt')
 
-    command = 'bsub -J "{name}[1-{N}]%100" -r -W 120:00 -o {run}/log "{exe} {input} {output} {history}"'.format(name=NAME,
-                                                                                                           N=str(N_SIMS),
-                                                                                                           run=RUN,
-                                                                                                           exe=EXECUTABLE,
-                                                                                                           input=JI_INPUT,
-                                                                                                           output=JI_OUTPUT,
-                                                                                                        history=JI_HISTORY)
+    command = 'bsub -J "{name}[1-{N}]%100" -r -W {maxtime}:00 -o {run}/log "{exe} {input} {output} {history}"'.format(
+        name=NAME,
+        N=str(N_SIMS),
+        maxtime=MAXTIME,
+        run=RUN,
+        exe=EXECUTABLE,
+        input=JI_INPUT,
+        output=JI_OUTPUT,
+        history=JI_HISTORY)
     system(command)
     return command
+
 
 if __name__ == "__main__":
     Name = sys.argv[1]

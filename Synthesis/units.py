@@ -50,7 +50,7 @@ rtoau = R_S / au
 mtome = M_S / M_E
 
 # Solar Mass to Jupiter Mass Conversion Factor
-mtome = M_S / M_J
+mtomj = M_S / M_J
 
 # Densities in cgs to Solar Units
 denstos = R_S2 / M_S
@@ -60,4 +60,6 @@ OE = 2.4E-4 * M_E
 
 # Solar Mass to Earths Ocean
 mtooe = M_S / OE
+
+print(26.72044313692741 / mtomj)
 

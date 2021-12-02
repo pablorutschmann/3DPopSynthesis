@@ -39,7 +39,7 @@ def binkert(r):
     y = 80 * (r)**coeff
     return y, coeff
 
-Surface_Density = raymond
+Surface_Density = binkert(r)
 
 def Temperature(r):
     coeff = -0.5

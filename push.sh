@@ -25,3 +25,7 @@ if [[ $COMP == 0 ]] ; then
 else
   ssh euler 'bash compile.sh'
 fi
+
+#rsync -r -Pav rupablo@euler.ethz.ch:/cluster/home/rupablo/3DPopSynthesis/Runs/thresh/ /Users/prut/CLionProjects/3DPopSynthesis/Runs/thresh/
+
+#rsync -r -Pav rupablo@euler.ethz.ch:/cluster/home/rupablo/3DPopSynthesis/Runs/nothresh/ /Users/prut/CLionProjects/3DPopSynthesis/Runs/nothresh/

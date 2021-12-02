@@ -39,10 +39,10 @@ class plotter:
                 ax.plot(x_all  * R_S / au, self.disk.binkert(x_all)*0.01, label="Binkert")
                 ax.plot(x_all  * R_S / au, self.disk.raymond(x_all)*0.01, label="Raymond")
 
-            ax.plot(x_init * R_S / au, profile, 'ko', label="Original Data")
-            ax.plot(x_out * R_S / au, self.disk.func_exp(x_out, *coeffs), 'r-', label="Disk Model")
+            #ax.plot(x_init * R_S / au, profile, 'ko', label="Original Data")
+            #ax.plot(x_out * R_S / au, self.disk.func_exp(x_out, *coeffs), 'r-', label="Disk Model")
             ax.set_ylabel(phase + ' '  + type + unit)
-            ax.plot(x_init * R_S / au, self.disk.func_exp(x_init, *coeffs), label="Fitted Curve")
+            #ax.plot(x_init * R_S / au, self.disk.func_exp(x_init, *coeffs), label="Fitted Curve")
             plt.legend()
             if scale == 'log':
                 ax.set_xscale("log", base=10)

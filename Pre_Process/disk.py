@@ -51,6 +51,7 @@ rho = 5.513 / M_S * R_S**3
 G_S = (G / R_S**3) * M_S * year**2
 
 if __name__ == "__main__":
+    a=1
 
 class disk:
     def __init__(self, path, pick = False):
