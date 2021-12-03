@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from Post_Process.units import *
+import numpy as np
 
 
 
@@ -48,6 +49,19 @@ class satellite:
     def fig_accretion(self, fig, ax):
         ax.step(list(self.acc.index), mtome * self.acc['mass'], where='post')
         return fig, ax
+
+    def plot_evo(self,path):
+        fig, ax = plt.subplots(ncols=1)
+        fig.set_size_inches(15.5, 10.5)
+
+        ax.scatter(self.data.index, self.data['a'] * rtoau, s=self.data['M']/np.min(self.data['M']))
+
+        ax.set_xlabel('Time in Years', fontsize=15)
+        ax.set_ylabel('Semi Major Axis in AU', fontsize=15)
+        fig.suptitle('Evolution of Satellite ' + str(self.ID))
+        fig.savefig(path + '/satellite' + str(self.ID) + '_evo.png')
+        plt.close(fig)
+        print('Plot saved at: ' + path + '/satellite' + str(self.ID) + '_evo.png')
 
     def wm_time(self, path):
         fig, ax = plt.subplots(ncols=1)

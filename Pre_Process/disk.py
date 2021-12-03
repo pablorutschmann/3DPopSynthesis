@@ -330,7 +330,7 @@ class disk:
         # index 0-(N-1), radius R_S, delta radius R_S, sigma gas, sigma dust M_S R_S2, sigma dust bar, temperature, area of annulus, keplerian orbital velocity omega, sigma exponent, temp exponent, opacity, wmf , swmf
 
         # sigma dust for now with gas to dust ratio of 0.01
-        sigma = self.raymond(self.out['r [R_S]'])
+        sigma = self.binkert(self.out['r [R_S]'])
         sigma_dust = sigma * 0.01
 
         # out['sigma gas [M_S/R_S^2]'] = sigma

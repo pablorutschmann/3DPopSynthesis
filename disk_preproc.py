@@ -12,7 +12,7 @@ mydisk.integrate_1D('gas')
 mydisk.integrate_1D('dust')
 
 spacing = 'log'
-R_min = 0.5 # Minimum Radius in AU for extrapolation
+R_min = 0.3 # Minimum Radius in AU for extrapolation
 R_max = 30 # Maximum Radius in AU for extrapolation
 N = 1000 # Number of cells in extrapolation axis
 

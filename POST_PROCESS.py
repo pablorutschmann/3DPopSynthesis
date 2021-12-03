@@ -24,4 +24,6 @@ if __name__ == "__main__":
 
     current_run.plot_accretion()
 
-    # current_run.plot_wm()
+
+    for i in range(1,len(current_run.satellites),len(current_run.satellites)//10):
+        current_run.satellites[i].plot_evo(current_run.plot_path)
