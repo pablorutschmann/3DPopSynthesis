@@ -392,15 +392,15 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
 
     if (type == 0) {
         bool invalid = true;
-        while (invalid == true) {
-            expr = log10(R_min) + (rand() % 10000) / 10000. * (log10(R_max) - log10(R_min));
-            r = pow(10, expr);
-            z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
-            Satellites[index] = SatelliteModel(ID, type, InitMass, r * cos(theta), r * sin(theta), z, Rho,
-                                               Disk.G, Disk.MP, Disk.RP, StokesNumber, Time);
-            ComputeParameters(index);
-            invalid = CheckInvalidity(index);
-        }
+        expr = log10(R_min) + (rand() % 10000) / 10000. * (log10(R_max) - log10(R_min));
+        r = pow(10, expr);
+        z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
+        double init_R = PhysicalRadiusDistribution(r);
+        double initial_mass = 4 / 3 * M_PI * pow(init_R, 3) * Rho;
+        Satellites[index] = SatelliteModel(ID, type, initial_mass, r * cos(theta), r * sin(theta), z, Rho, Disk.G,
+                                           Disk.MP, Disk.RP, StokesNumber, Time);
+        ComputeParameters(index);
+        //invalid = CheckInvalidity(index);
     }
 
     ofstream OutputFile;
@@ -1005,9 +1005,6 @@ double EvolutionModel::InitialTimeStep(int id_group) {
 
 double EvolutionModel::HPC(int id_group, double dt) {
     /*-- COMPUTE HERMITE INTEGRATION FOR A GROUP OF PARTICLES AND NEW TIME-STEP --*/
-
-
-
 
     // If you modify the first for loop you have to modify the second loop accordingly
 
@@ -1674,6 +1671,15 @@ double d2Kijdy2(double y) {
     else if (y >= 1) return 0.;
     else return (12 * y * y * y - 18 * y * y + 6 * y) / (den * den * den);
 }
+
+double PhysicalRadiusDistribution(double r) {
+    double b0 = 2.2745423088987758e-08;
+    double b1 = 1.6609640474436815;
+
+    return b0 * pow(r, b1);
+}
+
+
 
 
 

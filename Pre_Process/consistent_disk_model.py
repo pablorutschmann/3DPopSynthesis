@@ -180,14 +180,14 @@ print(radii[::10])
 def Mass(radius):
     return 4 / 3 * np.pi * (radius)**3 * rho
 
-# at log(1) au, radius log(30) km
+# at log(1) au, radius log(20) km
 
 # at log(10) au, radius log(100) km
 
 dx = np.log10(10) - np.log10(1)
 dy = np.log10(90) - np.log10(20)
 dxdy = dx/dy
-a0 = 100 * 1000 * 100 * np.power(10,np.log10(30) - dx/dy)
+a0 = 100 * 1000 * 100 * np.power(10,np.log10(20) - dx/dy)
 a1 = dx/dy
 print("a0: ",a0)
 print("a1: ",a1)
@@ -199,17 +199,16 @@ def Radius(r):
     return  a0 * r**a1
 
 
-b0 = a0 / R_S
-b1 = a1 * au / R_S
+b0 = a0 *  (R_S/au)**a1 / R_S
 print("b0: ",b0)
-print("b1: ",b1)
+print(6.1929286044739439e-15 * M_S / M_E * 2*10e6)
 
 def Radius_S(r_s):
-    # b1 = a1 * AU/R_S
-    # b0 = a0 /R_S
-    return  b0 * r**b1
-
-
+    # b0 = a0 * (R_S /au)**a1
+    # b0 = 2.2745423088987758e-08
+    return  b0 * r_s**a1
+print(Radius(1)/ R_S / R_E)
+print(Radius_S(215.03215567054764)*R_S/R_E)
 
 
 
@@ -223,7 +222,7 @@ plt.legend()
 #plt.show()
 print(np.sum(Mass(Radius(radii)))/M_S)
 print(Radius(1)/100/1000)
-print(Mass(Radius(30))/M_J)
+print(Mass(Radius(30)))
 
 
 

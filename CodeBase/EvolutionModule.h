@@ -153,4 +153,7 @@ double dKijdy(double y);
 
 double d2Kijdy2(double y);
 
+double PhysicalRadiusDistribution(double r);
+
+
 #endif //SIMULATION_EVOLUTIONMODULE_H
