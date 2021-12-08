@@ -1455,13 +1455,26 @@ void EvolutionModel::Accretion(int index, double dt) {
     }
 
     if (DMmax != 0) {
-        Mdot = 2 * sqrt(Satellites[index].Radius / R) * Satellites[index].SigmaDust * R * R *
+        Mdot = 2.0 * sqrt(Satellites[index].Radius / R) * Satellites[index].SigmaDust * R * R *
                sqrt(Satellites[index].Mass) * Satellites[index].OmegaK * AccCoeff;
-        DM = Mdot * dt;
+        double sigma = (pow(Satellites[index].Ecc, 2) +
+                        pow(Satellites[index].Inc, 2) *
+                        pow(Satellites[index].OmegaK * R,
+                            2));
+        double F = 1.0 + (2.0 * Disk.G * Satellites[index].Mass / Satellites[index].Radius) /
+                         pow(Satellites[index].OmegaK * R, 2);
+        double Mdot_star = 9.0 / 32.0 * pow(FeedRadius * Satellites[index].RHill, 2) /
+                           (R * Satellites[index].Inc * Satellites[index].RHill) * Satellites[index].SigmaDust *
+                           Satellites[index].OmegaK * M_PI * Satellites[index].Radius * F;
+
+        double Mdot_star2 =
+                sqrt(3) / 2 * Satellites[index].SigmaDust * Satellites[index].OmegaK * M_PI * Satellites[index].Radius *
+                F;
+        DM = Mdot_star * dt;
         if (DM > DMmax) DM = DMmax;
 
 
-        Satellites[index].Mass += DM;
+         Satellites[index].Mass += DM;
 
         for (int i = 0; i < Disk.Length; i++) {
             if (abs(R - Disk.R[i]) <= Satellites[index].Rfeed) {
@@ -1469,7 +1482,6 @@ void EvolutionModel::Accretion(int index, double dt) {
             }
         }
     }
-
 }
 
 double EvolutionModel::PebbleAccretion(int index, double dt) {

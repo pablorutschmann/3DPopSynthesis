@@ -35,7 +35,7 @@ class satellite:
         self.data.set_index('time', inplace=True)
 
         # Get Accretion Data
-        self.acc = self.data[['M', 'WM']]
+        self.acc = self.data[['M', 'WM']].copy()
         self.acc = self.acc.rename(columns={"M": "mass", "WM": "wm"})
 
         for time, row in run.collisions.iterrows():

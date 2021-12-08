@@ -110,7 +110,7 @@ class run:
         ax.set_title('Mass Evolution of remaining satellites')
 
         for item in self.satellites.values():
-            fig, ax = item.fig_accretion(fig, ax)
+                fig, ax = item.fig_accretion(fig, ax)
         savepath = os.path.join(self.plot_path, 'accretion.png')
         fig.savefig(savepath)
         plt.close(fig)

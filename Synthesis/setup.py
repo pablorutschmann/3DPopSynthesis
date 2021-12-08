@@ -49,7 +49,7 @@ def setup(NAME, N_sims):
     JI_INPUT = path.join(JI_SYSTEM, 'inputs/')
     JI_OUTPUT = path.join(JI_SYSTEM, 'outputs/')
     JI_HISTORY = path.join(JI_SYSTEM, 'history.txt')
-
+    MAXTIME=120
     command = 'bsub -J "{name}[1-{N}]%100" -r -W {maxtime}:00 -o {run}/log "{exe} {input} {output} {history}"'.format(
         name=NAME,
         N=str(N_SIMS),

@@ -24,7 +24,7 @@ def wmf(r):
         wmf = 0.4
         swmf = 0.2
 
-    return 0.2, 0.2
+    return wmf, swmf
 
 WMF = np.vectorize(wmf)
 
@@ -36,10 +36,10 @@ def raymond(r):
 
 def binkert(r):
     coeff = -0.5
-    y = 80 * (r)**coeff
+    y = 80 * r**coeff
     return y, coeff
 
-Surface_Density = binkert(r)
+Surface_Density = binkert
 
 def Temperature(r):
     coeff = -0.5
