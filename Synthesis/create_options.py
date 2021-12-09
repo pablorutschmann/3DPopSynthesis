@@ -16,11 +16,12 @@ def write_option_file(PATH):
     #   Units: Mass [Solar Mass], Distance [Solar Radius], Time [year]
 
     # Number of Embryos
-    NEmbryos = randint(7,14)
-    options["NEmbryos"] = NEmbryos
+
+    options["NEmbryos"] = 0
 
     # Number of Planetesiamls
-    options["NPlanetesimals"] = 100
+    NPlanetesimals = randint(80,120)
+    options["NPlanetesimals"] = NPlanetesimals
 
     # Initial Mass of Embryos
     options["EmbryoInitMass"] = 3.0e-07
@@ -32,13 +33,13 @@ def write_option_file(PATH):
     options['Spacing'] = 10
 
     # Initial Mass of Planetesimals
-    options["InitMass"] = 3.0e-07
+    options["InitMass"] = 1.6e-11
 
     # Density of Planetesimals
     options["Rho"] = 0.93357
 
     # Disperion Timescale
-    options["DispersionTime"] = 100000.0
+    options["DispersionTime"] = 500000.0
 
     # Colling Timescale
     options["CoolingTime"] = 100000.0

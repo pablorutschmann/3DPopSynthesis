@@ -27,8 +27,8 @@ cp $HOME/3DPopSynthesis/options.txt $input/options.txt
 echo $input
 echo $output
 
-bsub -J $name -r -W 72:00 -o $run/log $HOME/3DPopSynthesis/CodeBase/3DPopSyn $input $output $HOME/3DPopSynthesis/history.txt
-bsub -J ${name}1 -w "done($name)" -r -W 72:00 -o $run/log $HOME/3DPopSynthesis/CodeBase/3DPopSyn $input $output $HOME/3DPopSynthesis/history.txt
+bsub -J $name -r -W 120:00 -o $run/log $HOME/3DPopSynthesis/CodeBase/3DPopSyn $input $output $HOME/3DPopSynthesis/history.txt
+bsub -J ${name}1 -w "done($name)" -r -W 120:00 -o $run/log $HOME/3DPopSynthesis/CodeBase/3DPopSyn $input $output $HOME/3DPopSynthesis/history.txt
 
 # Star Post-Processing
 echo "Starting Plotting!"

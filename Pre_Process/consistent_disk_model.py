@@ -97,11 +97,6 @@ TM_gas = np.dot(A * au ** 2, gas_density)
 
 TM_dust = np.dot(A * au ** 2, dust_density)
 
-print("Total Gas Mass: ", TM_gas / M_J)
-print("Total Dust Mass: ", TM_dust / M_J)
-
-TM_disk = TM_dust + TM_gas
-print("Total Mass: ", TM_disk / M_J)
 
 # Planetesimals
 
@@ -111,11 +106,30 @@ N_planetesimals = 100
 rho = 0.93357
 # initial_mass = 3.0e-08 * M_S
 
-initial_radius = 100  # km
+initial_radius = 200/R_E * R_E *1000 *100 # km
 
-initial_mass = 4 / 3 * np.pi * (1000 * 100 * initial_radius) ** 3 * rho
+initial_mass = 4 / 3 * np.pi * (initial_radius) ** 3 * rho
 
-print("initial Mass: ", initial_mass / M_E)
+mass = 1.6e-11 * M_S
+initR = np.abs(np.power(mass * 3 / 4 / np.pi / rho,1/3))
+print(mass/M_E)
+print(initR/1000/100)
+
+print(0.8 *au/R_S)
+
+print("initial Mass in M_E: ", initial_mass / M_E)
+print("initial Mass in M_S: ", initial_mass / M_S)
+print("initial Radius in km: ", initial_radius/1000/100)
+print("initial Radius in R_E: ", initial_radius/R_E)
+
+TM_Planetesimals = N_planetesimals * initial_mass
+
+print("Total Gas Mass: ", TM_gas / M_J)
+print("Total Dust Mass: ", TM_dust / M_J)
+print("Total Planetesimals Mass: ", TM_Planetesimals / M_J)
+
+TM_disk = TM_dust + TM_gas + TM_Planetesimals
+print("Total Mass: ", TM_disk / M_J)
 
 log_rmin = np.log10(R_min)
 log_rmax = np.log10(R_max)
@@ -136,16 +150,7 @@ print("a0: ", a0)
 print("a1: ", a1)
 
 
-# initial Planetesimal Radius in cm
-def Radius(r):
-    # a0:  6548731.842129445
-    # a1:  1.6609640474436815
-    return a0 * r ** a1
-
-
-
-
-def get_sd(arr, rdist = False):
+def get_sd(arr):
     disk_ids = []
 
     for item in arr:
@@ -157,23 +162,36 @@ def get_sd(arr, rdist = False):
         sum = 0
         for j in range(len(arr)):
             if disk_ids[j] == i:
-                if not(rdist):
-                    sum += initial_mass
-                else:
-                    sum += 4 / 3 * np.pi * (Radius(x[i])) ** 3 * rho
-        surface_density[i] = sum / (A[i] * au ** 2)
+                sum += initial_mass
+                surface_density[i] = sum / (A[i] * au ** 2)
+    return surface_density
+
+def get_cum_sd(arr):
+    disk_ids = []
+
+    for item in arr:
+        index = np.argmin(np.abs(x - item))
+        disk_ids.append(index)
+
+    surface_density = np.zeros(N)
+    Area = 0
+    Mass = 0
+    for i in range(N):
+        Area += A[i] * au ** 2
+        for j in range(len(arr)):
+            if disk_ids[j] == i:
+                Mass += initial_mass
+        surface_density[i] = Mass/Area
     return surface_density
 
 surface_density = get_sd(radii)
 surface_density_log = get_sd(radii_log)
-surface_density_self = get_sd(radii_self)
-
-def SD(r):
-    mean_sd = N_planetesimals * initial_mass / (np.sum(A) * au ** 2)
-    return mean_sd
-
 
 mean_sd = N_planetesimals * initial_mass / (np.sum(A) * au ** 2)
+
+grad = np.gradient(get_cum_sd(radii))
+grad = np.gradient(get_cum_sd(radii_log))
+
 
 fig, ax = plt.subplots()
 ax.set_xlabel('Distance in AU')
@@ -184,18 +202,20 @@ ax.plot(x, binkert(x), label="Binkert")
 # ax.plot(x, raymond(x), label="Raymond")
 ax.plot(x, 0.01 * binkert(x), label="Binkert Dust")
 # ax.plot(x, np.full(shape=N, fill_value=mean_sd), label="Average Planetesimal Surface Density")
-ax.scatter(x, surface_density, label="Planetesimal Surface Density, lin")
-ax.scatter(x, surface_density_log, label="Planetesimal Surface Density, log")
-ax.scatter(x, surface_density_self, label="Planetesimal Surface Density, self")
+#ax.scatter(x, surface_density, label="Planetesimal Surface Density, lin")
+#ax.scatter(x, surface_density_log, label="Planetesimal Surface Density, log")
+ax.plot(x, get_cum_sd(radii), label="Cumulative Planetesimal Surface Density, lin")
+ax.plot(x, get_cum_sd(radii_log), label="Cumulative Planetesimal Surface Density, log")
+#ax.hlines(y=mean_sd,xmin=R_min,xmax=R_max)
 ax.set_xscale("log", base=10)
 ax.set_yscale("log", base=10)
 plt.legend()
 plt.savefig("planetesimal_SD.png")
+plt.close()
+
 
 d0 = 80
 d1 = -1
-
-
 def Planetesimal_SurfaceDensity(r):
     return d0 * r ** d1 * r ** 2
 
@@ -229,6 +249,7 @@ ax.hist(my_cv.rvs(size=N_planetesimals * 100), bins=100, label="PDF")
 # ax.set_yscale("log", base=10)
 plt.legend()
 plt.savefig("PDF.png")
+plt.close()
 
 disk_ids = []
 
@@ -250,98 +271,6 @@ x *= au
 dx *= au
 A *= au ** 2
 
-
-# Planetesimal Mass Distribution
-# Radius of Planetesiomals in cm according to Coleman 2021
-
-def Mass(radius):
-    return 4 / 3 * np.pi * (radius) ** 3 * rho
-
-
-# at log(1) au, radius log(20) km
-
-# at log(10) au, radius log(100) km
-
-dx = np.log10(10) - np.log10(1)
-dy = np.log10(90) - np.log10(20)
-dxdy = dx / dy
-a0 = 100 * 1000 * 100 * np.power(10, np.log10(20) - dx / dy)
-a1 = dx / dy
-print("a0: ", a0)
-print("a1: ", a1)
-
-
-# initial Planetesimal Radius in cm
-def Radius(r):
-    # a0:  6548731.842129445
-    # a1:  1.6609640474436815
-    return a0 * r ** a1
-
-
-b0 = a0 * (R_S / au) ** a1 / R_S
-print("b0: ", b0)
-print(6.1929286044739439e-15 * M_S / M_E * 2 * 10e6)
-
-
-def Radius_S(r_s):
-    # b0 = a0 * (R_S /au)**a1
-    # b0 = 2.2745423088987758e-08
-    return b0 * r_s ** a1
-
-
-print(Radius(1) / R_S / R_E)
-print(Radius_S(215.03215567054764) * R_S / R_E)
-
-fig, ax = plt.subplots()
-ax.set_xlabel('Distance in AU')
-ax.set_ylabel('Initial Mass in Erath Masses')
-ax.plot(radii, Mass(Radius(radii)) / M_E, label="Initial Masses of Planetesimals")
-ax.set_xscale("log", base=10)
-ax.set_yscale("log", base=10)
-plt.legend()
-plt.savefig("Embryos.png")
-
-print(np.sum(Mass(Radius(radii))) / M_S)
-print(Radius(1) / 100 / 1000)
-print(Mass(Radius(30)))
-
 TM_planetesimals = np.sum(initial_mass * N_planetesimals)
 
 print("Total Mass of Planetesimals: ", TM_planetesimals / M_J)
-
-# Planetesimal Surface Density
-
-dr = []
-for i, item in enumerate(radii[:-1]):
-    delta = radii[i + 1] - item
-    dr.append(delta)
-
-dr.insert(0, radii[0] - R_min)
-
-areas = np.zeros(N_planetesimals)
-for i in range(N_planetesimals - 1):
-    areas[i] = np.pi * ((radii[i + 1]) ** 2 - (radii[i]) ** 2)
-areas = np.array(areas)
-
-print("Area")
-print(np.sum(A))
-print(np.sum(areas))
-
-surface_dens = initial_mass * areas
-
-averagesurface = N_planetesimals * initial_mass / np.sum(A)
-
-
-# ax.hlines(y=averagesurface, xmin=R_min,xmax=R_max, label="Planetesimals")
-# plt.show()
-
-
-def pla_dens(rad, a0, a1, a2):
-    coeff = a1
-    y = a2 + a0 * rad ** coeff
-    return y
-
-
-popt, _ = curve_fit(pla_dens, radii, surface_dens)
-
-print(popt)

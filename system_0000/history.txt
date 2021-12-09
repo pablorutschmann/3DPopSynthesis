@@ -2142,3 +2142,35 @@ Runs/test_iceline/inputs started at Wed Nov 17 18:04:06 2021
 
 /Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Dec  6 17:08:47 2021
 
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Wed Dec  8 16:45:21 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Wed Dec  8 16:45:57 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Wed Dec  8 16:53:55 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Wed Dec  8 16:57:39 2021
+ after 224.268 s, 3.73781 min, 0.0622968 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Wed Dec  8 17:00:59 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Wed Dec  8 17:02:35 2021
+ after 96.2941 s, 1.6049 min, 0.0267484 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Wed Dec  8 17:07:01 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Wed Dec  8 17:09:11 2021
+ after 130.593 s, 2.17654 min, 0.0362757 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Wed Dec  8 17:10:20 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Wed Dec  8 17:12:05 2021
+ after 105.178 s, 1.75297 min, 0.0292162 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Wed Dec  8 17:13:00 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Wed Dec  8 17:14:14 2021
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Wed Dec  8 17:17:28 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Wed Dec  8 17:19:06 2021
+ after 98.3052 s, 1.63842 min, 0.027307 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Wed Dec  8 17:30:02 2021
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Wed Dec  8 17:30:10 2021
+ after 8.63565 s, 0.143927 min, 0.00239879 hours

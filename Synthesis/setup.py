@@ -14,17 +14,19 @@ def setup(NAME, N_sims):
     CWD = getcwd()
 
     # Path of the Executable
-    EXECUTABLE = path.join(CWD, '3DPopSynth')
+    EXECUTABLE = path.join(CWD, 'CodeBase/3DPopSyn')
 
-    # Directory 0f the Synthesis Run
+    # Directory of the Synthesis Run
     RUN = path.join(CWD, 'SynthesisRuns', NAME)
 
-    print(RUN)
+    # History File Path
+    HISTORY = path.join(RUN,'history.txt')
+
 
     def dir_structure(index):
         SYSTEM = path.join(RUN, 'system_' + str(index))
-        INPUT = path.join(SYSTEM, 'inputs/')
-        OUTPUT = path.join(SYSTEM, 'outputs/')
+        INPUT = path.join(SYSTEM, 'inputs')
+        OUTPUT = path.join(SYSTEM, 'outputs')
         makedirs(INPUT, exist_ok=True)
         makedirs(OUTPUT, exist_ok=True)
         return INPUT, OUTPUT
@@ -37,28 +39,31 @@ def setup(NAME, N_sims):
     N = 1000
     disk.prepare(spacing, R_min, R_max, N)
 
-    for i in range(N_SIMS):
+    for i in range(1,N_SIMS+1):
         INPUT, OUTPUT = dir_structure(i)
         # Create DiskFile
         disk.sample(INPUT)
         # Create Options File
         write_option_file(INPUT)
 
+    # Creating History File
+    with open(HISTORY, 'w') as history:
+        pass
+
     #  INPUT AND OUTPUT WITH $LSB_JOBINDEX
     JI_SYSTEM = path.join(RUN, 'system_\$LSB_JOBINDEX')
-    JI_INPUT = path.join(JI_SYSTEM, 'inputs/')
-    JI_OUTPUT = path.join(JI_SYSTEM, 'outputs/')
-    JI_HISTORY = path.join(JI_SYSTEM, 'history.txt')
+    JI_INPUT = path.join(JI_SYSTEM, 'inputs')
+    JI_OUTPUT = path.join(JI_SYSTEM, 'outputs')
     MAXTIME=120
-    command = 'bsub -J "{name}[1-{N}]%100" -r -W {maxtime}:00 -o {run}/log "{exe} {input} {output} {history}"'.format(
+    command = 'bsub -J "{name}[1-{N}]%100" -n 1 -r -W {maxtime}:00 -o {system}/log "{exe} {input} {output} {history}"'.format(
         name=NAME,
         N=str(N_SIMS),
         maxtime=MAXTIME,
-        run=RUN,
+        system=JI_SYSTEM,
         exe=EXECUTABLE,
         input=JI_INPUT,
         output=JI_OUTPUT,
-        history=JI_HISTORY)
+        history=HISTORY)
     system(command)
     return command
 

@@ -395,9 +395,7 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
         expr = log10(R_min) + (rand() % 10000) / 10000. * (log10(R_max) - log10(R_min));
         r = pow(10, expr);
         z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
-        double init_R = PhysicalRadiusDistribution(r);
-        double initial_mass = 4 / 3 * M_PI * pow(init_R, 3) * Rho;
-        Satellites[index] = SatelliteModel(ID, type, initial_mass, r * cos(theta), r * sin(theta), z, Rho, Disk.G,
+        Satellites[index] = SatelliteModel(ID, type, InitMass, r * cos(theta), r * sin(theta), z, Rho, Disk.G,
                                            Disk.MP, Disk.RP, StokesNumber, Time);
         ComputeParameters(index);
         //invalid = CheckInvalidity(index);
@@ -1465,7 +1463,7 @@ void EvolutionModel::Accretion(int index, double dt) {
                          pow(Satellites[index].OmegaK * R, 2);
         double Mdot_star = 9.0 / 32.0 * pow(FeedRadius * Satellites[index].RHill, 2) /
                            (R * Satellites[index].Inc * Satellites[index].RHill) * Satellites[index].SigmaDust *
-                           Satellites[index].OmegaK * M_PI * Satellites[index].Radius * F;
+                           Satellites[index].OmegaK * M_PI * Satellites[index].Radius * F * AccCoeff;
 
         double Mdot_star2 =
                 sqrt(3) / 2 * Satellites[index].SigmaDust * Satellites[index].OmegaK * M_PI * Satellites[index].Radius *
@@ -1474,7 +1472,7 @@ void EvolutionModel::Accretion(int index, double dt) {
         if (DM > DMmax) DM = DMmax;
 
 
-         Satellites[index].Mass += DM;
+        Satellites[index].Mass += DM;
 
         for (int i = 0; i < Disk.Length; i++) {
             if (abs(R - Disk.R[i]) <= Satellites[index].Rfeed) {
@@ -1684,12 +1682,6 @@ double d2Kijdy2(double y) {
     else return (12 * y * y * y - 18 * y * y + 6 * y) / (den * den * den);
 }
 
-double PhysicalRadiusDistribution(double r) {
-    double b0 = 2.2745423088987758e-08;
-    double b1 = 1.6609640474436815;
-
-    return b0 * pow(r, b1);
-}
 
 
 

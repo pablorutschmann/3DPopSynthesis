@@ -54,6 +54,7 @@ class disk:
     def sample(self, INPUT):
         # Get Surface Densities and Power Coefficients
         Sigma_Gas, Sigma_Coeff = Surface_Density(self.out['r [R_S]'])
+        # Unit Conversion from CGS to Solar Units
         Sigma_Gas *= denstos
         Sigma_Dust = 0.01 * Sigma_Gas
         self.out['sigma gas [M_S/R_S^2]'] = Sigma_Gas
@@ -76,7 +77,6 @@ class disk:
 
     def write_disk(self,INPUT):
 
-
         for key in ['r [R_S]', 'dr [R_S]', 'sigma gas [M_S/R_S^2]', 'sigma dust [M_S/R_S^2]', 'sigma dustbar [M_S/R_S^2]', 'T [K]', 'Area [R_S^2]', 'Keplerian Velocity [R_S / yr]', 'Power Coefficient Density', 'Power Coefficient Temperature', 'Gas Opacity []', 'WMF []', 'SWMF []', 'Headwind Factor []']:
             #self.out = self.out.pop[key]
             self.out[key] = self.out.pop(key)
@@ -90,7 +90,7 @@ class disk:
         df_out.to_csv(SAVEPATH, header=False, sep='\t', mode='w')
 
 
-#HELPER FUCNTIONS
+# HELPER FUCNTIONS
 
 # Calculate Keplerian Veloctiy
 def kepl_velo(r):
