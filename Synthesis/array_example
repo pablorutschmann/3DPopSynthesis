@@ -1,8 +1,0 @@
-bsub -J "calc 1" ./program [arguments]
-bsub -J "calc 2" ./program [arguments]
-bsub -J "calc 3" ./program [arguments]
-bsub -J "calc 4" ./program [arguments]
-
-name = 'jobname i'
-
-bsub -J $name -r -W 120:00 -o $run/log $HOME/3DPopSynthesis/CodeBase/3DPopSyn INPUT OUTPUT HISTORY

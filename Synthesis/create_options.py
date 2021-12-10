@@ -3,7 +3,7 @@ import os.path as path
 import pathlib
 
 
-def write_option_file(PATH):
+def write_option_file(PATH, RUNTIME, EVOTIME):
 
     options = {}
     # stream = pkg_resources.resource_stream(__name__, 'options_template.txt')
@@ -15,12 +15,20 @@ def write_option_file(PATH):
     # Declaring Options
     #   Units: Mass [Solar Mass], Distance [Solar Radius], Time [year]
 
-    # Number of Embryos
+    # Maximum Runtime
+    options["MaxRunTime"] = 0.99 * RUNTIME
 
+    # Maximum Evolution Time
+    options["MaxTime"] = EVOTIME
+
+    # Save Interval
+    options["SaveInterval"] = EVOTIME // 10
+
+    # Number of Embryos
     options["NEmbryos"] = 0
 
     # Number of Planetesiamls
-    NPlanetesimals = randint(80,120)
+    NPlanetesimals = randint(300,500)
     options["NPlanetesimals"] = NPlanetesimals
 
     # Initial Mass of Embryos

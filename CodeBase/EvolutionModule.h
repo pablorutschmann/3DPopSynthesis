@@ -38,7 +38,7 @@
 #include <ctime>
 #include <cstdlib>
 
-const int TotalNumberSatellites = 121;
+const int TotalNumberSatellites = 501;
 using namespace std;
 
 
