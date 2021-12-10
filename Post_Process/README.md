@@ -39,7 +39,7 @@ import Post_Process as post
 For every run of the Simulation Code 3DPopSynthesis, you should create a class instance. This can be done by calling:
 
 ```python
-my_run = post.run(path)
+my_run = post.simulation(path)
 ```
 
 where path is the location of the `system_0000` directory. This import all the data from the run. It imports

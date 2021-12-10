@@ -1,6 +1,6 @@
 import sys
 
-from Synthesis.pre.setup import setup
+import Synthesis.pre as pre
 
 if __name__ == "__main__":
     Name = sys.argv[1]
@@ -10,5 +10,5 @@ if __name__ == "__main__":
 
     # Name = 'Test'
     # N = 5
-    cmd = setup(Name, N, RUNTIME, EVOTIME)
+    cmd = pre.setup(Name, N, RUNTIME, EVOTIME)
     print(cmd)

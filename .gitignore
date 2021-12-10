@@ -9,3 +9,4 @@ cmake-build-debug/
 /disks/
 /SynthesisRuns/
 /Pre_Process/*.png
+/Synthesis/post/test/
