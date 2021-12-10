@@ -3,8 +3,8 @@ import os.path as path
 from os import getcwd
 from os import makedirs
 from os import system
-from create_options import write_option_file
-import disk as dsk
+from .create_options import write_option_file
+from .disk import disk
 
 
 def setup(NAME, N_sims, Runtime, Evotime):
@@ -43,17 +43,17 @@ def setup(NAME, N_sims, Runtime, Evotime):
         return INPUT, OUTPUT
 
     # Create Disk Object
-    disk = dsk.disk()
+    disk_object = disk()
     spacing = "log"
     R_min = 0.5
     R_max = 30
     N = 1000
-    disk.prepare(spacing, R_min, R_max, N)
+    disk_object.prepare(spacing, R_min, R_max, N)
 
     for i in range(1,N_SIMS+1):
         INPUT, OUTPUT = dir_structure(i)
         # Create DiskFile
-        disk.sample(INPUT)
+        disk_object.sample(INPUT)
         # Create Options File
         write_option_file(INPUT, RUNTIME, EVOTIME)
 

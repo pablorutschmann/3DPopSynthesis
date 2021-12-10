@@ -1,5 +1,5 @@
 import numpy as np
-from units import *
+from .units import *
 
 # Radius always in AU
 # Use exactly these function names: WMF, Surface_Density, Temperature, Eta
