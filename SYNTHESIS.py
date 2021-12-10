@@ -1,6 +1,6 @@
-from Synthesis.setup import setup
 import sys
 
+from Synthesis.pre.setup import setup
 
 if __name__ == "__main__":
     Name = sys.argv[1]

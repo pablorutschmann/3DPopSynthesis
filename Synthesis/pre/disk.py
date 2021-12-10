@@ -1,8 +1,8 @@
 import numpy as np
-from .units import *
+from ..units import *
 import pandas as pd
 import os.path as path
-from .functions import *
+from ..functions import *
 
 class disk:
     def __init__(self):
