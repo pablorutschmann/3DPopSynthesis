@@ -1,3 +1,3 @@
 # __init__.py
 
-from . import setup
+from .setup import setup

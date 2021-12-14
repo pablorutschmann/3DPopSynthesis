@@ -31,6 +31,9 @@ M_E = astroconst.M_earth.decompose(u.cgs.bases).value
 # Earth Radius
 R_E = astroconst.R_earth.decompose(u.cgs.bases).value
 
+# Mars Mass
+M_M = 0.107 * M_E
+
 # Gravitational Constant
 G = astroconst.G.decompose(u.cgs.bases).value
 
