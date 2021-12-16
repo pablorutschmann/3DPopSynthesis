@@ -10,6 +10,7 @@ from .simulation import simulation
 class population:
     def __init__(self, PATH, N_sims):
         self.MAIN = PATH
+        self.NAME = path.basename(self.MAIN)
         self.PLOT = path.join(self.MAIN, 'plots')
         self.NSIMS = N_sims
         self.SIMS = {}
@@ -43,7 +44,7 @@ class population:
         else:
             ax.hist(Masses, bins=bins, density=True, cumulative=cumulative, stacked=True)
         ax.vlines(np.mean(Masses), 0, 700, color='r', linestyle='dashed', linewidth=2, label='Mean Mass')
-        ax.vlines(M_M/M_E, 0, 700, color='r', linestyle='dashed', linewidth=2, label='Mars Mass')
+        ax.vlines(M_M / M_E, 0, 700, color='r', linestyle='dashed', linewidth=2, label='Mars Mass')
         ax.set_xlabel('Mass in Earth Masses')
         if density == False:
             ax.set_ylabel('Counts')
@@ -145,6 +146,9 @@ class population:
         fig.savefig(path.join(self.PLOT, 'final_wm_distribution' + str(cumulative) + str(density) + '.png'))
         plt.close(fig)
 
+
+    def 
+
     def system_path(self, i):
         sys = "system_" + str(i)
         return path.join(self.MAIN, sys)
@@ -154,6 +158,14 @@ class population:
 
     def system_output_path(self, i):
         return path.join(self.system_path(i), 'inputs')
+
+    def __str__(self):
+        return f"""
+      Synthesis Run:
+          Run Name: {self.NAME}
+          Main Path: {self.MAIN}
+          Number Of Simulations: {self.NSIMS}
+      """
 
 
 if __name__ == "__main__":
