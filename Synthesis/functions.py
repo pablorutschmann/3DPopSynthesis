@@ -28,16 +28,16 @@ def wmf(r):
 
 WMF = np.vectorize(wmf)
 
-def raymond(r):
+def raymond(r,coeff):
     # coeff = -1.0
     coeff = np.random.uniform(-1.5,-0.5)
     y = 4000 * (r)**coeff
     return y, coeff
 
-def binkert(r):
-    coeff = -0.5
-    y = 80 * r**coeff
-    return y, coeff
+def binkert(r, coeff):
+    norm = 100
+    y = norm * r**coeff
+    return y, coeff, norm
 
 Surface_Density = binkert
 

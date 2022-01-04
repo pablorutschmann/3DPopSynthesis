@@ -10,3 +10,4 @@ cmake-build-debug/
 /SynthesisRuns/
 /Pre_Process/*.png
 /Synthesis/post/test/
+/Rejection_Sampling.py

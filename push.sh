@@ -18,6 +18,8 @@ rsync -Pav /Users/prut/CLionProjects/3DPopSynthesis/run_euler.sh  rupablo@euler.
 
 rsync -Pav /Users/prut/CLionProjects/3DPopSynthesis/restart.sh  rupablo@euler.ethz.ch:/cluster/home/rupablo/3DPopSynthesis/restart.sh
 
+rsync -Pav /Users/prut/CLionProjects/3DPopSynthesis/SYNTHESIS.py  rupablo@euler.ethz.ch:/cluster/home/rupablo/3DPopSynthesis/SYNTHESIS.py
+
 rsync -Pav /Users/prut/CLionProjects/3DPopSynthesis/compile.sh  rupablo@euler.ethz.ch:/cluster/home/rupablo/compile.sh
 
 if [[ $COMP == 0 ]] ; then

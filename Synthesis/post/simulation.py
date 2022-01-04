@@ -22,6 +22,17 @@ class simulation:
         self.labels['SigmaDust'] = ['Dust Surface Density', 'Sigma in [units]']
         self.labels['Temp'] = ['Temperature', 'Kelvin']
 
+        # import options.txt
+        path = os.path.join(self.input_path, 'options.txt')
+        dic = {}
+        with open(path,'r') as file:
+            for line in file:
+                ln = line.split(' ')
+                key, value = ln[0], ln[-1]
+                dic[key] = float(value)
+        self.N_planetesimals = dic['NPlanetesimals']
+
+
         # import collisions.txt
         path = os.path.join(self.output_path, 'collisions.txt')
         df = pd.read_csv(path, sep="	", index_col="#time", dtype='float64')

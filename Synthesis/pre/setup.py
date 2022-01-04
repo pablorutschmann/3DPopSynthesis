@@ -44,18 +44,24 @@ def setup(NAME, N_sims, Runtime, Evotime):
 
     # Create Disk Object
     disk_object = disk()
-    spacing = "log"
+
+    TotalMass = 0.01 # Solar Masses from MMSN, Hayashi
     R_min = 0.5
     R_max = 30
     N = 1000
-    disk_object.prepare(spacing, R_min, R_max, N)
+    spacing = "log"
+    Sigma_min = -1.5
+    Sigma_max = -0.5
+
+
+    disk_object.prepare(TotalMass, R_min, R_max, N, spacing, Sigma_min, Sigma_max)
 
     for i in range(1,N_SIMS+1):
         INPUT, OUTPUT = dir_structure(i)
         # Create DiskFile
-        disk_object.sample(INPUT)
+        SIGMA_COEFF, SIGMA_NORM = disk_object.sample(INPUT)
         # Create Options File
-        write_option_file(INPUT, RUNTIME, EVOTIME)
+        write_option_file(INPUT, RUNTIME, EVOTIME, SIGMA_COEFF, SIGMA_NORM)
 
     # Creating History File
     with open(HISTORY, 'w') as history:

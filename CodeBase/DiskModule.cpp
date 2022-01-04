@@ -38,6 +38,8 @@ DiskModel::DiskModel(string input_address, string output_address, std::map<std::
     // Assign options
     MP = Options["MP"];
     RP = Options["RP"];
+    SigmaExponent = Options["SigmaExponent"];
+    SigmaNorm = Options["SigmaNorm"];
     RCavity = Options["RCavity"];
     DispersionTime = Options["DispersionTime"];
     CoolingTime = Options["CoolingTime"];
@@ -79,7 +81,7 @@ void DiskModel::SetDisk() {
 
     /*-- reading from file. Dustbar is the dust profile without satellite accretion, it is used for refilling calculation --*/
     while (InputFile >> index >> R[i] >> Dr[i] >> SigmaGas[i] >> SigmaDust[i] >> SigmaDustBar[i] >> Temp[i] >> Area[i]
-                     >> OmegaK[i] >> SigmaExponent[i] >> TempExponent[i] >> Opacity[i] >> WMF[i] >> SWMF[i] >> Eta[i]) {
+                     >> OmegaK[i] >> TempExponent[i] >> Opacity[i] >> WMF[i] >> SWMF[i] >> Eta[i]) {
         if (RCavity > R[i]) {
             SigmaGas[i] = 0;
             SigmaDust[i] = 0;
@@ -95,7 +97,7 @@ void DiskModel::SetDisk() {
     {
         InputFile.open(InputAddress + "/disk.txt");
         while (InputFile >> index >> R[i] >> Dr[i] >> SigmaGas[i] >> SigmaDust[i] >> SigmaDustBar[i] >> Temp[i]
-                         >> Area[i] >> OmegaK[i] >> SigmaExponent[i] >> TempExponent[i] >> Opacity[i] >> WMF[i]
+                         >> Area[i] >> OmegaK[i] >> TempExponent[i] >> Opacity[i] >> WMF[i]
                          >> SWMF[i] >> Eta[i]) {
             if (RCavity > R[i]) {
                 SigmaGas[i] = 0;

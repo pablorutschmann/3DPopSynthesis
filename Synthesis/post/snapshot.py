@@ -43,8 +43,11 @@ class snapshot:
 
         self.Mass = np.sum(self.satellites['M']) * M_S
         #pi (R^2 - r^2)
-        self.Area = np.pi * ( max(self.satellites['a'])**2 - min(self.satellites['a'])**2) * R_S2
-
+        if list(self.satellites['a'].values):
+            self.Area = np.pi * ( max(self.satellites['a'].values)**2 - min(self.satellites['a'].values)**2) * R_S2
+        else:
+            print("Empty List")
+            print("Detected")
         self.Sigma = self.Mass / self.Area
 
     def plot_satellites(self):

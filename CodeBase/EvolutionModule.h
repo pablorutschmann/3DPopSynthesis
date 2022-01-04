@@ -37,6 +37,7 @@
 #include <ctime>
 #include <ctime>
 #include <cstdlib>
+#include <random>
 
 const int TotalNumberSatellites = 501;
 using namespace std;
@@ -84,6 +85,8 @@ public:
 
     std::map<std::string, double> Options;
 
+    default_random_engine generator;
+
     // Functions
 
     void Simulation();
@@ -95,6 +98,10 @@ public:
     void SatelliteInitialization();
 
     void CreateSatellite(int index, bool type = 0);
+
+    double Density_Model(double x);
+
+    double Rejection_Sample();
 
     void CreateSnapshot();
 

@@ -392,8 +392,10 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
 
     if (type == 0) {
         bool invalid = true;
-        expr = log10(R_min) + (rand() % 10000) / 10000. * (log10(R_max) - log10(R_min));
-        r = pow(10, expr);
+
+
+        r = Rejection_Sample();
+
         z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
         Satellites[index] = SatelliteModel(ID, type, InitMass, r * cos(theta), r * sin(theta), z, Rho, Disk.G,
                                            Disk.MP, Disk.RP, StokesNumber, Time);
@@ -444,12 +446,12 @@ void EvolutionModel::WriteSnapshot(string FolderName, bool header) {
 
     if (header)
         OutputFile
-                << "#index\tr\tdr\tSigmaGas\tSigmaDust\tSigmaDustBar\tTemp\tArea\tOmegaK\tSigmaExponent\tTExponent\tOpacity\tWMF\tSWMF\tEta\n";
+                << "#index\tr\tdr\tSigmaGas\tSigmaDust\tSigmaDustBar\tTemp\tArea\tOmegaK\tTExponent\tOpacity\tWMF\tSWMF\tEta\n";
 
     for (int i = 0; i < Disk.Length; i++) {
         OutputFile << i << '\t' << Disk.R[i] << '\t' << Disk.Dr[i] << '\t' << Disk.SigmaGas[i] << '\t'
                    << Disk.SigmaDust[i] << '\t' << Disk.SigmaDustBar[i] << '\t' << Disk.Temp[i] << '\t' << Disk.Area[i]
-                   << '\t' << Disk.OmegaK[i] << '\t' << Disk.SigmaExponent[i] << '\t' << Disk.TempExponent[i] << '\t'
+                   << '\t' << Disk.OmegaK[i] << '\t' << Disk.TempExponent[i] << '\t'
                    << Disk.Opacity[i] << '\t' << Disk.WMF[i] << '\t' << Disk.SWMF[i] << '\t' << Disk.Eta[i] << '\n';
     }
 
@@ -521,7 +523,7 @@ void EvolutionModel::ComputeParameters(int index) {
         Satellites[index].Inc = Satellites[index].ComputeInc();
         Satellites[index].R = Disk.R[Satellites[index].Index];
         Satellites[index].OmegaK = Disk.OmegaK[Satellites[index].Index];
-        Satellites[index].SigmaExp = Disk.SigmaExponent[Satellites[index].Index];
+        Satellites[index].SigmaExp = Disk.SigmaExponent;
         Satellites[index].TempExp = Disk.TempExponent[Satellites[index].Index];
         Satellites[index].RHill = Satellites[index].ComputeRHill();
         Satellites[index].Rfeed = Satellites[index].RHill * FeedRadius;
@@ -1642,6 +1644,20 @@ double EvolutionModel::Energy() {
     return energy;
 }
 
+double EvolutionModel::Density_Model(double x) {
+    return Disk.SigmaNorm * pow(x, Disk.SigmaExponent);
+}
+
+double EvolutionModel::Rejection_Sample() {;
+    uniform_real_distribution<> x_distribution(R_min, R_max);
+    uniform_real_distribution<> y_distribution(Density_Model(R_min), Density_Model(R_max));
+    while (true) {
+        double x = x_distribution(generator);
+        double y = y_distribution(generator);
+        if (y <= Density_Model(x))
+            return x;
+    }
+}
 
 string ZeroPadNumber(int num, int length) {
     string ret;

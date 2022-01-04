@@ -63,5 +63,6 @@ mtooe = M_S / OE
 
 
 if __name__ == '__main__':
-    print(6.49235e-05 * mtome)
+    print(0.01 * M_S / M_J)
+    print((10 * M_J / M_S))
 

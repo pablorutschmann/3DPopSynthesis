@@ -3,6 +3,8 @@ RP                  9.73115873104683
 DustToGas           0.01
 NEmbryos            -1
 NPlanetesimals      -1
+SigmaExponent       0
+SigmaNorm           0
 R_min               170.0
 R_max               6450.0
 EmbryoInitMass      -1
@@ -11,7 +13,7 @@ Spacing             -1
 InitMass            -1
 Rho                 -1
 FeedRadius          2.3
-ThresholdMass       1.0e-10
+ThresholdMass       1.0e-11
 MaxTime             1.0e6
 SaveInterval        1.0e4
 MaxRunTime          119.0

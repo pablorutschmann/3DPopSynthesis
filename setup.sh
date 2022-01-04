@@ -40,3 +40,5 @@ rm -r $PWD/Runs/debug_test/outputs ;mkdir $PWD/Runs/debug_test/outputs
 cp disks/disk_log_1000.txt Runs/debug_test/inputs/disk.txt
 
 rsync -Pav rupablo@euler.ethz.ch:/cluster/home/rupablo/3DPopSynthesis/SynthesisRuns/initsynth /Users/prut/CLionProjects/3DPopSynthesis/SynthesisRuns/
+
+python SYNTHESIS.py thresh 500 120 1e6

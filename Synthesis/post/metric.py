@@ -1,19 +1,21 @@
-#from ..units import *
-from Synthesis.units import *
+from ..units import *
 import numpy as np
 from scipy.integrate import dblquad
 
 
 # From Alibert 2017
 
+def weight(M):
+    return np.log10(M*M_E/M_J) + 1
+
 def f_p(M, A, MP, AP):
     # Funtion for each planet
     # Variables: Mass and Semi Major Axis
     # Parameter: Planet in form of Pandas Row
     sigma_m = 1
-    sigma_a = 0.3
+    sigma_a = 0.2
 
-    return np.exp(-np.power((np.log(M) - np.log(MP)) / (2 * sigma_m), 2) - np.power((np.log(A) - np.log(AP)) / (2 * sigma_a), 2))
+    return np.exp(-np.power((np.log10(M) - np.log10(MP)) / (sigma_m), 2) - np.power((np.log10(A) - np.log10(AP)) / (sigma_a), 2)) * weight(MP)
 
 
 def PSI_S(M, A, System):
@@ -32,10 +34,10 @@ def distance(s1, s2):
     def f(M, A):
         return np.power(PSI_S(M, A, s1) - PSI_S(M, A, s2), 2) / M / A
 
-    fs = f(1,1)
-    integral = dblquad(f, 0.1, 30, 0.1, 50)
+    integral, err = dblquad(f, 0.1, 30, 0.1, 50)
 
     return np.sqrt(integral)
+
 
 # Solar System Planets (Mass, Orbital Distance) in Earth Units
 
@@ -55,13 +57,3 @@ terrestrial = [mercury, venus, earth, mars]
 
 solar_system = [mercury, venus, earth, mars, jupiter, saturn, uranus, neptune]
 
-
-if __name__ == "__main__":
-    system1 = [(0.8, 0.9), (1.1,1.5), (1.9,2.3)]
-
-    print(PSI_S(0.01,0.01,terrestrial))
-
-    ass = np.linspace(0.01, 30, 100)
-    mass = np.random.uniform(0.1,5,100)
-
-    print(distance(system1,terrestrial))
