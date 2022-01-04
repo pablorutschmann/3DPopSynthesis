@@ -41,10 +41,6 @@ EvolutionModel::EvolutionModel(string input_address, string output_address) {
 
     SetOptions();
 
-    // initialize random seed for satellite formation
-    int factor = (int) (Options["DustToGas"] * 1e6 + Options["TRefilling"]);
-    srand(time(0) + factor); // We need this to have real random numbers and not pseudo-random numbers.
-
     Disk = DiskModel(InputAddress, OutputAddress, Options);
     GlobalDt = 2 * M_PI * sqrt(RDistruction * RDistruction * RDistruction / Disk.G / Disk.MP) *
                RotationFraction;   // minimum timestep (inner disk)
@@ -365,7 +361,8 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
     }
     ID++;
 
-    theta = (rand() % 10000) / 10000. * 2 * M_PI;
+    uniform_real_distribution<> theta_distribution(0, 2 * M_PI);
+    theta = theta_distribution(generator);
 
 
     if (ID == 1 and type == 1) {
@@ -391,16 +388,17 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
 
 
     if (type == 0) {
-        bool invalid = true;
-
 
         r = Rejection_Sample();
 
-        z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
+        uniform_real_distribution<> inc_distribution(0, 2.0 * MaxInclination);
+        double inc = inc_distribution(generator) - MaxInclination;
+
+        z = inc * r;
+
         Satellites[index] = SatelliteModel(ID, type, InitMass, r * cos(theta), r * sin(theta), z, Rho, Disk.G,
                                            Disk.MP, Disk.RP, StokesNumber, Time);
         ComputeParameters(index);
-        //invalid = CheckInvalidity(index);
     }
 
     ofstream OutputFile;
