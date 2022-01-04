@@ -72,6 +72,17 @@ class snapshot:
         plt.close(fig)
         print('Plot saved at: ' + self.plot_path + '/satellites' + str(self.index).zfill(4) + '.png')
 
+    def plot_histogram(self):
+        fig, ax = plt.subplots()
+        ax.set_xlabel('Radius in au')
+        ax.set_ylabel('Counts')
+        ax.set_title('Distribution of Satellites')
+
+        ax.hist(self.satellites['a']*R_S/au, bins=50)
+        savepath = os.path.join(self.plot_path, 'histogram.png')
+        fig.savefig(savepath)
+        plt.close(fig)
+
     def plot_satellites_ratio(self):
         fig, ax = plt.subplots(ncols=1)
         fig.set_size_inches(15.5, 10.5)
@@ -87,8 +98,6 @@ class snapshot:
         mean_mass = np.min(mtome * self.satellites['M'])
         mass_scaling = mean_mass / 90000
         mass_scaling = 0.000000001
-
-
 
         def pie_1d(r1, r2):
             # calculate the points of the first pie marker

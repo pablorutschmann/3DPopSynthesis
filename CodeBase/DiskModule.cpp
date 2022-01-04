@@ -242,13 +242,15 @@ void DiskModel::DiskRefilling(double dt) {
     int N_window = 6;
     if (Refilling) {
 
-        double weights [] = {0.000886, 0.00158, 0.00272, 0.00448, 0.00709, 0.0108, 0.0158, 0.0222, 0.0299, 0.0388, 0.0484, 0.0579, 0.0666, 0.0737, 0.0782, 0.0798, 0.0782, 0.0737, 0.0666, 0.0579, 0.0484, 0.0388, 0.0299, 0.0222, 0.0158, 0.0108, 0.00709, 0.00448, 0.00272, 0.00158, 0.000886};
+        double weights[] = {0.000886, 0.00158, 0.00272, 0.00448, 0.00709, 0.0108, 0.0158, 0.0222, 0.0299, 0.0388,
+                            0.0484, 0.0579, 0.0666, 0.0737, 0.0782, 0.0798, 0.0782, 0.0737, 0.0666, 0.0579, 0.0484,
+                            0.0388, 0.0299, 0.0222, 0.0158, 0.0108, 0.00709, 0.00448, 0.00272, 0.00158, 0.000886};
         vector<double> Padded;
         vector<double>::iterator it;
         double intermed[Length];
         for (int i = 0; i < Length; i++) {
             it = Padded.begin() + i;
-            Padded.insert(it,SigmaDust[i]);
+            Padded.insert(it, SigmaDust[i]);
         }
 
         for (int i = 0; i < N_window / 2; i++) {
@@ -259,13 +261,13 @@ void DiskModel::DiskRefilling(double dt) {
         }
 
 
-        for (int i = int(N_window/2); i < Length + int(N_window/2); i++) {
+        for (int i = int(N_window / 2); i < Length + int(N_window / 2); i++) {
             double window_sum = 0.0;
-            for (signed int j = -int(N_window/2); i < (N_window/2 + 1); i++) {
-                window_sum += weights[j+int(N_window/2)] * Padded[i+j];
+            for (signed int j = -int(N_window / 2); i < (N_window / 2 + 1); i++) {
+                window_sum += weights[j + int(N_window / 2)] * Padded[i + j];
             }
             intermed[i] = window_sum;
-            double rate = (SigmaDustBar[i] - Padded[i+int(N_window/2)]) / RefillingTime;
+            double rate = (SigmaDustBar[i] - Padded[i + int(N_window / 2)]) / RefillingTime;
             SigmaDust[i] += (rate * dt);
         }
 

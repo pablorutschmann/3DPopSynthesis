@@ -97,7 +97,7 @@ public:
 
     void SatelliteInitialization();
 
-    void CreateSatellite(int index, bool type = 0);
+    void CreateSatellite(int index);
 
     double Density_Model(double x);
 

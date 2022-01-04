@@ -66,6 +66,7 @@ class run:
         for i in ids:
             self.snaps[i].plot_satellites()
             self.snaps[i].plot_satellites_ratio()
+            self.snaps[i].plot_histogram()
 
     def plot_disk_evol(self, field, log=True, N=10, keys=None):
         if keys == None:
@@ -118,6 +119,8 @@ class run:
     def plot_wm(self):
         for item in self.satellites.values():
             item.wm_time(self.plot_path)
+
+
 
 
 if __name__ == "__main__":

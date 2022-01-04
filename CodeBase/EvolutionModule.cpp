@@ -249,17 +249,17 @@ void EvolutionModel::SetParameters() {
         ofstream OutputFile;
 
         OutputFile.open(OutputAddress + "/satellite_list.txt");
-        OutputFile << "#ID\tType\tinit_time\tmass\twm\tswm\tr2D\ttheta\tx\ty\tz\tinit_temp\n";
+        OutputFile << "#ID\tinit_time\tmass\twm\tswm\tr2D\ttheta\tx\ty\tz\tinit_temp\n";
         OutputFile.close();
 
         OutputFile.open(OutputAddress + "/lost_satellites.txt");
         OutputFile
-                << "#ID\ttime\tType\tmass\twm\tswm\tr\tx\ty\tz\tvx\tvy\tvz\ta\tecc\tinc\tformation_time\tcollision\tcollision_index\n";
+                << "#ID\ttime\tmass\twm\tswm\tr\tx\ty\tz\tvx\tvy\tvz\ta\tecc\tinc\tformation_time\tcollision\tcollision_index\n";
         OutputFile.close();
 
         OutputFile.open(OutputAddress + "/collisions.txt");
         OutputFile
-                << "#time\tID1\tType1\tmass1\twm1\tswm1\tx1\ty1\tz1\tvx1\tvy1\tvz1\tID2\tType2\tmass2\twm2\tswm2\tx2\ty2\tz2\tvx2\tvy2\tvz2\tID\tType\tmass\twm\tswm\tx\ty\tz\tvx\tvy\tvz\n";
+                << "#time\tID1\tmass1\twm1\tswm1\tx1\ty1\tz1\tvx1\tvy1\tvz1\tID2\tmass2\twm2\tswm2\tx2\ty2\tz2\tvx2\tvy2\tvz2\tID\tmass\twm\tswm\tx\ty\tz\tvx\tvy\tvz\n";
         OutputFile.close();
 
         Time = 0.;
@@ -288,7 +288,6 @@ void EvolutionModel::SatelliteInitialization() {
 
     int ID, N;
     double mass, rho, wm, swm, x, y, z, vx, vy, vz, init_time, form_time, a, e, inc, dt, p;
-    bool type;
     ifstream InputFile;
     cout << OutputAddress + "/restart/satellites.txt'\n";
     InputFile.open(OutputAddress + "/restart/satellites.txt");
@@ -297,15 +296,11 @@ void EvolutionModel::SatelliteInitialization() {
 
     int i = 0;
 
-    while (InputFile >> ID >> type >> mass >> wm >> swm >> x >> y >> z >> vx >> vy >> vz >> a >> e >> inc >> N >> dt
+    while (InputFile >> ID >> mass >> wm >> swm >> x >> y >> z >> vx >> vy >> vz >> a >> e >> inc >> N >> dt
                      >> init_time >> form_time >> p)    // search satellites in the restart file
     {
-        if (type == 1) {
-            rho = EmbryoRho;
-        } else {
-            rho = Rho;
-        }
-        Satellites[i] = SatelliteModel(ID, type, mass, x, y, z, rho, Disk.G, Disk.MP, Disk.RP, StokesNumber, init_time);
+
+        Satellites[i] = SatelliteModel(ID, mass, x, y, z, Rho, Disk.G, Disk.MP, Disk.RP, StokesNumber, init_time);
         Satellites[i].Vx = vx;
         Satellites[i].Vy = vy;
         Satellites[i].Vz = vz;
@@ -329,15 +324,12 @@ void EvolutionModel::SatelliteInitialization() {
 
         int j = 0;
         for (j = 0; j < NSatellites; j++) {
-            if (j < NEmbryos) {
-                CreateSatellite(j, 1);
-            } else {
-                CreateSatellite(j, 0);
-            }
-
-            ComputeParameters(j);
+            CreateSatellite(j);
         }
+
+        ComputeParameters(j);
     }
+
 
     for (i = 0; i < NSatellites; i++) {
         SatellitesBackUp[i] = Satellites[i];
@@ -346,7 +338,7 @@ void EvolutionModel::SatelliteInitialization() {
 }
 
 
-void EvolutionModel::CreateSatellite(int index, bool type) {
+void EvolutionModel::CreateSatellite(int index) {
     /*-- CREATE ONE SATELLITE IN SPECIFIC POSITION --*/
 
     double r, expr, theta, z, mass, rho;
@@ -365,45 +357,20 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
     theta = theta_distribution(generator);
 
 
-    if (ID == 1 and type == 1) {
-        r = R_min + 0.1 * R_min;
-        z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
-        r_prev = r;
-        Satellites[index] = SatelliteModel(ID, type, EmbryoInitMass, r * cos(theta), r * sin(theta), z, EmbryoRho,
-                                           Disk.G, Disk.MP, Disk.RP, Disk.StokesNumber, Time);
-        ComputeParameters(index);
-        RHill_prev = Satellites[index].ComputeRHill();
+    r = Rejection_Sample();
 
-    }
-    if (ID > 1 and type == 1) {
-        r = r_prev + Spacing * RHill_prev +
-            ((-0.1 * Spacing * RHill_prev) + (rand() % 10) / 10. * (0.2 * Spacing * RHill_prev));
-        z = (2 * (rand() % 10000) / 10000. - 1) * MaxInclination * r;
-        r_prev = r;
-        Satellites[index] = SatelliteModel(ID, type, EmbryoInitMass, r * cos(theta), r * sin(theta), z, EmbryoRho,
-                                           Disk.G, Disk.MP, Disk.RP, StokesNumber, Time);
-        ComputeParameters(index);
-        RHill_prev = Satellites[index].ComputeRHill();
-    }
+    uniform_real_distribution<> inc_distribution(0, 2.0 * MaxInclination);
+    double inc = inc_distribution(generator) - MaxInclination;
 
+    z = inc * r;
 
-    if (type == 0) {
-
-        r = Rejection_Sample();
-
-        uniform_real_distribution<> inc_distribution(0, 2.0 * MaxInclination);
-        double inc = inc_distribution(generator) - MaxInclination;
-
-        z = inc * r;
-
-        Satellites[index] = SatelliteModel(ID, type, InitMass, r * cos(theta), r * sin(theta), z, Rho, Disk.G,
-                                           Disk.MP, Disk.RP, StokesNumber, Time);
-        ComputeParameters(index);
-    }
+    Satellites[index] = SatelliteModel(ID, InitMass, r * cos(theta), r * sin(theta), z, Rho, Disk.G,
+                                       Disk.MP, Disk.RP, StokesNumber, Time);
+    ComputeParameters(index);
 
     ofstream OutputFile;
     OutputFile.open(OutputAddress + "/satellite_list.txt", ios_base::app);
-    OutputFile << Satellites[index].ID << '\t' << Satellites[index].Type << '\t' << Satellites[index].InitTime << '\t'
+    OutputFile << Satellites[index].ID << '\t' << Satellites[index].InitTime << '\t'
                << Satellites[index].Mass << '\t' << Satellites[index].WM << '\t' << Satellites[index].SWM << '\t'
                << Satellites[index].ComputeR2D()
                << '\t' << Satellites[index].ComputeTheta() << '\t' << Satellites[index].X << '\t' << Satellites[index].Y
@@ -459,11 +426,11 @@ void EvolutionModel::WriteSnapshot(string FolderName, bool header) {
     OutputFile.open(FolderName + "/satellites.txt");
 
     if (header)
-        OutputFile << "#ID\tType\tM\tWM\tSWM\tx\ty\tz\txv\tvy\tvz\ta\te\ti\tN\tdt\tinit_time\tformation_time\tP\n";
+        OutputFile << "#ID\tM\tWM\tSWM\tx\ty\tz\txv\tvy\tvz\ta\te\ti\tN\tdt\tinit_time\tformation_time\tP\n";
 
     for (int i = 0; i < NSatellites; i++) {
         if (Satellites[i].Active) {
-            OutputFile << Satellites[i].ID << '\t' << Satellites[i].Type << '\t' << Satellites[i].Mass << '\t'
+            OutputFile << Satellites[i].ID << '\t' << Satellites[i].Mass << '\t'
                        << Satellites[i].WM << '\t' << Satellites[i].SWM << '\t' << Satellites[i].X << '\t'
                        << Satellites[i].Y << '\t' << Satellites[i].Z << '\t' << Satellites[i].Vx << '\t'
                        << Satellites[i].Vy << '\t' << Satellites[i].Vz << '\t' << Satellites[i].ComputeA() << '\t'
@@ -1363,13 +1330,13 @@ void EvolutionModel::CheckCollision(int index) {
 
                 OutputFile.open(OutputAddress + "/collisions.txt", ios_base::app);
                 OutputFile << Time << '\t';
-                OutputFile << Satellites[save_index].ID << '\t' << Satellites[save_index].Type << '\t'
+                OutputFile << Satellites[save_index].ID << '\t'
                            << Satellites[save_index].Mass << '\t' << Satellites[save_index].WM << '\t'
                            << Satellites[save_index].SWM << '\t' << Satellites[save_index].X << '\t'
                            << Satellites[save_index].Y << '\t' << Satellites[save_index].Z << '\t'
                            << Satellites[save_index].Vx << '\t' << Satellites[save_index].Vy << '\t'
                            << Satellites[save_index].Vz << '\t';
-                OutputFile << Satellites[dest_index].ID << '\t' << Satellites[dest_index].Type << '\t'
+                OutputFile << Satellites[dest_index].ID << '\t'
                            << Satellites[dest_index].Mass << '\t' << Satellites[dest_index].WM << '\t'
                            << Satellites[dest_index].SWM << '\t' << Satellites[dest_index].X << '\t'
                            << Satellites[dest_index].Y << '\t' << Satellites[dest_index].Z << '\t'
@@ -1399,12 +1366,8 @@ void EvolutionModel::CheckCollision(int index) {
                 }
 
                 Satellites[save_index].Mass = TotalMass;
-                if (Satellites[save_index].Type == 1 or Satellites[dest_index].Type == 1) {
-                    Satellites[save_index].Rho = EmbryoRho;
-                    Satellites[save_index].Type = 1;
-                }
 
-                OutputFile << Satellites[save_index].ID << '\t' << Satellites[save_index].Type << '\t'
+                OutputFile << Satellites[save_index].ID << '\t'
                            << Satellites[save_index].Mass << '\t' << Satellites[save_index].WM << '\t'
                            << Satellites[save_index].SWM << '\t' << Satellites[save_index].X << '\t'
                            << Satellites[save_index].Y << '\t' << Satellites[save_index].Z << '\t'
@@ -1542,7 +1505,7 @@ void EvolutionModel::DestroySatellite(int index, int code, int index2) {
 
     ofstream OutputFile;
     OutputFile.open(OutputAddress + "/lost_satellites.txt", ios_base::app);
-    OutputFile << Satellites[index].ID << '\t' << Time << '\t' << Satellites[index].Type << '\t'
+    OutputFile << Satellites[index].ID << '\t' << Time << '\t'
                << Satellites[index].Mass << '\t' << Satellites[index].WM << '\t' << Satellites[index].SWM << '\t'
                << Satellites[index].ComputeR2D() << '\t' << Satellites[index].X << '\t' << Satellites[index].Y << '\t'
                << Satellites[index].Z << '\t' << Satellites[index].Vx << '\t' << Satellites[index].Vy << '\t'

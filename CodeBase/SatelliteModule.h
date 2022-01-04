@@ -21,11 +21,10 @@ public:
 
     SatelliteModel();
 
-    SatelliteModel(int id, bool type, double mass, double x, double y, double z, double rho, double g, double mp,
+    SatelliteModel(int id, double mass, double x, double y, double z, double rho, double g, double mp,
                    double rp, double sn, double time);
 
     int ID, Index;
-    bool Type;
     double Mass;
     double WM;
     double SWM;
