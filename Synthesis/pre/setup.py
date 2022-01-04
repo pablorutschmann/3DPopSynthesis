@@ -59,9 +59,9 @@ def setup(NAME, N_sims, Runtime, Evotime):
     for i in range(1,N_SIMS+1):
         INPUT, OUTPUT = dir_structure(i)
         # Create DiskFile
-        SIGMA_COEFF, SIGMA_NORM = disk_object.sample(INPUT)
+        SIGMA_COEFF, SIGMA_NORM, TEMP_COEFF = disk_object.sample(INPUT)
         # Create Options File
-        write_option_file(INPUT, RUNTIME, EVOTIME, SIGMA_COEFF, SIGMA_NORM)
+        write_option_file(INPUT, RUNTIME, EVOTIME, SIGMA_COEFF, SIGMA_NORM, TEMP_COEFF)
 
     # Creating History File
     with open(HISTORY, 'w') as history:

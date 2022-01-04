@@ -5,6 +5,7 @@ NEmbryos            -1
 NPlanetesimals      -1
 SigmaExponent       0
 SigmaNorm           0
+TempExponent        0
 R_min               170.0
 R_max               6450.0
 EmbryoInitMass      -1

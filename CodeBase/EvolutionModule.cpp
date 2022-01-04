@@ -451,8 +451,8 @@ void EvolutionModel::WriteSnapshot(string FolderName, bool header) {
     for (int i = 0; i < Disk.Length; i++) {
         OutputFile << i << '\t' << Disk.R[i] << '\t' << Disk.Dr[i] << '\t' << Disk.SigmaGas[i] << '\t'
                    << Disk.SigmaDust[i] << '\t' << Disk.SigmaDustBar[i] << '\t' << Disk.Temp[i] << '\t' << Disk.Area[i]
-                   << '\t' << Disk.OmegaK[i] << '\t' << Disk.TempExponent[i] << '\t'
-                   << Disk.Opacity[i] << '\t' << Disk.WMF[i] << '\t' << Disk.SWMF[i] << '\t' << Disk.Eta[i] << '\n';
+                   << '\t' << Disk.OmegaK[i] << '\t' << Disk.Opacity[i] << '\t' << Disk.WMF[i] << '\t' << Disk.SWMF[i]
+                   << '\t' << Disk.Eta[i] << '\n';
     }
 
     OutputFile.close();
@@ -524,7 +524,7 @@ void EvolutionModel::ComputeParameters(int index) {
         Satellites[index].R = Disk.R[Satellites[index].Index];
         Satellites[index].OmegaK = Disk.OmegaK[Satellites[index].Index];
         Satellites[index].SigmaExp = Disk.SigmaExponent;
-        Satellites[index].TempExp = Disk.TempExponent[Satellites[index].Index];
+        Satellites[index].TempExp = Disk.TempExponent;
         Satellites[index].RHill = Satellites[index].ComputeRHill();
         Satellites[index].Rfeed = Satellites[index].RHill * FeedRadius;
         Satellites[index].Cs = Disk.ComputeCs(Satellites[index].Index);
@@ -1649,7 +1649,8 @@ double EvolutionModel::Density_Model(double x) {
     return Disk.SigmaNorm * pow(x, Disk.SigmaExponent);
 }
 
-double EvolutionModel::Rejection_Sample() {;
+double EvolutionModel::Rejection_Sample() {
+    ;
     uniform_real_distribution<> x_distribution(R_min, R_max);
     uniform_real_distribution<> y_distribution(Density_Model(R_min), Density_Model(R_max));
     while (true) {

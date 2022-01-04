@@ -73,7 +73,6 @@ class disk:
 
         # Get Temperature
         self.out['T [K]'], Temp_Coeff = Temperature(self.out['r [R_S]'])
-        self.out['Power Coefficient Temperature'] = np.full(self.N, Temp_Coeff)
 
         # Get Water Mass Fractions
         self.out['WMF []'], self.out['SWMF []'] = WMF(self.out['r [R_S]'])
@@ -84,13 +83,13 @@ class disk:
         # Write out the disk file for that Sample in the inputs folder
         self.write_disk(INPUT)
 
-        return Sigma_Coeff, Sigma_Norm * denstos * (R_S / au) ** Sigma_Coeff
+        return Sigma_Coeff, Sigma_Norm * denstos * (R_S / au) ** Sigma_Coeff, Temp_Coeff
 
     def write_disk(self, INPUT):
 
         for key in ['r [R_S]', 'dr [R_S]', 'sigma gas [M_S/R_S^2]', 'sigma dust [M_S/R_S^2]',
                     'sigma dustbar [M_S/R_S^2]', 'T [K]', 'Area [R_S^2]', 'Keplerian Velocity [R_S / yr]',
-                    'Power Coefficient Temperature', 'Gas Opacity []', 'WMF []', 'SWMF []',
+                    'Gas Opacity []', 'WMF []', 'SWMF []',
                     'Headwind Factor []']:
             # self.out = self.out.pop[key]
             self.out[key] = self.out.pop(key)

@@ -32,6 +32,7 @@ public:
     double MP, RP;
     double SigmaExponent;
     double SigmaNorm;
+    double TempExponent;
     double DustToGas;
     double RCavity;
     double DispersionTime, CoolingTime, RefillingTime;
@@ -50,7 +51,6 @@ public:
     double Temp[DiskLength];
     double Area[DiskLength];
     double OmegaK[DiskLength];
-    double TempExponent[DiskLength];
     double Opacity[DiskLength];
     double WMF[DiskLength];
     double SWMF[DiskLength];
