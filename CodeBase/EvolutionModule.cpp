@@ -556,6 +556,7 @@ void EvolutionModel::ComputeParameters(int index) {
         if ((Satellites[index].Mass != 0) && (Satellites[index].SigmaGas != 0)) {
             Satellites[index].Twave = 1 / (Satellites[index].Mass * Satellites[index].SigmaGas * position * position *
                                            Satellites[index].OmegaK) * pow((Satellites[index].H / position), 4);
+            double err = 1.0;
         } else Satellites[index].Twave = 1e300;
 
         Satellites[index].Twave /= MigrationFactor;

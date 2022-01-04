@@ -59,12 +59,13 @@ class disk:
     def sample(self, INPUT):
         # Get Surface Densities and Power Coefficients with constant total mass
         Sigma_Coeff = np.random.uniform(self.Sigma_min, self.Sigma_max)
-        integral, _ = quad(lambda x: Power_Law(x, 1, Sigma_Coeff) * x/au, self.R_min, self.R_max)
-        Sigma_Norm = self.TotalMass * M_S / (2 * np.pi * integral)
+        integral, _ = quad(lambda x: Power_Law(x, 1, Sigma_Coeff) * x, self.R_min * au / R_S,
+                           self.R_max * au / R_S)
+        Sigma_Norm = self.TotalMass / (2 * np.pi * integral)
 
-        Sigma_Gas = Power_Law(self.out['r [R_S]'], Sigma_Norm, Sigma_Coeff)
+        Sigma_Gas = Power_Law(self.out['r [R_S]'] * au / R_S, Sigma_Norm, Sigma_Coeff)
         # Unit Conversion from CGS to Solar Units
-        Sigma_Gas *= denstos
+        Sigma_Gas = Sigma_Gas
         Sigma_Dust = 0.01 * Sigma_Gas
         self.out['sigma gas [M_S/R_S^2]'] = Sigma_Gas
         self.out['sigma dust [M_S/R_S^2]'] = Sigma_Dust
@@ -83,7 +84,7 @@ class disk:
         # Write out the disk file for that Sample in the inputs folder
         self.write_disk(INPUT)
 
-        return Sigma_Coeff, Sigma_Norm * denstos * (R_S/au)**Sigma_Coeff
+        return Sigma_Coeff, Sigma_Norm * denstos * (R_S / au) ** Sigma_Coeff
 
     def write_disk(self, INPUT):
 
