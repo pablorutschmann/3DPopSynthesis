@@ -28,7 +28,7 @@ def write_option_file(PATH, RUNTIME, EVOTIME, SIGMA_COEFF, SIGMA_NORM, TEMP_COEF
     options["NEmbryos"] = 0
 
     # Number of Planetesiamls
-    NPlanetesimals = randint(1,5)
+    NPlanetesimals = randint(80,120)
     options["NPlanetesimals"] = NPlanetesimals
 
     # Surface Density Power Law Coefficients
@@ -37,15 +37,6 @@ def write_option_file(PATH, RUNTIME, EVOTIME, SIGMA_COEFF, SIGMA_NORM, TEMP_COEF
 
     # Temperature Power Law Coefficients
     options["TempExponent"] = TEMP_COEFF
-
-    # Initial Mass of Embryos
-    options["EmbryoInitMass"] = 3.0e-07
-
-    # Density of Embryos
-    options["EmbryoRho"] = 0.93357
-
-    # Spacing between Embryos in Hill Radii
-    options['Spacing'] = 10
 
     # Initial Mass of Planetesimals
     options["InitMass"] = 1.6e-11

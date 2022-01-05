@@ -8,9 +8,6 @@ SigmaNorm           0
 TempExponent        0
 R_min               170.0
 R_max               6450.0
-EmbryoInitMass      -1
-EmbryoRho           -1
-Spacing             -1
 InitMass            -1
 Rho                 -1
 FeedRadius          2.3

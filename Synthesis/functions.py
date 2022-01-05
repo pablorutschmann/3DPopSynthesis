@@ -1,5 +1,5 @@
 import numpy as np
-from .units import *
+#from .units import *
 
 # Radius always in AU
 # Use exactly these function names: WMF, Surface_Density, Temperature, Eta
@@ -51,10 +51,14 @@ def Eta(r):
     return y
 
 if __name__ == "__main__":
-    aus = np.linspace(0.5,30,5)
-    print(aus)
-    for i in range(5):
-        sd, coeff = Surface_Density(aus)
-        print(sd)
-        print(coeff)
+    # aus = np.linspace(0.5,30,5)
+    # print(aus)
+    # for i in range(5):
+    #     sd, coeff = Surface_Density(aus)
+    #     print(sd)
+    #     print(coeff)
+
+    print(Temperature(2.71280277))
+
+
 
