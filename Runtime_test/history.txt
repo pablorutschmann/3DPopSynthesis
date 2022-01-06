@@ -1,0 +1,40 @@
+/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs started at Thu Jan  6 19:18:24 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs finished at Thu Jan  6 19:18:24 2022
+ after 0.000437 s, 7.28333e-06 min, 1.21389e-07 hours
+/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs started at Thu Jan  6 19:20:54 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs finished at Thu Jan  6 19:20:54 2022
+ after 0.000444 s, 7.4e-06 min, 1.23333e-07 hours
+/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs started at Thu Jan  6 19:31:55 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs finished at Thu Jan  6 19:31:55 2022
+ after 0.000472 s, 7.86667e-06 min, 1.31111e-07 hours
+/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs started at Thu Jan  6 19:36:37 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs finished at Thu Jan  6 19:36:37 2022
+ after 0.00189 s, 3.15e-05 min, 5.25e-07 hours
+/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs started at Thu Jan  6 19:36:49 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs finished at Thu Jan  6 19:36:49 2022
+ after 0.000988 s, 1.64667e-05 min, 2.74444e-07 hours
+/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs started at Thu Jan  6 19:37:02 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs finished at Thu Jan  6 19:37:02 2022
+ after 0.000733 s, 1.22167e-05 min, 2.03611e-07 hours
+/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs started at Thu Jan  6 19:37:35 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs finished at Thu Jan  6 19:37:35 2022
+ after 0.001155 s, 1.925e-05 min, 3.20833e-07 hours
+/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs started at Thu Jan  6 19:38:43 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs finished at Thu Jan  6 19:39:30 2022
+ after 47.2971 s, 0.788286 min, 0.0131381 hours
+/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs started at Thu Jan  6 19:40:16 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs finished at Thu Jan  6 19:40:18 2022
+ after 2.02342 s, 0.0337236 min, 0.00056206 hours
+/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs started at Thu Jan  6 19:40:55 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/RUNTIME_TEST/system_1/inputs finished at Thu Jan  6 19:40:57 2022
+ after 1.72709 s, 0.0287849 min, 0.000479748 hours
