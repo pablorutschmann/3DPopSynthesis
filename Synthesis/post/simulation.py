@@ -32,6 +32,14 @@ class simulation:
                 dic[key] = float(value)
         self.N_planetesimals = dic['NPlanetesimals']
 
+        # import options.txt
+        self.options = {}
+        path = os.path.join(self.input_path, 'options.txt')
+        with open(path, 'r') as stream:
+            for line in stream:
+                (key, val) = line.split()
+                options[key] = val
+
 
         # import collisions.txt
         path = os.path.join(self.output_path, 'collisions.txt')

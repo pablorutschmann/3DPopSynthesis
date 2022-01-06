@@ -18,16 +18,22 @@ class disk:
         self.tot_mass_dust = -1
         self.tot_mass = -1
 
+        self.DustGasRatio = 0.01
+
         self.out = {}
 
-    def prepare(self, TotalMass, R_min, R_max, N, spacing, Sigma_min, Sigma_max):
-        self.TotalMass = TotalMass
+    def prepare(self, TM_min, TM_max, R_min, R_max, N, spacing, Sigma_min, Sigma_max, N_Sigma):
+        self.TM_min = TM_min
+        self.TM_max = TM_max
+        self.TotalMass = np.random.uniform(TM_min, TM_max)
         self.R_min = R_min
         self.R_max = R_max
         self.N = N
         self.spacing = spacing
         self.Sigma_min = Sigma_min
         self.Sigma_max = Sigma_max
+        self.N_Sigma = N_Sigma
+        self.Sigmas = np.round(np.linspace(self.Sigma_min,self.Sigma_max, self.N_Sigma),2)
 
         # Creation of linspace or logspace of radii in R_S, include one point more for N cells
         if self.spacing == 'lin':
@@ -58,7 +64,7 @@ class disk:
 
     def sample(self, INPUT):
         # Get Surface Densities and Power Coefficients with constant total mass
-        Sigma_Coeff = np.random.uniform(self.Sigma_min, self.Sigma_max)
+        Sigma_Coeff = np.random.choice(self.Sigmas)
         integral, _ = quad(lambda x: Power_Law(x, 1, Sigma_Coeff) * x, self.R_min * au / R_S,
                            self.R_max * au / R_S)
         Sigma_Norm = self.TotalMass / (2 * np.pi * integral)
@@ -66,7 +72,7 @@ class disk:
         Sigma_Gas = Power_Law(self.out['r [R_S]'] * au / R_S, Sigma_Norm, Sigma_Coeff)
         # Unit Conversion from CGS to Solar Units
         Sigma_Gas = Sigma_Gas
-        Sigma_Dust = 0.01 * Sigma_Gas
+        Sigma_Dust = self.DustGasRatio * Sigma_Gas
         self.out['sigma gas [M_S/R_S^2]'] = Sigma_Gas
         self.out['sigma dust [M_S/R_S^2]'] = Sigma_Dust
         self.out['sigma dustbar [M_S/R_S^2]'] = Sigma_Dust

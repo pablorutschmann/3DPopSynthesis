@@ -2234,3 +2234,39 @@ Runs/test_iceline/inputs started at Wed Nov 17 18:04:06 2021
 
 	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Tue Jan  4 17:18:28 2022
  after 16.7955 s, 0.279925 min, 0.00466542 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Thu Jan  6 11:36:58 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Thu Jan  6 11:37:18 2022
+ after 20.4936 s, 0.34156 min, 0.00569267 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Thu Jan  6 11:40:10 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Thu Jan  6 11:40:31 2022
+ after 20.1134 s, 0.335223 min, 0.00558706 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Thu Jan  6 11:44:55 2022
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Thu Jan  6 11:44:57 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Thu Jan  6 11:47:45 2022
+ after 167.929 s, 2.79882 min, 0.046647 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Thu Jan  6 11:59:35 2022
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Thu Jan  6 12:00:43 2022
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Thu Jan  6 12:08:21 2022
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Thu Jan  6 12:12:31 2022
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Thu Jan  6 12:15:06 2022
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Thu Jan  6 12:24:25 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Thu Jan  6 12:27:11 2022
+ after 165.52 s, 2.75867 min, 0.0459779 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Thu Jan  6 12:33:12 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Thu Jan  6 14:14:47 2022
+ after 6094.62 s, 101.577 min, 1.69295 hours
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Thu Jan  6 14:57:05 2022
+
+	/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs finished at Thu Jan  6 15:23:43 2022
+ after 1597.89 s, 26.6316 min, 0.44386 hours

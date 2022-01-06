@@ -1,12 +1,12 @@
 MP                  1047.5655146604774
 RP                  9.73115873104683
 DustToGas           0.01
-NEmbryos            -1
-NPlanetesimals      -1
+NEmbryos            10
+NPlanetesimals      500
 SigmaExponent       0
 SigmaNorm           0
 TempExponent        0
-R_min               170.0
+R_min               65.0
 R_max               6450.0
 InitMass            -1
 Rho                 -1
@@ -26,7 +26,7 @@ AccretionCoeff      0.1
 PebbleFlux          1e-9
 StokesNumber        0.1
 RCavity             1.0
-RDistruction        110.0
+RDistruction        65.0
 MigrationType       4
 Migration           1
 NBody               1

@@ -60,8 +60,9 @@ public:
     int NEmbryos, NPlanetesimals, NSatellites;
     double R_min, R_max;
     double Spacing;
-    double EmbryoInitMass, EmbryoRho;
-    double InitMass, Rho;
+    double EmbryoInitMass;
+    double InitMass;
+    double Rho;
     double DtMax, GlobalDt;
     double RDistruction;
     double AccCoeff, FeedRadius, ThresholdMass;
@@ -97,7 +98,7 @@ public:
 
     void SatelliteInitialization();
 
-    void CreateSatellite(int index);
+    void CreateSatellite(int index, bool type);
 
     double Density_Model(double x);
 
@@ -113,7 +114,7 @@ public:
 
     void CheckCollision(int index);
 
-    bool CheckInvalidity(int index);
+    bool CheckInvalidity(double r);
 
     void CheckAndCreate();
 

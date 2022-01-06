@@ -3,7 +3,7 @@ import os.path as path
 import pathlib
 
 
-def write_option_file(PATH, RUNTIME, EVOTIME, SIGMA_COEFF, SIGMA_NORM, TEMP_COEFF):
+def write_option_file(PATH, RUNTIME, EVOTIME, SIGMA_COEFF, SIGMA_NORM, TEMP_COEFF, N_EMBRYO, N_PLANETESIMAL):
 
     options = {}
     # stream = pkg_resources.resource_stream(__name__, 'options_template.txt')
@@ -25,11 +25,10 @@ def write_option_file(PATH, RUNTIME, EVOTIME, SIGMA_COEFF, SIGMA_NORM, TEMP_COEF
     options["SaveInterval"] = EVOTIME // 10
 
     # Number of Embryos
-    options["NEmbryos"] = 0
+    options["NEmbryos"] = N_EMBRYO
 
     # Number of Planetesiamls
-    NPlanetesimals = randint(80,120)
-    options["NPlanetesimals"] = NPlanetesimals
+    options["NPlanetesimals"] = N_PLANETESIMAL
 
     # Surface Density Power Law Coefficients
     options["SigmaExponent"] = SIGMA_COEFF
