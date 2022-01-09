@@ -22,15 +22,15 @@ class simulation:
         self.labels['SigmaDust'] = ['Dust Surface Density', 'Sigma in [units]']
         self.labels['Temp'] = ['Temperature', 'Kelvin']
 
-        # import options.txt
-        path = os.path.join(self.input_path, 'options.txt')
-        dic = {}
-        with open(path,'r') as file:
-            for line in file:
-                ln = line.split(' ')
-                key, value = ln[0], ln[-1]
-                dic[key] = float(value)
-        self.N_planetesimals = dic['NPlanetesimals']
+        # # import options.txt
+        # path = os.path.join(self.input_path, 'options.txt')
+        # dic = {}
+        # with open(path,'r') as file:
+        #     for line in file:
+        #         ln = line.split(' ')
+        #         key, value = ln[0], ln[-1]
+        #         dic[key] = float(value)
+        # self.N_planetesimals = dic['NPlanetesimals']
 
         # import options.txt
         self.options = {}
@@ -38,8 +38,11 @@ class simulation:
         with open(path, 'r') as stream:
             for line in stream:
                 (key, val) = line.split()
-                options[key] = val
-
+                self.options[key] = float(val)
+        self.N_Embryos = self.options['NEmbryos']
+        self.N_Planetesimals = self.options['NPlanetesimals']
+        self.Total_Mass = self.options['TotalMass']
+        self.Sigma_Exponent = self.options['SigmaExponent']
 
         # import collisions.txt
         path = os.path.join(self.output_path, 'collisions.txt')

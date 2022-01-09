@@ -11,3 +11,4 @@ cmake-build-debug/
 /Pre_Process/*.png
 /Synthesis/post/test/
 /Rejection_Sampling.py
+/RUNTIME/
