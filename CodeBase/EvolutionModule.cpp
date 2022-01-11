@@ -62,7 +62,6 @@ EvolutionModel::EvolutionModel(string input_address, string output_address) {
     cout << "Eta = " << eta << '\n';
     cout << "EtaS = " << etaS << '\n';
     cout << "Migration factor = " << MigrationFactor << '\n' << '\n';
-    cout << "Tracing of WM: " << Options["TraceWM"] << '\n';
 
 }
 
@@ -87,7 +86,8 @@ void EvolutionModel::Simulation() {
             cout << "\n##################################\n";
             cout << "######   RUN TIME IS OVER   ######\n";
             cout << "##################################\n\n";
-            break;
+            WriteSnapshot(OutputAddress + "/restart", false);
+            return exit(1);
         }
 
 
@@ -316,6 +316,10 @@ void EvolutionModel::SatelliteInitialization() {
     InputFile.close();
 
     cout << i << " satellites detected\n";
+    if (i > 0) {
+        NSatellites = i;
+    }
+
 
     if (i == 0)   // if satellites are not found, create them
     {

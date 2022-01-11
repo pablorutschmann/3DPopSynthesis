@@ -1,0 +1,1 @@
+#time	ID1	type1	mass1	wm1	swm1	x1	y1	z1	vx1	vy1	vz1	ID2	type2	mass2	wm2	swm2	x2	y2	z2	vx2	vy2	vz2	ID	type	mass	wm	swm	x	y	z	vx	vy	vz

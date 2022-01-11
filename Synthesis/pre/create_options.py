@@ -16,13 +16,14 @@ def write_option_file(PATH, RUNTIME, EVOTIME, SIGMA_COEFF, SIGMA_NORM, TEMP_COEF
     #   Units: Mass [Solar Mass], Distance [Solar Radius], Time [year]
 
     # Maximum Runtime
-    options["MaxRunTime"] = 0.99 * RUNTIME
+    # options["MaxRunTime"] = 0.99 * RUNTIME
+    options["MaxRunTime"] = 1.2 * RUNTIME
 
     # Maximum Evolution Time
     options["MaxTime"] = EVOTIME
 
     # Save Interval
-    options["SaveInterval"] = EVOTIME // 10
+    options["SaveInterval"] = EVOTIME // 1000
 
     # Number of Embryos
     options["NEmbryos"] = N_EMBRYO

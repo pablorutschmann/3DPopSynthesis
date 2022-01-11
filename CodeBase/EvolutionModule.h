@@ -39,7 +39,7 @@
 #include <cstdlib>
 #include <random>
 
-const int TotalNumberSatellites = 1011;
+const int TotalNumberSatellites = 300;
 using namespace std;
 
 

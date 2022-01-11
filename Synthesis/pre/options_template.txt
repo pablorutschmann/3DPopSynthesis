@@ -2,7 +2,7 @@ MP                  1047.5655146604774
 RP                  9.73115873104683
 DustToGas           0.01
 NEmbryos            10
-NPlanetesimals      500
+NPlanetesimals      190
 Spacing             8
 SigmaExponent       0
 SigmaNorm           0
@@ -29,7 +29,7 @@ PebbleFlux          1e-9
 StokesNumber        0.1
 RCavity             1.0
 RDistruction        65.0
-MigrationType       3
+MigrationType       4
 Migration           1
 NBody               1
 EccDamping          1
@@ -45,4 +45,4 @@ PebbleDispersion    0
 PebbleFiltering     0
 Refilling           0
 Snapshots           1
-SeedFormation       0
+SeedFormation       1

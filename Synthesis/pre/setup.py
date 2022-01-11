@@ -42,14 +42,14 @@ def setup(NAME, N_sims, Runtime, Evotime):
 
     # Create Disk Object
     disk_object = disk()
-    #Disk Parameters
+    # Disk Parameters
     R_min = 0.3
     R_max = 30
     N = 1000
     spacing = "log"
 
-    #Synthesis Parameters
-    #Total Disk Mass Range
+    # Synthesis Parameters
+    # Total Disk Mass Range
     TM_min = 10 * M_J / M_S
     TM_max = 100 * M_J / M_S
 
@@ -61,7 +61,7 @@ def setup(NAME, N_sims, Runtime, Evotime):
 
     # Number of Embryos and Planetesimals
     N_EMBRYO = 10
-    N_PLANETESIMAL = 100
+    N_PLANETESIMAL = 190
 
     disk_object.prepare(TM_min, TM_max, R_min, R_max, N, spacing, Sigma_min, Sigma_max, N_Sigma)
 
@@ -83,17 +83,40 @@ def setup(NAME, N_sims, Runtime, Evotime):
     JI_LOG = path.join(RUN, 'log')
 
     # Command for Euler Job Array
-    command = 'bsub -J "{name}[1-{N}]%100" -n 1 -r -W {runtime}:00 -oo {log} "{exe} {input} {output} {history}"'.format(
+    INSTRUCTION = '\"{exe} {input} {output} {history}\"'.format(exe=EXECUTABLE,
+                                                              input=JI_INPUT,
+                                                              output=JI_OUTPUT,
+                                                              history=HISTORY)
+
+
+    command = 'job_output=$(bsub -J "{name}[1-{N}]" -n 1 -r -W 0{runtime}:00 -oo {log} {instruction})'.format(
         name=NAME,
         N=str(N_SIMS),
         runtime=RUNTIME,
         log=JI_LOG,
-        exe=EXECUTABLE,
-        input=JI_INPUT,
-        output=JI_OUTPUT,
-        history=HISTORY)
-    system(command)
-    return command
+        instruction=INSTRUCTION)
+
+    # command = 'bsub -J "{name}[1-{N}]" -n 1 -r -W {runtime}:00 -oo {log} "{exe} {input} {output} {history}"'.format(
+    #     name=NAME,
+    #     N=str(N_SIMS),
+    #     runtime=RUNTIME,
+    #     log=JI_LOG,
+    #     exe=EXECUTABLE,
+    #     input=JI_INPUT,
+    #     output=JI_OUTPUT,
+    #     history=HISTORY)
+    # restart = 'bsub -w numended({name}[1-{N}],*) "brequeue -J {name}[1-{N}]"'.format(name=NAME,
+    #                                                                                  N=str(N_SIMS))
+
+
+    JOBID = "JOBID=$(echo $job_output | awk '/is submitted/{print substr($2, 2, length($2)-2);}')"
+    restart = 'bsub -w "numdone($JOBID,*)" "brequeue -J $JOBID"'
+    final = '; '.join([command,JOBID,restart])
+    # system('sleep 10')
+    print(final)
+    system(final)
+
+    return command, restart
 
 
 if __name__ == "__main__":
@@ -106,3 +129,5 @@ if __name__ == "__main__":
     # N = 5
     cmd = setup(Name, N, RUNTIME, EVOTIME)
     print(cmd)
+    # JOBID =$(bsub - J
+    #          job[1-10] command | awk '/is submitted/{print substr($2, 2, length($2)-2);}')  # submits job and extracts job ID

@@ -44,3 +44,7 @@ rsync -Pav rupablo@euler.ethz.ch:/cluster/home/rupablo/3DPopSynthesis/SynthesisR
 python SYNTHESIS.py thresh 500 120 1e6
 
 rsync -Pav rupablo@euler.ethz.ch:/cluster/home/rupablo/3DPopSynthesis/RUNTIME /Users/prut/CLionProjects/3DPopSynthesis/RUNTIME
+
+rsync -Pav rupablo@euler.ethz.ch:/cluster/home/rupablo/3DPopSynthesis/Runs /Users/prut/CLionProjects/3DPopSynthesis/MigrationRuns
+
+python SYNTHESIS.py final1 48 120 1000000

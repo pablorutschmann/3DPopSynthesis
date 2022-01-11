@@ -25,7 +25,7 @@ def get_runtimes():
                 if query in line:
                     # Month,Day,Time,Year = line.split()[-4:]
                     # Hours, Minutes, Seconds
-                    runtime = float(next(hist).split()[1])
+                    runtime = float(next(hist).split()[1])/60/60
                     print(i, type(runtime))
                     sim.Runtime = runtime
 
@@ -115,7 +115,7 @@ interval_max = 320
 
 color_list = ['red', 'green', 'blue', 'orange']
 
-ax.scatter(df["NPlanetesimals"], df["Runtime"], c=df['Total Mass'], cmap=cmap, norm=norm)
+ax.scatter(df["NPlanetesimals"], df["Runtime"]/60/60, c=df['Total Mass'], cmap=cmap, norm=norm)
 fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label="Total Disk Mass", ax=ax)
 ax.set_xlabel('Number of Planetesimals', fontsize=15)
 ax.set_ylabel('Runtime in hours', fontsize=15)
@@ -123,3 +123,35 @@ fig.suptitle('runtimes for different Parameters')
 fig.savefig(PLOT)
 plt.close(fig)
 print('Plot saved!')
+
+
+N_planetesimals = [100, 200, 500, 800, 1000]
+N_planetesimals = df['NPlanetesimals'].unique()[:-1]
+print(f"{N_planetesimals=}")
+print(df[(df.NPlanetesimals == 100)])
+
+average_runtimes = {}
+max_simulations = {}
+
+def max_number_of_planetesimals(average_runtime):
+    total_time = 4 * 7 * 24
+    n_cores = 48
+    scaling = 1e6 / 10000
+
+    return int(total_time/(scaling*average_runtime) * n_cores)
+
+for n_p in N_planetesimals:
+    values = df.loc[df["NPlanetesimals"] == n_p, "Runtime"].values
+    maxtime = np.max(values)
+    meantime = np.mean(values)
+    stdtime = np.std(values)
+    average_runtimes[n_p] = (maxtime, meantime, stdtime)
+    max_simulations[n_p] = (max_number_of_planetesimals(meantime),max_number_of_planetesimals(maxtime))
+
+print(average_runtimes.values())
+print(max_simulations)
+
+
+
+
+

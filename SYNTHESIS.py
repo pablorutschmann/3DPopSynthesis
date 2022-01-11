@@ -10,5 +10,6 @@ if __name__ == "__main__":
 
     # Name = 'Test'
     # N = 5
-    cmd = pre.setup(Name, N, RUNTIME, EVOTIME)
-    print(cmd)
+    cmd,rst = pre.setup(Name, N, RUNTIME, EVOTIME)
+    # print(cmd)
+    # print(rst)

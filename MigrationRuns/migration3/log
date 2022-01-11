@@ -1,0 +1,574 @@
+Sender: LSF System <lsfadmin@eu-ms-020-33>
+Subject: Job 199798968: <migration3> in cluster <euler> Done
+
+Job <migration3> was submitted from host <eu-login-09> by user <rupablo> in cluster <euler> at Sun Jan  9 12:07:17 2022
+Job was executed on host(s) <eu-ms-020-33>, in queue <normal.120h>, as user <rupablo> in cluster <euler> at Sun Jan  9 12:07:37 2022
+</cluster/home/rupablo> was used as the home directory.
+</cluster/home/rupablo/3DPopSynthesis> was used as the working directory.
+Started at Sun Jan  9 12:07:37 2022
+Terminated at Sun Jan  9 14:31:17 2022
+Results reported at Sun Jan  9 14:31:17 2022
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+/cluster/home/rupablo/3DPopSynthesis/CodeBase/3DPopSyn /cluster/home/rupablo/3DPopSynthesis/Runs/migration3/inputs /cluster/home/rupablo/3DPopSynthesis/Runs/migration3/outputs /cluster/home/rupablo/3DPopSynthesis/history.txt
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   8620.71 sec.
+    Max Memory :                                 12 MB
+    Average Memory :                             9.60 MB
+    Total Requested Memory :                     1024.00 MB
+    Delta Memory :                               1012.00 MB
+    Max Swap :                                   -
+    Max Processes :                              3
+    Max Threads :                                4
+    Run time :                                   8648 sec.
+    Turnaround time :                            8640 sec.
+
+The output (if any) follows:
+
+
+
+
+
+MP 1047.57
+RP 9.73116
+DustToGas 0.01
+NEmbryos 10
+NPlanetesimals 0
+Spacing 8
+SigmaExponent -1.5
+SigmaNorm 8.0658e-14
+TempExponent -0.5
+R_min 65
+R_max 6450
+EmbryoInitMass 3.0035e-08
+InitMass 3.0035e-11
+Rho 0.93357
+FeedRadius 2.3
+ThresholdMass 1e-09
+MaxTime 500000
+SaveInterval 50000
+MaxRunTime 23.76
+RotationFraction 0.3
+DiskPrecision 1e-05
+DtMax 1
+DispersionTime 500000
+CoolingTime 100000
+RefillingTime 1000
+SublimationFactor 1
+AccretionCoeff 1
+PebbleFlux 1e-09
+StokesNumber 0.1
+RCavity 1
+RDistruction 65
+MigrationType 3
+Migration 1
+NBody 1
+EccDamping 1
+IncDamping 1
+Accretion 1
+PebbleAccretion 0
+TraceWM 1
+Sublimation 1
+Cooling 0
+GasDispersion 1
+DustDispersion 1
+PebbleDispersion 0
+PebbleFiltering 0
+Refilling 0
+Snapshots 1
+SeedFormation 1
+Migration type	Jimenez_lin
+SigmaBoltz	8.96364e-16
+Cv		182.183
+G		3.92199e+08
+KbMuMp		72.8731
+
+TimeStopFormation = 6.35944e+06
+/cluster/home/rupablo/3DPopSynthesis/Runs/migration3/outputs/restart/satellites.txt'
+Searching satellites in /cluster/home/rupablo/3DPopSynthesis/Runs/migration3/outputs/restart/satellites.txt
+0 satellites detected
+
+
+Satellite 1 at time 0
+
+
+ID = 1
+Group ID = -1
+Disk index = 0
+Type = 1
+Mass = 3.0035e-08
+WM = 0
+SWM = 0
+Physical r = 0.00318049
+Disk r = 107.516
+X = 47.8379
+Y = 51.9389
+Z = -0.116195
+Vx = -56106.7
+Vy = 51676.6
+Vz = 0
+ecc = 8.64541e-17
+inc = 0.00164552
+a = 70.6125
+Period = 0.00581646
+dt = 0.00154109
+N = 2
+Active = 1
+
+
+
+
+Satellite 2 at time 0
+
+
+ID = 2
+Group ID = -1
+Disk index = 366
+Type = 1
+Mass = 3.0035e-08
+WM = 0
+SWM = 3.0035e-09
+Physical r = 0.00318049
+Disk r = 481.868
+X = -203.811
+Y = -437.12
+Z = -1.64892
+Vx = 26452.6
+Vy = -12333.7
+Vz = 0
+ecc = 1.9848e-16
+inc = 0.00341886
+a = 482.303
+Period = 0.103828
+dt = 0.0246574
+N = 32
+Active = 1
+
+
+
+
+Satellite 3 at time 0
+
+
+ID = 3
+Group ID = -1
+Disk index = 0
+Type = 1
+Mass = 3.0035e-08
+WM = 0
+SWM = 0
+Physical r = 0.00318049
+Disk r = 107.516
+X = -3.61713
+Y = -85.5393
+Z = -0.536255
+Vx = 69211
+Vy = -2926.67
+Vz = 0
+ecc = 2.00244e-16
+inc = 0.00626342
+a = 85.6174
+Period = 0.00776568
+dt = 0.00154109
+N = 2
+Active = 1
+
+
+
+
+Satellite 4 at time 0
+
+
+ID = 4
+Group ID = -1
+Disk index = 547
+Type = 1
+Mass = 3.0035e-08
+WM = 1.2014e-08
+SWM = 6.007e-09
+Physical r = 0.00318049
+Disk r = 1011.8
+X = 675.821
+Y = 757.302
+Z = -1.9744
+Vx = -15011
+Vy = 13395.9
+Vz = 0
+ecc = 0
+inc = 0.0019452
+a = 1015.01
+Period = 0.316987
+dt = 0.0493148
+N = 64
+Active = 1
+
+
+
+
+Satellite 5 at time 0
+
+
+ID = 5
+Group ID = -1
+Disk index = 223
+Type = 1
+Mass = 3.0035e-08
+WM = 0
+SWM = 0
+Physical r = 0.00318049
+Disk r = 268.163
+X = 113.51
+Y = -243.093
+Z = 0.917973
+Vx = 35457.8
+Vy = 16556.7
+Vz = 0
+ecc = 3.11377e-16
+inc = 0.00342158
+a = 268.29
+Period = 0.0430767
+dt = 0.0123287
+N = 16
+Active = 1
+
+
+
+
+Satellite 6 at time 0
+
+
+ID = 6
+Group ID = -1
+Disk index = 212
+Type = 1
+Mass = 3.0035e-08
+WM = 0
+SWM = 0
+Physical r = 0.00318049
+Disk r = 256.341
+X = 18.9949
+Y = 256.103
+Z = 0.243459
+Vx = -39888.6
+Vy = 2958.5
+Vz = 0
+ecc = 2.26669e-17
+inc = 0.000948024
+a = 256.807
+Period = 0.040341
+dt = 0.00616435
+N = 8
+Active = 1
+
+
+
+
+Satellite 7 at time 0
+
+
+ID = 7
+Group ID = -1
+Disk index = 676
+Type = 1
+Mass = 3.0035e-08
+WM = 1.2014e-08
+SWM = 6.007e-09
+Physical r = 0.00318049
+Disk r = 1716.75
+X = -1716.2
+Y = 139.974
+Z = -10.4467
+Vx = -1255.67
+Vy = -15395.6
+Vz = 0
+ecc = 0
+inc = 0.0060669
+a = 1721.93
+Period = 0.700423
+dt = 0.197259
+N = 256
+Active = 1
+
+
+
+
+Satellite 8 at time 0
+
+
+ID = 8
+Group ID = -1
+Disk index = 17
+Type = 1
+Mass = 3.0035e-08
+WM = 0
+SWM = 0
+Physical r = 0.00318049
+Disk r = 115.274
+X = 64.238
+Y = 95.9634
+Z = 0.441662
+Vx = -49566.8
+Vy = 33180.1
+Vz = 0
+ecc = 2.76446e-16
+inc = 0.00382457
+a = 115.48
+Period = 0.0121646
+dt = 0.00308217
+N = 4
+Active = 1
+
+
+
+
+Satellite 9 at time 0
+
+
+ID = 9
+Group ID = -1
+Disk index = 139
+Type = 1
+Mass = 3.0035e-08
+WM = 0
+SWM = 0
+Physical r = 0.00318049
+Disk r = 190.057
+X = -9.15799
+Y = 190.091
+Z = 0.540692
+Vx = -46409.5
+Vy = -2235.86
+Vz = 0
+ecc = 6.58268e-18
+inc = 0.00284108
+a = 190.313
+Period = 0.0257358
+dt = 0.00616435
+N = 8
+Active = 1
+
+
+
+
+Satellite 10 at time 0
+
+
+ID = 10
+Group ID = -1
+Disk index = 343
+Type = 1
+Mass = 3.0035e-08
+WM = 0
+SWM = 3.0035e-09
+Physical r = 0.00318049
+Disk r = 438.52
+X = 292.596
+Y = -328.112
+Z = -2.27907
+Vx = 22816
+Vy = 20346.3
+Vz = 0
+ecc = 1.45166e-16
+inc = 0.00518408
+a = 439.63
+Period = 0.0903582
+dt = 0.0246574
+N = 32
+Active = 1
+
+
+
+Snapshot 0 created at time 0
+
+Initial time = 0
+
+Max number of satellites = 1011
+GlobalDt = 0.00154109
+Formation probability = 0.1
+NH = 3
+Eta = 0.02
+EtaS = 0.01
+Migration factor = 1
+
+Tracing of WM: 1
+Input = /cluster/home/rupablo/3DPopSynthesis/Runs/migration3/inputs
+Output = /cluster/home/rupablo/3DPopSynthesis/Runs/migration3/outputs
+
+NSatellites = 10
+
+started computation at Sun Jan  9 12:07:39 2022
+
+Snapshot 1 created at time 50000.1
+
+
+Snapshot 2 created at time 100000
+
+
+Snapshot 3 created at time 150000
+
+
+Snapshot 4 created at time 200000
+
+
+Snapshot 5 created at time 250000
+
+
+Snapshot 6 created at time 300000
+
+
+Snapshot 7 created at time 350000
+
+
+Snapshot 8 created at time 400000
+
+
+Snapshot 9 created at time 450000
+
+
+Snapshot 10 created at time 500000
+
+Total Subticks = 648892672
+Close encounter = 0
+Ratio = 0
+N of back-ups = 0
+
+Final time = 500000
+
+finished computation at Sun Jan  9 14:31:17 2022
+elapsed time: 8618.26 s, 143.638 min, 2.39396 hours
+
+Sender: LSF System <lsfadmin@eu-ms-003-30>
+Subject: Job 199798969: <migration31> in cluster <euler> Done
+
+Job <migration31> was submitted from host <eu-login-09> by user <rupablo> in cluster <euler> at Sun Jan  9 12:07:17 2022
+Job was executed on host(s) <eu-ms-003-30>, in queue <normal.120h>, as user <rupablo> in cluster <euler> at Sun Jan  9 14:32:26 2022
+</cluster/home/rupablo> was used as the home directory.
+</cluster/home/rupablo/3DPopSynthesis> was used as the working directory.
+Started at Sun Jan  9 14:32:26 2022
+Terminated at Sun Jan  9 14:32:27 2022
+Results reported at Sun Jan  9 14:32:27 2022
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+/cluster/home/rupablo/3DPopSynthesis/CodeBase/3DPopSyn /cluster/home/rupablo/3DPopSynthesis/Runs/migration3/inputs /cluster/home/rupablo/3DPopSynthesis/Runs/migration3/outputs /cluster/home/rupablo/3DPopSynthesis/history.txt
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   0.13 sec.
+    Max Memory :                                 6 MB
+    Average Memory :                             -
+    Total Requested Memory :                     1024.00 MB
+    Delta Memory :                               1018.00 MB
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   1 sec.
+    Turnaround time :                            8710 sec.
+
+The output (if any) follows:
+
+
+
+
+
+MP 1047.57
+RP 9.73116
+DustToGas 0.01
+NEmbryos 10
+NPlanetesimals 0
+Spacing 8
+SigmaExponent -1.5
+SigmaNorm 8.0658e-14
+TempExponent -0.5
+R_min 65
+R_max 6450
+EmbryoInitMass 3.0035e-08
+InitMass 3.0035e-11
+Rho 0.93357
+FeedRadius 2.3
+ThresholdMass 1e-09
+MaxTime 500000
+SaveInterval 50000
+MaxRunTime 23.76
+RotationFraction 0.3
+DiskPrecision 1e-05
+DtMax 1
+DispersionTime 500000
+CoolingTime 100000
+RefillingTime 1000
+SublimationFactor 1
+AccretionCoeff 1
+PebbleFlux 1e-09
+StokesNumber 0.1
+RCavity 1
+RDistruction 65
+MigrationType 3
+Migration 1
+NBody 1
+EccDamping 1
+IncDamping 1
+Accretion 1
+PebbleAccretion 0
+TraceWM 1
+Sublimation 1
+Cooling 0
+GasDispersion 1
+DustDispersion 1
+PebbleDispersion 0
+PebbleFiltering 0
+Refilling 0
+Snapshots 1
+SeedFormation 1
+Migration type	Jimenez_lin
+SigmaBoltz	8.96364e-16
+Cv		182.183
+G		3.92199e+08
+KbMuMp		72.8731
+
+TimeStopFormation = 6.35944e+06
+/cluster/home/rupablo/3DPopSynthesis/Runs/migration3/outputs/restart/satellites.txt'
+Searching satellites in /cluster/home/rupablo/3DPopSynthesis/Runs/migration3/outputs/restart/satellites.txt
+10 satellites detected
+
+Snapshot 10 created at time 500000
+
+Initial time = 500000
+
+Max number of satellites = 1011
+GlobalDt = 0.00154109
+Formation probability = 0.1
+NH = 3
+Eta = 0.02
+EtaS = 0.01
+Migration factor = 1
+
+Tracing of WM: 1
+Input = /cluster/home/rupablo/3DPopSynthesis/Runs/migration3/inputs
+Output = /cluster/home/rupablo/3DPopSynthesis/Runs/migration3/outputs
+
+NSatellites = 10
+
+started computation at Sun Jan  9 14:32:27 2022
+Total Subticks = 0
+Close encounter = 0
+Ratio = -nan
+N of back-ups = 0
+
+Final time = 500000
+
+finished computation at Sun Jan  9 14:32:27 2022
+elapsed time: 0.00793038 s, 0.000132173 min, 2.20288e-06 hours
+
