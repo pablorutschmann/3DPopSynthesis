@@ -64,5 +64,5 @@ OE = 2.4E-4 * M_E
 # Solar Mass to Earths Ocean
 mtooe = M_S / OE
 
-print(26.72044313692741 / mtomj)
+print(7.63764e-07 * M_S / M_E)
 

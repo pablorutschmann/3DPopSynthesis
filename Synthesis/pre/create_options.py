@@ -23,7 +23,7 @@ def write_option_file(PATH, RUNTIME, EVOTIME, SIGMA_COEFF, SIGMA_NORM, TEMP_COEF
     options["MaxTime"] = EVOTIME
 
     # Save Interval
-    options["SaveInterval"] = EVOTIME // 1000
+    options["SaveInterval"] = EVOTIME // 100
 
     # Number of Embryos
     options["NEmbryos"] = N_EMBRYO

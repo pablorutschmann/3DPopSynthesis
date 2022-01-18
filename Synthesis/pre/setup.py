@@ -89,7 +89,7 @@ def setup(NAME, N_sims, Runtime, Evotime):
                                                               history=HISTORY)
 
 
-    command = 'job_output=$(bsub -J "{name}[1-{N}]" -n 1 -r -W 0{runtime}:00 -oo {log} {instruction})'.format(
+    command = 'job_output=$(bsub -J "{name}[1-{N}]" -n 1 -r -W {runtime}:00 -oo {log} {instruction})'.format(
         name=NAME,
         N=str(N_SIMS),
         runtime=RUNTIME,
@@ -110,7 +110,7 @@ def setup(NAME, N_sims, Runtime, Evotime):
 
 
     JOBID = "JOBID=$(echo $job_output | awk '/is submitted/{print substr($2, 2, length($2)-2);}')"
-    restart = 'bsub -w "numdone($JOBID,*)" "brequeue -J $JOBID"'
+    restart = 'bsub -w "numdone($JOBID,*)" "echo DONE"'
     final = '; '.join([command,JOBID,restart])
     # system('sleep 10')
     print(final)
