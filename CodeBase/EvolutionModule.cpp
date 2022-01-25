@@ -1457,9 +1457,7 @@ void EvolutionModel::Accretion(int index, double dt) {
                            (R * Satellites[index].Inc * Satellites[index].RHill) * Satellites[index].SigmaDust *
                            Satellites[index].OmegaK * M_PI * Satellites[index].Radius * F;
 
-        double Mdot_star2 =
-                sqrt(3) / 2 * Satellites[index].SigmaDust * Satellites[index].OmegaK * M_PI * Satellites[index].Radius *
-                F;
+        double Mdot_star2 = sqrt(3) / 2 * Satellites[index].SigmaDust * Satellites[index].OmegaK * M_PI * Satellites[index].Radius * F;
         DM = Mdot_star * dt;
         if (DM > DMmax) DM = DMmax;
 

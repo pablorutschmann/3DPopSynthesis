@@ -51,4 +51,4 @@ python SYNTHESIS.py final2 48 120 1000000
 /cluster/home/rupablo/3DPopSynthesis
 
 
-bsub -J "final2[1-48]" -n 1 -r -W 120:00 -oo /cluster/home/rupablo/3DPopSynthesis/SynthesisRuns/final2/log "/cluster/home/rupablo/3DPopSynthesis/CodeBase/3DPopSyn /cluster/home/rupablo/3DPopSynthesis/SynthesisRuns/final1/system_\$LSB_JOBINDEX/inputs /cluster/home/rupablo/3DPopSynthesis/SynthesisRuns/final1/system_\$LSB_JOBINDEX/outputs /cluster/home/rupablo/3DPopSynthesis/SynthesisRuns/final1/history.txt"
+bsub -J "final2[1-48]" -n 1 -r -W 120:00 -oo /cluster/home/rupablo/3DPopSynthesis/SynthesisRuns/final2/log "/cluster/home/rupablo/3DPopSynthesis/CodeBase/3DPopSyn /cluster/home/rupablo/3DPopSynthesis/SynthesisRuns/final2/system_\$LSB_JOBINDEX/inputs /cluster/home/rupablo/3DPopSynthesis/SynthesisRuns/final2/system_\$LSB_JOBINDEX/outputs /cluster/home/rupablo/3DPopSynthesis/SynthesisRuns/final2/history.txt"
