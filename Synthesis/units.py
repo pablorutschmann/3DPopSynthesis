@@ -1,5 +1,6 @@
 import astropy.constants as astroconst
 from astropy import units as u
+import numpy as np
 
 # Defining Constants
 # AU in cm
@@ -66,3 +67,24 @@ mtooe = M_S / OE
 
 print(7.63764e-07 * M_S / M_E)
 
+print(65.0 * R_S / au)
+print(6540 * R_S / au)
+
+M_ceres = 9.1e20 * 1000
+
+initm = 3.0035e-08
+initm2 = 3.0035e-11
+print("Ceres")
+print(initm * M_S / M_ceres)
+print(initm2 * M_S / M_ceres)
+
+print(initm * M_S / M_E)
+print(initm2 * M_S / M_E)
+
+r = pow(3 * initm * M_S / 4 / np.pi / 5.513,1/3)
+print(r/R_E)
+print(r / 100 / 1000)
+
+r = pow(3 * initm2 * M_S / 4 / np.pi / 5.513,1/3)
+print(r/R_E)
+print(r / 100 / 1000)

@@ -366,9 +366,6 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
     theta = theta_distribution(generator);
 
 
-
-
-
     if (type) {
         mass = EmbryoInitMass;
         bool invalid_pos = true;
@@ -1456,6 +1453,10 @@ void EvolutionModel::Accretion(int index, double dt) {
         double Mdot_star = 9.0 / 32.0 * pow(FeedRadius * Satellites[index].RHill, 2) /
                            (R * Satellites[index].Inc * Satellites[index].RHill) * Satellites[index].SigmaDust *
                            Satellites[index].OmegaK * M_PI * Satellites[index].Radius * F;
+
+        double Mdot_star_corr = 9.0 / 32.0 * pow(FeedRadius * Satellites[index].RHill, 2) /
+                           (R * Satellites[index].Inc * Satellites[index].RHill) * Satellites[index].SigmaDust *
+                           Satellites[index].OmegaK * M_PI * Satellites[index].Radius * Satellites[index].Radius * F;
 
         double Mdot_star2 = sqrt(3) / 2 * Satellites[index].SigmaDust * Satellites[index].OmegaK * M_PI * Satellites[index].Radius * F;
         DM = Mdot_star * dt;

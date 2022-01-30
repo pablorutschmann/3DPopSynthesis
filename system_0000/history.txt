@@ -2352,3 +2352,9 @@ Runs/test_iceline/inputs started at Wed Nov 17 18:04:06 2021
 
 /Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Mon Jan 10 17:32:10 2022
 
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Tue Jan 25 14:24:01 2022
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Tue Jan 25 14:24:31 2022
+
+/Users/prut/CLionProjects/3DPopSynthesis/Runs/debug_test/inputs started at Tue Jan 25 14:25:08 2022
+

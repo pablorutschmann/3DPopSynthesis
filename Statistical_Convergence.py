@@ -1,4 +1,5 @@
 import numpy as np
+form
 
 lst = [100,200,400,800,1000]
 print(lst[:-3])
