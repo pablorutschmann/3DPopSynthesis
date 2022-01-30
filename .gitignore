@@ -13,3 +13,22 @@ cmake-build-debug/
 /Rejection_Sampling.py
 /RUNTIME/
 /MigrationRuns/
+/system_0000/
+/Runtime_test/
+/Pre_Process/
+/Post_Process/
+/Other Files/
+/MigrationRuns/
+/disks/
+/cmd.py
+/compile.sh
+/DISK_PREPROCESSING.py
+/make.sh
+/POST_PROCESS.py
+/pull_run.sh
+/push.sh
+/restart.sh
+/run.sh
+/run_euler.sh
+/setup.sh
+/testing_post.py
