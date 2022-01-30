@@ -107,11 +107,29 @@ The values within a row should be `space` or `tab` separated. Column names must 
 ## Installation and Compiling
 
 The code was developed in C++ 11 using CMake version 3.20 for ease of debugging and compilation. In the repository you
-can find the `CMakeLists.txt`, and we highly recommend using it. Simple compilation can also be done using the normal
-Makefile. Once the repository is pulled into the desired folder it can be compiled using the following command.
+can find the `CMakeLists.txt`, and we highly recommend using it. Simple compilation can also be done using a normal
+Makefile. Once the repository is pulled into the desired folder. While being in the `3DPopSynthesis` directory, it can
+be compiled using the following command.
 
-```cmake
-
+```bash
+make build
 ```
+
+This calls the file `Makefile` and creates a folder `build_outputs`, where all intermediate build files are stored. The
+executable `3DPopSynis created in the `3DPopSynthesis` directory. Now the simulation is ready to be started.
+
+## Running a single Simulation
+
+Once the directories and input files are set up, the compiled programm can be run. It takes 3 arguments:
+- `inputs`: The path to the `inputs` directory.
+- `outputs`: The Path to the `outputs` directory.
+- 'history': pThe path to the `history.txt` file.
+
+If you and the example folder `system_0000` are in the same directory as the compiled Program, the command to start the simulation would look as follows:
+```bash
+./3DPopSyn system_0000/inputs system_0000/outputs history.txt
+```
+
+
 
 
