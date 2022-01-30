@@ -121,14 +121,115 @@ executable `3DPopSynis created in the `3DPopSynthesis` directory. Now the simula
 ## Running a single Simulation
 
 Once the directories and input files are set up, the compiled programm can be run. It takes 3 arguments:
+
 - `inputs`: The path to the `inputs` directory.
 - `outputs`: The Path to the `outputs` directory.
 - 'history': pThe path to the `history.txt` file.
 
-If you and the example folder `system_0000` are in the same directory as the compiled Program, the command to start the simulation would look as follows:
+If you and the example folder `system_0000` are in the same directory as the compiled Program, the command to start the
+simulation would look as follows:
+
 ```bash
 ./3DPopSyn system_0000/inputs system_0000/outputs history.txt
 ```
+
+If the code has been run but crashed before finishing, it can be restarted by entering the same command again. The code
+automatically detects the last state and continues from there.
+
+### Output Files
+
+Once the simulation is completed you can see several files and directories in the `output` folder. The three files
+keeping track of the satellites and their collisions are: `satellite_list.txt`, `collisions.txt`
+and `lost_satellites.txt`. For every snapshot a directory with the files `satellites.txt`, `disk.txt`
+and `parameters.txt` is created. Finally, a folder called `restart` is used as backup in the case the simulation
+crashes. `restart` is exactly like a snapshot but without the column names in the files. 
+
+#### `satellite_list.txt`
+- `#ID`: Index of the body
+- `init_time`: Time of initialization
+- `Type`: Type of object (1: Embryo, 0: Planetesimal)
+- `mass`: Mass
+- `wm`: Water mass
+- `swm`: Solid water mass
+- `r2d`: 2-dimensional distance to central star (sqrt(x^2 + y^2))
+- `theta`: Azimuthal angle
+- `x`,`y`,`z`: x,y,z cartesian coordinates
+- `init_temp`: Local Temperature at creation
+
+#### `lost_satellites.txt`
+- `#ID`: Index of the body
+- `time`: Time of being lost
+- `type`: Type of object (1: Embryo, 0: Planetesimal)
+- `mass`: Mass
+- `wm`: Water mass
+- `swm`: Solid water mass
+- `r`: 3-dimensional distance to central star
+- `x`,`y`,`z`: x,y,z cartesian coordinates
+- `xv`,`yv`,`zv`: x,y,z cartesian components of the velocity
+- `a`: Semi-major axis
+- `ecc`: Eccentricity
+- `inc`: Inclination
+- `formation_time`: Time for it to reach size of interest
+- `collision`: reason of destruction:
+  - `0`: engulfed by central star
+  - `1`: collision with other body
+  - `2`: ejected from system (eccentricity >= 1)
+- `collision_index`: Index of the collision, otherwise `-1`
+
+#### `collision_list.txt`
+- `time`: Time of the collision
+- `ID1`: Index of the body 1
+- `type1`: Type of body 1 (1: Embryo, 0: Planetesimal)
+- `mass1`: Mass of body 1
+- `wm1`: Water mass of body 1
+- `swm1`: Solid water mass
+- `x1`,`y1`,`z1`: x,y,z cartesian coordinates of body 1
+- `xv1`,`yv1`,`zv1`: x,y,z cartesian components of the velocity of body 1
+- `ID2`: Index of the body 2
+- `type2`: Type of body 2 (1: Embryo, 0: Planetesimal)
+- `mass2`: Mass of body 2
+- `wm2`: Water mass of body 2
+- `swm2`: Solid water mass
+- `x2`,`y2`,`z2`: x,y,z cartesian coordinates of body 2
+- `xv2`,`yv2`,`zv2`: x,y,z cartesian components of the velocity of body 2
+- - `ID`: Index of the resulting body
+- `type`: Type of the resulting body  (1: Embryo, 0: Planetesimal)
+- `mass`: Mass of the resulting body
+- `wm`: Water mass of the resulting body
+- `swm`: Solid water mass of the resulting body
+- `x`,`y`,`z`: x,y,z cartesian coordinates of the resulting body
+- `xv`,`yv`,`zv`: x,y,z cartesian components of the velocity of the resulting body
+
+#### `Snapshot_*/satellites.txt`
+- `#ID`: Index of the body
+- `Type`: Type of object (1: Embryo, 0: Planetesimal)
+- `M`: Mass
+- `WM`: Water mass
+- `SWM`: Solid water mass
+- `x`,`y`,`z`: x,y,z cartesian coordinates
+- `xv`,`yv`,`zv`: x,y,z cartesian components of the velocity
+- `a`: Semi-major axis
+- `e`: Eccentricity
+- `i`: Inclination
+- `N`: Current timestep index
+- `dt`: Current timestep
+- `init_time`: Time of initialization
+- `formation_time`: Time for it to reach size of interest
+- `P`: Gap opening parameter
+
+#### `Snapshot_*/disk.txt`
+The same structure as the input disk file.
+
+#### `Snapshot_*/parameters.txt`
+- `Time`: Time within the simulation
+- `UpdateTime`: Last time at which the disk was updated
+- `SaveIndex`: Index of the snapshot
+- `TimeStopFormation`: Time when new object are not created anymore
+- `GlobalDt`: Global timestep which is multiplied with `N` from `satellites.txt` to get the indivual timestep.
+- `IceLineId`: Index of the Iceline within the disk file.
+- `IceLineRadius`: Orbital distance of the Iceline
+- `PebbleFlux`: Current pebble flux
+
 
 
 
