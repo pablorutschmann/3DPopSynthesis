@@ -122,9 +122,15 @@ executable `3DPopSynis created in the `3DPopSynthesis` directory. Now the simula
 
 Once the directories and input files are set up, the compiled programm can be run. It takes 3 arguments:
 
-- `inputs`: The path to the `inputs` directory.
-- `outputs`: The Path to the `outputs` directory.
-- 'history': pThe path to the `history.txt` file.
+- `in`: The path to the `inputs` directory.
+- `out`: The Path to the `outputs` directory.
+- 'hist': The path to the `history.txt` file.
+
+To start the simulation run:
+
+```bash
+./3DPopSyn in out hist
+```
 
 If you and the example folder `system_0000` are in the same directory as the compiled Program, the command to start the
 simulation would look as follows:
@@ -133,8 +139,8 @@ simulation would look as follows:
 ./3DPopSyn system_0000/inputs system_0000/outputs history.txt
 ```
 
-If the code has been run but crashed before finishing, it can be restarted by entering the same command again. The code
-automatically detects the last state and continues from there.
+If the code has been run but crashed or ended before finishing, it can be restarted by entering the same command again.
+The code automatically detects the last state and continues from there.
 
 ### Output Files
 
@@ -142,9 +148,11 @@ Once the simulation is completed you can see several files and directories in th
 keeping track of the satellites and their collisions are: `satellite_list.txt`, `collisions.txt`
 and `lost_satellites.txt`. For every snapshot a directory with the files `satellites.txt`, `disk.txt`
 and `parameters.txt` is created. Finally, a folder called `restart` is used as backup in the case the simulation
-crashes. `restart` is exactly like a snapshot but without the column names in the files. 
+crashes. `restart` looks exactly like a snapshot but without the column names in the files. All output files consist of
+rows for each entry. The values per row are `space` or `tab` separated.
 
 #### `satellite_list.txt`
+
 - `#ID`: Index of the body
 - `init_time`: Time of initialization
 - `Type`: Type of object (1: Embryo, 0: Planetesimal)
@@ -157,6 +165,7 @@ crashes. `restart` is exactly like a snapshot but without the column names in th
 - `init_temp`: Local Temperature at creation
 
 #### `lost_satellites.txt`
+
 - `#ID`: Index of the body
 - `time`: Time of being lost
 - `type`: Type of object (1: Embryo, 0: Planetesimal)
@@ -171,12 +180,13 @@ crashes. `restart` is exactly like a snapshot but without the column names in th
 - `inc`: Inclination
 - `formation_time`: Time for it to reach size of interest
 - `collision`: reason of destruction:
-  - `0`: engulfed by central star
-  - `1`: collision with other body
-  - `2`: ejected from system (eccentricity >= 1)
+    - `0`: engulfed by central star
+    - `1`: collision with other body
+    - `2`: ejected from system (eccentricity >= 1)
 - `collision_index`: Index of the collision, otherwise `-1`
 
 #### `collision_list.txt`
+
 - `time`: Time of the collision
 - `ID1`: Index of the body 1
 - `type1`: Type of body 1 (1: Embryo, 0: Planetesimal)
@@ -192,7 +202,8 @@ crashes. `restart` is exactly like a snapshot but without the column names in th
 - `swm2`: Solid water mass
 - `x2`,`y2`,`z2`: x,y,z cartesian coordinates of body 2
 - `xv2`,`yv2`,`zv2`: x,y,z cartesian components of the velocity of body 2
-- - `ID`: Index of the resulting body
+-
+    - `ID`: Index of the resulting body
 - `type`: Type of the resulting body  (1: Embryo, 0: Planetesimal)
 - `mass`: Mass of the resulting body
 - `wm`: Water mass of the resulting body
@@ -201,6 +212,7 @@ crashes. `restart` is exactly like a snapshot but without the column names in th
 - `xv`,`yv`,`zv`: x,y,z cartesian components of the velocity of the resulting body
 
 #### `Snapshot_*/satellites.txt`
+
 - `#ID`: Index of the body
 - `Type`: Type of object (1: Embryo, 0: Planetesimal)
 - `M`: Mass
@@ -218,9 +230,11 @@ crashes. `restart` is exactly like a snapshot but without the column names in th
 - `P`: Gap opening parameter
 
 #### `Snapshot_*/disk.txt`
+
 The same structure as the input disk file.
 
 #### `Snapshot_*/parameters.txt`
+
 - `Time`: Time within the simulation
 - `UpdateTime`: Last time at which the disk was updated
 - `SaveIndex`: Index of the snapshot
@@ -229,6 +243,20 @@ The same structure as the input disk file.
 - `IceLineId`: Index of the Iceline within the disk file.
 - `IceLineRadius`: Orbital distance of the Iceline
 - `PebbleFlux`: Current pebble flux
+
+## Code Overview
+
+The code is structured into modules which define different parts and handle specific tasks. The file `main.cpp` serves
+as an interface to the  `EvolutionModel` class defined in the `EvolutionModule.*` files. It sets up a model, starts it
+and counts the runtime. In the `EvolutionModule.cpp` all other modules are combined to calculate all relevant
+quantities. A `DiskModule::DiskModel` is set up containing all relevant information for the evolution of the disk. It
+includes functions to calculate disk properties and evolve the disk in time. A list of `SatelliteModule::SatelliteModel`
+is created in for teh `EvolutionModel`. Again, the `SatelliteModel` contains all relevant parameters an individual
+satellite. The dynamical evolution is however handled in with the `NBodyModule`. With pointers pointing on the
+coordinates and velocities it changes theses with time. When ever the satellites interact with the disk, the calcuations
+are done within the `EvolutionModule`.
+
+
 
 
 
