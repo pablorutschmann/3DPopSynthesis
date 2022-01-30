@@ -1,1 +1,0 @@
-#ID	time	type	mass	wm	swm	r	x	y	z	vx	vy	vz	a	ecc	inc	formation_time	collision	collision_index

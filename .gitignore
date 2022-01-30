@@ -1,5 +1,8 @@
 .DS_Store
 .idea/
+*__pycache__*
+*.pyo
+*.pyc
 cmake-build-debug/
 /ppd/
 /Disk_Plots/
@@ -17,9 +20,12 @@ cmake-build-debug/
 /Runtime_test/
 /Pre_Process/
 /Post_Process/
-/Other Files/
+/Other_Files/
 /MigrationRuns/
 /disks/
+/Synthesis/__pycache__
+/Synthesis/post/__pycache__
+/Synthesis/pre/__pycache__
 /cmd.py
 /compile.sh
 /DISK_PREPROCESSING.py
