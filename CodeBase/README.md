@@ -118,19 +118,24 @@ make build
 ```
 
 This calls the file `Makefile` and creates a folder `build_outputs`, where all intermediate build files are stored. The
-executable `3DPopSynis created in the `3DPopSynthesis` directory. Now the simulation is ready to be started.
+executable `3DPopSynis created in the `3DPopSynthesis` directory. Now the simulation is ready to be started. For the
+compilation and usage on the ETH Euler cluster, you first have to load the relevant modules; gcc, python and cmake.
+```
+module load gcc/6.3.0 python/3.8.5
+module load cmake/3.20.3
+```
 
 ## Running a single Simulation
 
-Once the directories and input files are set up, the compiled programm can be run. It takes 3 arguments:
+Once the directories and input files are set up, the compiled program can be run. It takes 3 arguments:
 
 - `in`: The path to the `inputs` directory.
 - `out`: The Path to the `outputs` directory.
-- 'hist': The path to the `history.txt` file.
+- `hist`: The path to the `history.txt` file.
 
 To start the simulation run:
 
-```bash
+```
 ./3DPopSyn in out hist
 ```
 
