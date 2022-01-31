@@ -2,6 +2,8 @@
 
 Based on Cilibrasi et al. [2021]. (doi:  10.1093/mnras/stab1179)
 
+GitHub Link: https://github.com/pablorutschmann/3DPopSynthesis
+
 ## Preparation
 
 ### Directory Structure

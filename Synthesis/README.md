@@ -1,5 +1,7 @@
 # Synthesis Framework Module
 
+GitHub Link: https://github.com/pablorutschmann/3DPopSynthesis
+
 This module allows for automation of population synthesis with the simulation code stored in `CodeBase`. It consists of
 two sub-modules, one which handles the preprocessing and prepares the appropriate directories and files and one that
 handles the data analysis of the simulation data.
