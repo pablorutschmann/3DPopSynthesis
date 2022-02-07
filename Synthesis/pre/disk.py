@@ -25,7 +25,6 @@ class disk:
     def prepare(self, TM_min, TM_max, R_min, R_max, N, spacing, Sigma_min, Sigma_max, N_Sigma):
         self.TM_min = TM_min
         self.TM_max = TM_max
-        self.TotalMass = np.random.uniform(TM_min, TM_max)
         self.R_min = R_min
         self.R_max = R_max
         self.N = N
@@ -67,7 +66,8 @@ class disk:
         Sigma_Coeff = np.random.choice(self.Sigmas)
         integral, _ = quad(lambda x: Power_Law(x, 1, Sigma_Coeff) * x, self.R_min * au / R_S,
                            self.R_max * au / R_S)
-        Sigma_Norm = self.TotalMass / (2 * np.pi * integral)
+        TotalMass = np.random.uniform(self.TM_min, self.TM_max)
+        Sigma_Norm = TotalMass / (2 * np.pi * integral)
 
         Sigma_Gas = Power_Law(self.out['r [R_S]'] * au / R_S, Sigma_Norm, Sigma_Coeff)
         # Unit Conversion from CGS to Solar Units
@@ -89,7 +89,7 @@ class disk:
         # Write out the disk file for that Sample in the inputs folder
         self.write_disk(INPUT)
 
-        return Sigma_Coeff, Sigma_Norm * denstos * (R_S / au) ** Sigma_Coeff, Temp_Coeff
+        return  TotalMass, Sigma_Coeff, Sigma_Norm * denstos * (R_S / au) ** Sigma_Coeff, Temp_Coeff
 
     def write_disk(self, INPUT):
 

@@ -84,9 +84,12 @@ public:
     int TotalSubticks;
     int CloseSubticks;
 
-    // Random Numbers Generator Initialization
     std::map<std::string, double> Options;
-    default_random_engine generator;
+
+    // Random Numbers Generator Initialization
+
+//    default_random_engine generator;
+
 
     // Functions
 

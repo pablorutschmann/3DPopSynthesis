@@ -24,6 +24,11 @@ const double etaS = 0.01; // second coefficient for HPC timestep
 
 const bool flags = false;
 
+// random number initializer
+unsigned seed1 = std::chrono::system_clock::now().time_since_epoch().count();
+
+default_random_engine gen(seed1);
+
 
 EvolutionModel::EvolutionModel() {
 }
@@ -54,6 +59,7 @@ EvolutionModel::EvolutionModel(string input_address, string output_address) {
 
     CreateSnapshot();
 
+    cout << "Seed = " << seed1 << '\n' << '\n';
     cout << "Initial time = " << Time << '\n' << '\n';
     cout << "Max number of satellites = " << TotalNumberSatellites << '\n';
     cout << "GlobalDt = " << GlobalDt << '\n';
@@ -363,7 +369,7 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
     ID++;
 
     uniform_real_distribution<> theta_distribution(0, 2 * M_PI);
-    theta = theta_distribution(generator);
+    theta = theta_distribution(gen);
 
 
     if (type) {
@@ -380,7 +386,7 @@ void EvolutionModel::CreateSatellite(int index, bool type) {
     }
 
     uniform_real_distribution<> inc_distribution(0, 2.0 * MaxInclination);
-    double inc = inc_distribution(generator) - MaxInclination;
+    double inc = inc_distribution(gen) - MaxInclination;
 
     z = inc * r;
 
@@ -1642,8 +1648,8 @@ double EvolutionModel::Rejection_Sample() {
     uniform_real_distribution<> x_distribution(R_min, R_max);
     uniform_real_distribution<> y_distribution(Density_Model(R_min), Density_Model(R_max));
     while (true) {
-        double x = x_distribution(generator);
-        double y = y_distribution(generator);
+        double x = x_distribution(gen);
+        double y = y_distribution(gen);
         if (y <= Density_Model(x))
             return x;
     }

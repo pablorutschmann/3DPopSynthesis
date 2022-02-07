@@ -4,6 +4,7 @@ DustToGas           0.01
 NEmbryos            10
 NPlanetesimals      190
 Spacing             8
+TotalMass           0
 SigmaExponent       0
 SigmaNorm           0
 TempExponent        0
