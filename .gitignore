@@ -41,3 +41,5 @@ cmake-build-debug/
 /clean_up.py
 /combine_runs.py
 /get_list_done.sh
+/build_output/
+/master/
