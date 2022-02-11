@@ -6,6 +6,7 @@ from . import snapshot
 from . import satellite
 from ..units import *
 from collections import OrderedDict
+from scipy.optimize import fminbound
 
 
 class simulation:
@@ -16,6 +17,8 @@ class simulation:
         self.plot_path = os.path.join(self.path, 'plots')
         if not os.path.exists(self.plot_path):
             os.makedirs(self.plot_path)
+
+        self.threshold = 0
 
         self.labels = {}
         self.labels['SigmaGas'] = ['Gas Surface Density', 'Sigma in [units]']
@@ -41,8 +44,10 @@ class simulation:
                 self.options[key] = float(val)
         self.N_Embryos = self.options['NEmbryos']
         self.N_Planetesimals = self.options['NPlanetesimals']
-        self.Total_Mass = self.options['TotalMass']
+        self.Total_Mass = np.random.uniform(10 * M_J / M_S, 100 * M_J / M_S)
+        # self.Total_Mass = self.options['TotalMass']
         self.Sigma_Exponent = self.options['SigmaExponent']
+        self.Sigma_Norm = self.options['SigmaNorm']
 
         # import collisions.txt
         path = os.path.join(self.output_path, 'collisions.txt')
@@ -133,7 +138,7 @@ class simulation:
         ax.set_title('Mass Evolution of remaining satellites')
 
         for item in self.satellites.values():
-                fig, ax = item.fig_accretion(fig, ax)
+            fig, ax = item.fig_accretion(fig, ax)
         savepath = os.path.join(self.plot_path, 'accretion.png')
         fig.savefig(savepath)
         plt.close(fig)
@@ -141,6 +146,54 @@ class simulation:
     def plot_wm(self):
         for item in self.satellites.values():
             item.wm_time(self.plot_path)
+
+    def get_AMD(self, Mass_low_lim, A_up_lim):
+        M = list(self.snaps[self.N_snaps - 1].satellites['M'].values * M_S / 1000)
+        A = list(self.snaps[self.N_snaps - 1].satellites['a'].values * R_S / 100)
+        E = list(self.snaps[self.N_snaps - 1].satellites['i'].values)
+        I = list(self.snaps[self.N_snaps - 1].satellites['e'].values)
+
+        data = zip(M, A, E, I)
+
+        data = [item for item in data if item[0] >= Mass_low_lim * M_E / 1000 and item[1] <= A_up_lim * au / 100]
+
+        M, A, E, I = zip(*data)
+
+        AMD = np.sum(M * np.sqrt(A) * (1 - np.cos(I) * np.sqrt(1 - np.power(E, 2)))) / np.sum(M * np.sqrt(A))
+
+        return AMD, len(M)
+
+    def get_RMC(self, Mass_low_lim, A_up_lim):
+        M = list(self.snaps[self.N_snaps - 1].satellites['M'].values * M_S / 1000)
+        A = list(self.snaps[self.N_snaps - 1].satellites['a'].values * R_S / 100)
+        E = list(self.snaps[self.N_snaps - 1].satellites['i'].values)
+        I = list(self.snaps[self.N_snaps - 1].satellites['e'].values)
+
+        data = zip(M, A, E, I)
+
+        data = [item for item in data if item[0] >= Mass_low_lim * M_E / 1000 and item[1] <= A_up_lim * au / 100]
+
+        M, A, E, I = zip(*data)
+
+        def f(a):
+            num = np.sum(M)
+            den = 0
+
+            for i in range(len(M)):
+                den += M[i] * np.power(np.log10(a / A[i]), 2)
+
+            return num/den
+
+          # return np.sum(M) / np.sum(M * np.power(np.log10(a / A), 2))
+        vec_f = np.vectorize(f)
+        test_au = np.linspace(self.options['R_min'] * R_S /au, A_up_lim, 100000) * au / 100
+        lin_max = np.max(vec_f(test_au))
+        x1 = self.options["R_min"] * R_S / 100
+        x2 = A_up_lim * au / 100
+
+        #RMC = fminbound(lambda a: -f(a), 0.3 , 2)
+
+        return lin_max, len(M)
 
 
 if __name__ == "__main__":

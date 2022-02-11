@@ -35,6 +35,12 @@ R_E = astroconst.R_earth.decompose(u.cgs.bases).value
 # Mars Mass
 M_M = 0.107 * M_E
 
+# Merkur Mass
+M_ME = 0.00553 * M_E
+
+# Venus Mass
+M_V = 0.815 * M_E
+
 # Gravitational Constant
 G = astroconst.G.decompose(u.cgs.bases).value
 
