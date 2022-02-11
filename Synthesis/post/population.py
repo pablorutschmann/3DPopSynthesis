@@ -9,6 +9,10 @@ from ..units import *
 from .simulation import simulation
 from .metric import *
 
+figsize=(8, 6)
+fontsize=60
+dpi=600
+
 
 class population:
     def __init__(self, PATH, N_sims):
@@ -36,7 +40,7 @@ class population:
 
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
-        plt.rcParams.update({'font.size': 40})
+        plt.rcParams.update({'font.size': fontsize})
 
         # cmap = 'cividis_r'
         cmap = 'viridis_r'
@@ -45,7 +49,7 @@ class population:
 
         norm = colors.LogNorm(cmin, cmax)
 
-        fig, ax = plt.subplots(figsize=(8, 6))
+        fig, ax = plt.subplots(figsize=figsize)
         ax.scatter(SigmaCoeffs, TotalMasses, c=Reference, cmap=cmap, norm=norm, s=12)
         x_labels = ax.get_xticklabels()
         plt.setp(x_labels, horizontalalignment='center')
@@ -57,11 +61,11 @@ class population:
         fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
                      label=r'Reference Value at $1 \mathrm{au}$ [$\mathrm{g}\mathrm{cm}^{-2}$]', ax=ax2, pad=0.09)
         # ax.set_yscale('log')
-        fig.savefig(path.join(self.PLOT, 'scatter_parameters.png'), transparent=False, dpi=600, bbox_inches="tight")
+        fig.savefig(path.join(self.PLOT, 'scatter_parameters.png'), transparent=False, dpi=dpi, bbox_inches="tight")
         plt.close(fig)
 
         #
-        # fig = plt.figure(figsize=(8, 6), dpi=500)
+        # fig = plt.figure(figsize=figsize, dpi=500)
         # # ax = fig.add_subplot(121)
         # fig.scatter(SigmaCoeffs, TotalMasses, c=SigmaNorms, cmap=cmap, norm=norm)
         # fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label="Surface Profile Normalization", ax=ax)
@@ -92,7 +96,7 @@ class population:
 
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
-        plt.rcParams.update({'font.size': 40})
+        plt.rcParams.update({'font.size': fontsize})
 
         # cmap = 'cividis_r'
         cmap = 'viridis_r'
@@ -101,7 +105,7 @@ class population:
 
         norm = colors.LogNorm(cmin, cmax)
 
-        fig, ax = plt.subplots(figsize=(8, 6))
+        fig, ax = plt.subplots(figsize=figsize)
         ax.scatter(Ecc, np.sin(Inc), c=Orb_Dist, cmap=cmap, norm=norm, s=12)
         x_labels = ax.get_xticklabels()
         plt.setp(x_labels, horizontalalignment='center')
@@ -114,7 +118,7 @@ class population:
                      ax=ax)
         ax.set_xscale('log')
         ax.set_yscale('log')
-        fig.savefig(path.join(self.PLOT, 'scatter_ecc_inc.png'), transparent=False, dpi=600, bbox_inches="tight")
+        fig.savefig(path.join(self.PLOT, 'scatter_ecc_inc.png'), transparent=False, dpi=dpi, bbox_inches="tight")
         plt.close(fig)
 
     def scatter_AMD_RMC(self, m_low_lim, a_up_lim):
@@ -138,7 +142,7 @@ class population:
 
         norm = colors.Normalize(cmin, cmax)
 
-        fig, ax = plt.subplots(figsize=(8, 6))
+        fig, ax = plt.subplots(figsize=figsize)
         ax.scatter(RMCS, AMDS, c=NS, cmap=cmap, norm=norm, s=12)
         ax.scatter(RMC_sol, AMD_sol, c='red')
         x_labels = ax.get_xticklabels()
@@ -152,7 +156,7 @@ class population:
                      ax=ax)
         ax.set_xscale('log')
         ax.set_yscale('log')
-        fig.savefig(path.join(self.PLOT, 'scatter_AMD_RMC.png'), transparent=False, dpi=600, bbox_inches="tight")
+        fig.savefig(path.join(self.PLOT, 'scatter_AMD_RMC.png'), transparent=False, dpi=dpi, bbox_inches="tight")
         plt.close(fig)
 
     def histogram_mass(self, m_low_lim=0, a_up_lim=30):
@@ -171,11 +175,11 @@ class population:
 
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
-        plt.rcParams.update({'font.size': 40})
+        plt.rcParams.update({'font.size': fontsize})
 
         N_bins = 15
         bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins)
-        fig, ax = plt.subplots(figsize=(8, 6))
+        fig, ax = plt.subplots(figsize=figsize)
         # ax.hist(Masses, bins=bins)
         values, base, _ = plt.hist(Masses, bins=bins, rwidth=0.95)
         ax_bis = ax.twinx()
@@ -187,7 +191,7 @@ class population:
         ax_bis.set(ylabel='Cumulative Distribution')
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
-        fig.savefig(path.join(self.PLOT, 'histogram_mass.png'), transparent=False, dpi=600, bbox_inches="tight")
+        fig.savefig(path.join(self.PLOT, 'histogram_mass.png'), transparent=False, dpi=dpi, bbox_inches="tight")
         plt.close(fig)
 
     def histogram_weighted_mass(self, m_low_lim=0, a_up_lim=30):
@@ -206,11 +210,11 @@ class population:
 
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
-        plt.rcParams.update({'font.size': 40})
+        plt.rcParams.update({'font.size': fontsize})
 
         N_bins = 15
         bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins)
-        fig, ax = plt.subplots(figsize=(8, 6))
+        fig, ax = plt.subplots(figsize=figsize)
         # ax.hist(Masses, bins=bins)
         values, base, _ = plt.hist(Masses, bins=bins, rwidth=0.95, weights=Masses / np.sum(Masses))
         ax.axvline(1, color='red', linewidth=1)
@@ -226,7 +230,7 @@ class population:
         ax_bis.set(ylabel='Cumulative Distribution')
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
-        fig.savefig(path.join(self.PLOT, 'histogram_weighted_mass.png'), transparent=False, dpi=600,
+        fig.savefig(path.join(self.PLOT, 'histogram_weighted_mass.png'), transparent=False, dpi=dpi,
                     bbox_inches="tight")
         plt.close(fig)
 
@@ -244,15 +248,13 @@ class population:
 
         Masses, Orb_Dist = zip(*data)
 
-        print(Masses)
-        print(Orb_Dist)
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
-        plt.rcParams.update({'font.size': 40})
+        plt.rcParams.update({'font.size': fontsize})
 
         N_bins = 15
         bins = 10 ** np.linspace(np.log10(min(Orb_Dist)), np.log10(max(Orb_Dist)), N_bins)
-        fig, ax = plt.subplots(figsize=(8, 6))
+        fig, ax = plt.subplots(figsize=figsize)
         # ax.hist(Masses, bins=bins)
         values, base, _ = plt.hist(Orb_Dist, bins=bins, rwidth=0.95)
         ax.axvline(1, color='red', linewidth=1)
@@ -268,7 +270,7 @@ class population:
         ax_bis.set(ylabel='Cumulative Distribution')
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
-        fig.savefig(path.join(self.PLOT, 'histogram_a.png'), transparent=False, dpi=600, bbox_inches="tight")
+        fig.savefig(path.join(self.PLOT, 'histogram_a.png'), transparent=False, dpi=dpi, bbox_inches="tight")
         plt.close(fig)
 
     def histogram_weighted_a(self, m_low_lim=0, a_up_lim=30):
@@ -285,15 +287,13 @@ class population:
 
         Masses, Orb_Dist = zip(*data)
 
-        print(Masses)
-        print(Orb_Dist)
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
-        plt.rcParams.update({'font.size': 40})
+        plt.rcParams.update({'font.size': fontsize})
 
         N_bins = 15
         bins = 10 ** np.linspace(np.log10(min(Orb_Dist)), np.log10(max(Orb_Dist)), N_bins)
-        fig, ax = plt.subplots(figsize=(8, 6))
+        fig, ax = plt.subplots(figsize=figsize)
         # ax.hist(Masses, bins=bins)
         values, base, _ = plt.hist(Orb_Dist, bins=bins, rwidth=0.95, density=True, weights=Masses / np.sum(Masses))
         ax.axvline(1, color='red', linewidth=1)
@@ -309,7 +309,7 @@ class population:
         ax_bis.set(ylabel='Cumulative Distribution')
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
-        fig.savefig(path.join(self.PLOT, 'histogram_weighted_a.png'), transparent=False, dpi=600, bbox_inches="tight")
+        fig.savefig(path.join(self.PLOT, 'histogram_weighted_a.png'), transparent=False, dpi=dpi, bbox_inches="tight")
         plt.close(fig)
 
     def histogram_totalmass(self, m_low_lim=0):
@@ -322,11 +322,11 @@ class population:
 
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
-        plt.rcParams.update({'font.size': 40})
+        plt.rcParams.update({'font.size': fontsize})
 
         N_bins = 15
         bins = 10 ** np.linspace(np.log10(min(TotalMasses)), np.log10(max(TotalMasses)), N_bins)
-        fig, ax = plt.subplots(figsize=(8, 6))
+        fig, ax = plt.subplots(figsize=figsize)
         # ax.hist(Masses, bins=bins)
         values, base, _ = plt.hist(TotalMasses, bins=bins, rwidth=0.95)
         # ax.axvline(1, color='red', linewidth=1)
@@ -340,80 +340,128 @@ class population:
         ax_bis.set(ylabel='Cumulative Distribution')
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
-        fig.savefig(path.join(self.PLOT, 'histogram_totalmass.png'), transparent=False, dpi=600, bbox_inches="tight")
+        fig.savefig(path.join(self.PLOT, 'histogram_totalmass.png'), transparent=False, dpi=dpi, bbox_inches="tight")
         plt.close(fig)
 
-    def total_mass_distribution(self, cumulative=False, density=False, thresholds=[10e-12]):
-        Masses = []
+    def distances(self, m_low_lim, a_up_lim):
+        systems = []
+        total_masses = []
+        sigma_exponents = []
+        m_low_lim = m_low_lim
+        a_up_lim = a_up_lim
+
 
         for sim in self.SIMS.values():
-            Masses.append(np.sum(sim.snaps[sim.N_snaps - 1].satellites['M'].values))
+            total_masses.append(sim.Total_Mass)
+            sigma_exponents.append(sim.Sigma_Exponent)
 
-        data = []
-        if density == False:
-            thresholds = [M_S / M_E * thresh for thresh in thresholds]
-            for thresh in thresholds:
-                data.append([x for x in Masses if x > thresh])
+            zipped = zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values,
+                         sim.snaps[sim.N_snaps - 1].satellites['a'].values)
 
-        N_bins = 30
-        bins = np.logspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins)
+            # Remove under threshold Masses
+            filtered = [(m * M_S / M_E, a * R_S / au) for (m, a) in zipped if
+                        m >= m_low_lim * M_E / M_S and a <= a_up_lim * au / R_S]
+            systems.append(filtered)
 
-        print(len(Masses))
+        func = lambda x: distance(x, terrestrial)
+        distances = list(map(func, systems))
+
+        plt.rcParams.update({'figure.autolayout': True})
+        plt.style.use('seaborn-paper')
+        plt.rcParams.update({'font.size': fontsize})
+
         fig, ax = plt.subplots(ncols=1)
         fig.set_size_inches(15.5, 10.5)
-        if density == False:
-            for dat, thresh in zip(data, thresholds):
-                ax.hist(dat, bins=bins, cumulative=cumulative, label=str(thresh))
-        else:
-            ax.hist(Masses, bins=bins, density=True, cumulative=cumulative, stacked=True)
-        ax.vlines(np.mean(Masses), 0, 700, color='r', linestyle='dashed', linewidth=2, label='Mean Mass')
-        ax.vlines(M_M / M_E, 0, 700, color='r', linestyle='dashed', linewidth=2, label='Mars Mass')
-        ax.set_xlabel('Mass in Earth Masses')
-        if density == False:
-            ax.set_ylabel('Counts')
-        else:
-            ax.set_ylabel('Probability')
-        ax.set_xscale('log')
+        ax.scatter(sigma_exponents, distances)
+
+        ax.set_xlabel('Number of initial Planetesimals')
+
+        ax.set_ylabel('Distance')
         ax.legend()
-        fig.suptitle('Final Mass Distribution')
-        fig.savefig(path.join(self.PLOT, 'final_mass_distribution' + str(cumulative) + str(density) + '.png'))
+        fig.suptitle('Distance Metric to Solar System')
+        fig.savefig(path.join(self.PLOT, 'distances_exponent.png'))
         plt.close(fig)
 
-    def a_mass_distribution(self):
-        Masses = []
-        A = []
-        WM = []
-        SWM = []
-        for sim in self.SIMS.values():
-            Masses.extend(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)
-            A.extend(sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
-            WM.extend(sim.snaps[sim.N_snaps - 1].satellites['WM'].values * M_S / M_E)
-            SWM.extend(sim.snaps[sim.N_snaps - 1].satellites['SWM'].values * M_S / M_E)
+        fig, ax = plt.subplots(ncols=1)
+        fig.set_size_inches(15.5, 10.5)
+        ax.scatter(total_masses, distances)
 
-        Masses = np.asarray(Masses)
-        WM = np.asarray(WM)
-        SWM = np.asarray(SWM)
-        total_wmf = (WM + SWM) / Masses
+        ax.set_xlabel('Number of initial Planetesimals')
 
-        cmap = 'cividis_r'
-        cmin = min(total_wmf)
-        cmax = max(total_wmf)
+        ax.set_ylabel('Distance')
+        ax.legend()
+        fig.suptitle('Distance Metric to Solar System')
+        fig.savefig(path.join(self.PLOT, 'distances_mass.png'))
+        plt.close(fig)
+
+        cmap = 'viridis_r'
+        cmin = min(distances)
+        cmax = max(distances)
 
         norm = colors.Normalize(cmin, cmax)
 
-        fig, ax = plt.subplots(ncols=1)
-        fig.set_size_inches(15.5, 10.5)
-        ax.scatter(A, Masses, c=total_wmf, cmap=cmap, norm=norm)
-        fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label="Water Mass Fraction",
+        fig, ax = plt.subplots(figsize=figsize)
+        ax.scatter(sigma_exponents, total_masses, c=distances, cmap=cmap, norm=norm, s=12)
+        x_labels = ax.get_xticklabels(list(set(sigma_exponents)))
+        plt.setp(x_labels, horizontalalignment='center')
+        ax.set(xlabel='Sigma Exponent', ylabel=r'Total Mass', xticks=sigma_exponents)
+        # ax2 = ax.twinx()
+        # mn, mx  = ax.get_ylim()
+        # ax2.set_ylim(M_S/M_J * mn, M_S/M_J * mx)
+        # ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
+        fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
                      ax=ax)
-        ax.set_xlabel('Distane from Star in au')
-        ax.set_ylabel('Mass in Earth Masses')
-        ax.set_xscale('log')
-        ax.set_yscale('log')
-        ax.legend()
-        fig.suptitle('Distance Mass Distribution')
-        fig.savefig(path.join(self.PLOT, 'a_mass_distribution.png'))
+        # ax.set_xscale('log')
+        # ax.set_yscale('log')
+        fig.savefig(path.join(self.PLOT, 'scatter_distances.png'), transparent=False, dpi=dpi, bbox_inches="tight")
         plt.close(fig)
+
+    def line_n_planets(self, a_up_lim, thresholds=None):
+        if thresholds is None:
+            thresholds = [0.05, 0.1, 0.15]
+
+        thresholds = sorted(thresholds)
+        numbers = {key:[] for key in thresholds}
+        occurences = {key:[] for key in thresholds}
+        systems = []
+
+        for sim in self.SIMS.values():
+            zipped = list(zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S /M_E,
+                         sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au))
+            zipped = [(m, a) for (m, a) in zipped if a <= a_up_lim]
+            systems.append(zipped)
+        number_of_systems = len(systems)
+        for keys,lists in numbers.items():
+            for i,item in enumerate(systems):
+                filtered = [(m, a) for (m, a) in item if
+                          m >= keys]
+                leng = len(filtered)
+                lists += [leng]
+                systems[i] = filtered
+
+        max_number = max(numbers[thresholds[0]])
+        for key,value in numbers.items():
+            for i in range(max_number+1):
+                occurences[key] += [value.count(i)]
+
+        plt.rcParams.update({'figure.autolayout': True})
+        plt.style.use('seaborn-paper')
+        plt.rcParams.update({'font.size': fontsize})
+
+        fig, ax = plt.subplots(figsize=figsize)
+        for key,value in occurences.items():
+            ax.plot(range(max_number+1), np.array(value)/number_of_systems, linestyle='dashed', linewidth=0.5, marker='o', label=f'Threshold {key}'  +  r' $\mathrm{M_{\oplus}}$')
+        ax.set(xlabel='Number of Planets', ylabel=r'Normalized Occurence',  xticks=range(max_number+1))
+        # ax2 = ax.twinx()
+        # mn, mx  = ax.get_ylim()
+        # ax2.set_ylim(M_S/M_J * mn, M_S/M_J * mx)
+        # ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
+        # ax.set_xscale('log')
+        # ax.set_yscale('log')
+        ax.legend(loc='best')
+        fig.savefig(path.join(self.PLOT, 'line_planet_number_occurences.png'), transparent=False, dpi=dpi, bbox_inches="tight")
+        plt.close(fig)
+
 
     def a_wm_distribution(self):
         Masses = []
@@ -443,78 +491,6 @@ class population:
         ax.legend()
         fig.suptitle('Distance Mass Distribution')
         fig.savefig(path.join(self.PLOT, 'a_mass_distribution.png'))
-        plt.close(fig)
-
-    def final_mass_distribution(self, cumulative=False, density=False, thresholds=[10e-12]):
-        Masses = []
-
-        for sim in self.SIMS.values():
-            Masses.extend(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)
-        data = []
-        if density == False:
-            thresholds = [M_S / M_E * thresh for thresh in thresholds]
-            for thresh in thresholds:
-                data.append([x for x in Masses if x > thresh])
-
-        N_bins = 30
-        bins = np.logspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins)
-
-        print(len(Masses))
-        fig, ax = plt.subplots(ncols=1)
-        fig.set_size_inches(15.5, 10.5)
-        if density == False:
-            for dat, thresh in zip(data, thresholds):
-                ax.hist(dat, bins=bins, cumulative=cumulative, label=str(thresh))
-        else:
-            ax.hist(Masses, bins=bins, density=True, cumulative=cumulative, stacked=True)
-        ax.vlines(np.mean(Masses), 0, 700, color='r', linestyle='dashed', linewidth=2, label='Mean Mass')
-        ax.vlines(M_M / M_E, 0, 700, color='r', linestyle='dashed', linewidth=2, label='Mars Mass')
-        ax.set_xlabel('Mass in Earth Masses')
-        if density == False:
-            ax.set_ylabel('Counts')
-        else:
-            ax.set_ylabel('Probability')
-        ax.set_xscale('log')
-        ax.legend()
-        fig.suptitle('Final Mass Distribution')
-        fig.savefig(path.join(self.PLOT, 'final_mass_distribution' + str(cumulative) + str(density) + '.png'))
-        plt.close(fig)
-
-    def final_radius_distribution(self, cumulative=False, density=False, thresholds=[10e-12]):
-        Masses = []
-        A = []
-
-        for sim in self.SIMS.values():
-            Masses.extend(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)
-            A.extend(sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
-        data = []
-        if not density:
-            thresholds = [thresh * M_S / M_E for thresh in thresholds]
-            for thresh in thresholds:
-                data.append([(m, a) for (m, a) in zip(Masses, A) if m > thresh])
-
-        N_bins = 30
-        bins = np.logspace(np.log10(min(A)), np.log10(max(A)), N_bins)
-        print(len(Masses))
-        fig, ax = plt.subplots(ncols=1)
-        fig.set_size_inches(15.5, 10.5)
-        if not density:
-            for dat, thresh in zip(data, thresholds):
-                ax.hist([x[1] for x in dat], bins=bins, density=density, cumulative=cumulative,
-                        label=str(thresh))
-        else:
-            ax.hist(A, bins=bins, density=density, cumulative=cumulative, stacked=True)
-
-        ax.set_xlabel('Distance from Star in AU')
-        ax.set_xscale('log')
-
-        if not density:
-            ax.set_ylabel('Counts')
-        else:
-            ax.set_ylabel('Probability')
-        ax.legend()
-        fig.suptitle('Final Radius Distribution')
-        fig.savefig(path.join(self.PLOT, 'final_radius_distribution' + str(cumulative) + str(density) + '.png'))
         plt.close(fig)
 
     def final_wmf_radial_distribution(self, cumulative=False, density=False, thresholds=[10e-12]):
@@ -568,103 +544,6 @@ class population:
 
         fig.suptitle('Final Water Mass Fraction Distribution')
         fig.savefig(path.join(self.PLOT, 'final_wm_distribution' + str(cumulative) + str(density) + '.png'))
-        plt.close(fig)
-
-    def distances(self, m_low_lim, a_up_lim):
-        systems = []
-        total_masses = []
-        sigma_exponents = []
-        m_low_lim = m_low_lim
-        a_up_lim = a_up_lim
-
-        for sim in self.SIMS.values():
-            total_masses.append(sim.Total_Mass)
-            sigma_exponents.append(sim.Sigma_Exponent)
-
-            zipped = zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values,
-                         sim.snaps[sim.N_snaps - 1].satellites['a'].values)
-
-            # Remove under threshold Masses
-            filtered = [(m * M_S / M_E, a * R_S / au) for (m, a) in zipped if
-                        m >= m_low_lim * M_E / M_S and a <= a_up_lim * au / R_S]
-            systems.append(filtered)
-
-        func = lambda x: distance(x, terrestrial)
-        distances = list(map(func, systems))
-        print(distances)
-
-        fig, ax = plt.subplots(ncols=1)
-        fig.set_size_inches(15.5, 10.5)
-        ax.scatter(sigma_exponents, distances)
-
-        ax.set_xlabel('Number of initial Planetesimals')
-
-        ax.set_ylabel('Distance')
-        ax.legend()
-        fig.suptitle('Distance Metric to Solar System')
-        fig.savefig(path.join(self.PLOT, 'distances_exponent.png'))
-        plt.close(fig)
-
-        fig, ax = plt.subplots(ncols=1)
-        fig.set_size_inches(15.5, 10.5)
-        ax.scatter(total_masses, distances)
-
-        ax.set_xlabel('Number of initial Planetesimals')
-
-        ax.set_ylabel('Distance')
-        ax.legend()
-        fig.suptitle('Distance Metric to Solar System')
-        fig.savefig(path.join(self.PLOT, 'distances_mass.png'))
-        plt.close(fig)
-
-        cmap = 'viridis_r'
-        cmin = min(distances)
-        cmax = max(distances)
-
-        norm = colors.Normalize(cmin, cmax)
-
-        fig, ax = plt.subplots(figsize=(8, 6))
-        ax.scatter(sigma_exponents, total_masses, c=distances, cmap=cmap, norm=norm, s=12)
-        x_labels = ax.get_xticklabels(list(set(sigma_exponents)))
-        plt.setp(x_labels, horizontalalignment='center')
-        ax.set(xlabel='Sigma Exponent', ylabel=r'Total Mass',  xticks=sigma_exponents)
-        # ax2 = ax.twinx()
-        # mn, mx  = ax.get_ylim()
-        # ax2.set_ylim(M_S/M_J * mn, M_S/M_J * mx)
-        # ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
-        fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
-                     ax=ax)
-        # ax.set_xscale('log')
-        # ax.set_yscale('log')
-        fig.savefig(path.join(self.PLOT, 'scatter_distances.png'), transparent=False, dpi=600, bbox_inches="tight")
-        plt.close(fig)
-
-    def ecc_inc_distribution(self):
-        Masses = []
-        Inc = []
-        Ecc = []
-
-        for sim in self.SIMS.values():
-            Masses.extend(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)
-            Inc.extend(sim.snaps[sim.N_snaps - 1].satellites['i'].values)
-            Ecc.extend(sim.snaps[sim.N_snaps - 1].satellites['e'].values)
-
-        cmap = 'cividis_r'
-        cmin = min(Masses)
-        cmax = max(Masses)
-
-        norm = colors.LogNorm(cmin, cmax)
-
-        fig, ax = plt.subplots(ncols=1)
-        fig.set_size_inches(15.5, 10.5)
-        ax.scatter(Ecc, np.sin(Inc), c=Masses, cmap=cmap, norm=norm)
-        fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label="Mass in Earth Masses",
-                     ax=ax)
-        ax.set_xlabel('Eccentricity')
-        ax.set_ylabel('sin(Inclination)')
-        ax.legend()
-        fig.suptitle('Ecc and Inc Distribution')
-        fig.savefig(path.join(self.PLOT, 'inc_ecc_distribution.png'))
         plt.close(fig)
 
     def system_path(self, i):
