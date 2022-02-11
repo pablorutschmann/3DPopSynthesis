@@ -9,9 +9,10 @@ from ..units import *
 from .simulation import simulation
 from .metric import *
 
-figsize=(8, 6)
-fontsize=60
-dpi=600
+figsize = (8, 6)
+fontsize = 60
+dpi = 600
+cmap_standart = 'viridis_r'
 
 
 class population:
@@ -42,8 +43,7 @@ class population:
         plt.style.use('seaborn-paper')
         plt.rcParams.update({'font.size': fontsize})
 
-        # cmap = 'cividis_r'
-        cmap = 'viridis_r'
+        cmap = cmap_standart
         cmin = min(Reference)
         cmax = max(Reference)
 
@@ -63,18 +63,6 @@ class population:
         # ax.set_yscale('log')
         fig.savefig(path.join(self.PLOT, 'scatter_parameters.png'), transparent=False, dpi=dpi, bbox_inches="tight")
         plt.close(fig)
-
-        #
-        # fig = plt.figure(figsize=figsize, dpi=500)
-        # # ax = fig.add_subplot(121)
-        # fig.scatter(SigmaCoeffs, TotalMasses, c=SigmaNorms, cmap=cmap, norm=norm)
-        # fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label="Surface Profile Normalization", ax=ax)
-        # fig.set_xticks(set(SigmaCoeffs))
-        # fig.set_xlabel('Surface Density Power Law Exponent')
-        # fig.set_ylabel(r'Total Disk Mass [$M_{\odot}$]')
-        # fig.legend()
-        # fig.savefig(path.join(self.PLOT, 'synthesis_parameter_distribution.png'))
-        # plt.close(fig)
 
     def scatter_ecc_inc(self, m_low_lim=0, a_up_lim=30):
         Masses = []
@@ -98,8 +86,7 @@ class population:
         plt.style.use('seaborn-paper')
         plt.rcParams.update({'font.size': fontsize})
 
-        # cmap = 'cividis_r'
-        cmap = 'viridis_r'
+        cmap = cmap_standart
         cmin = min(Masses)
         cmax = max(Masses)
 
@@ -110,10 +97,6 @@ class population:
         x_labels = ax.get_xticklabels()
         plt.setp(x_labels, horizontalalignment='center')
         ax.set(xlabel='Eccentricity', ylabel=r'$\sin(\mathrm{inclination})$')
-        # ax2 = ax.twinx()
-        # mn, mx  = ax.get_ylim()
-        # ax2.set_ylim(M_S/M_J * mn, M_S/M_J * mx)
-        # ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
         fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Mass [$\mathrm{M_E}$]',
                      ax=ax)
         ax.set_xscale('log')
@@ -136,11 +119,15 @@ class population:
             RMCS.append(RMC)
             NS.append(N)
 
-        cmap = 'viridis_r'
+        cmap = cmap_standart
         cmin = min(NS)
         cmax = max(NS)
 
         norm = colors.Normalize(cmin, cmax)
+
+        plt.rcParams.update({'figure.autolayout': True})
+        plt.style.use('seaborn-paper')
+        plt.rcParams.update({'font.size': fontsize})
 
         fig, ax = plt.subplots(figsize=figsize)
         ax.scatter(RMCS, AMDS, c=NS, cmap=cmap, norm=norm, s=12)
@@ -148,10 +135,6 @@ class population:
         x_labels = ax.get_xticklabels()
         plt.setp(x_labels, horizontalalignment='center')
         ax.set(xlabel='RMC', ylabel=r'AMC')
-        # ax2 = ax.twinx()
-        # mn, mx  = ax.get_ylim()
-        # ax2.set_ylim(M_S/M_J * mn, M_S/M_J * mx)
-        # ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
         fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Number of Satellites',
                      ax=ax)
         ax.set_xscale('log')
@@ -350,7 +333,6 @@ class population:
         m_low_lim = m_low_lim
         a_up_lim = a_up_lim
 
-
         for sim in self.SIMS.values():
             total_masses.append(sim.Total_Mass)
             sigma_exponents.append(sim.Sigma_Exponent)
@@ -405,14 +387,10 @@ class population:
         x_labels = ax.get_xticklabels(list(set(sigma_exponents)))
         plt.setp(x_labels, horizontalalignment='center')
         ax.set(xlabel='Sigma Exponent', ylabel=r'Total Mass', xticks=sigma_exponents)
-        # ax2 = ax.twinx()
-        # mn, mx  = ax.get_ylim()
-        # ax2.set_ylim(M_S/M_J * mn, M_S/M_J * mx)
-        # ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
         fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
                      ax=ax)
-        # ax.set_xscale('log')
-        # ax.set_yscale('log')
+        ax.set_xscale('log')
+        ax.set_yscale('log')
         fig.savefig(path.join(self.PLOT, 'scatter_distances.png'), transparent=False, dpi=dpi, bbox_inches="tight")
         plt.close(fig)
 
@@ -421,27 +399,27 @@ class population:
             thresholds = [0.05, 0.1, 0.15]
 
         thresholds = sorted(thresholds)
-        numbers = {key:[] for key in thresholds}
-        occurences = {key:[] for key in thresholds}
+        numbers = {key: [] for key in thresholds}
+        occurences = {key: [] for key in thresholds}
         systems = []
 
         for sim in self.SIMS.values():
-            zipped = list(zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S /M_E,
-                         sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au))
+            zipped = list(zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E,
+                              sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au))
             zipped = [(m, a) for (m, a) in zipped if a <= a_up_lim]
             systems.append(zipped)
         number_of_systems = len(systems)
-        for keys,lists in numbers.items():
-            for i,item in enumerate(systems):
+        for keys, lists in numbers.items():
+            for i, item in enumerate(systems):
                 filtered = [(m, a) for (m, a) in item if
-                          m >= keys]
+                            m >= keys]
                 leng = len(filtered)
                 lists += [leng]
                 systems[i] = filtered
 
         max_number = max(numbers[thresholds[0]])
-        for key,value in numbers.items():
-            for i in range(max_number+1):
+        for key, value in numbers.items():
+            for i in range(max_number + 1):
                 occurences[key] += [value.count(i)]
 
         plt.rcParams.update({'figure.autolayout': True})
@@ -449,19 +427,14 @@ class population:
         plt.rcParams.update({'font.size': fontsize})
 
         fig, ax = plt.subplots(figsize=figsize)
-        for key,value in occurences.items():
-            ax.plot(range(max_number+1), np.array(value)/number_of_systems, linestyle='dashed', linewidth=0.5, marker='o', label=f'Threshold {key}'  +  r' $\mathrm{M_{\oplus}}$')
-        ax.set(xlabel='Number of Planets', ylabel=r'Normalized Occurence',  xticks=range(max_number+1))
-        # ax2 = ax.twinx()
-        # mn, mx  = ax.get_ylim()
-        # ax2.set_ylim(M_S/M_J * mn, M_S/M_J * mx)
-        # ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
-        # ax.set_xscale('log')
-        # ax.set_yscale('log')
+        for key, value in occurences.items():
+            ax.plot(range(max_number + 1), np.array(value) / number_of_systems, linestyle='dashed', linewidth=0.5,
+                    marker='o', label=f'Threshold {key}' + r' $\mathrm{M_{\oplus}}$')
+        ax.set(xlabel='Number of Planets', ylabel=r'Normalized Occurence', xticks=range(max_number + 1))
         ax.legend(loc='best')
-        fig.savefig(path.join(self.PLOT, 'line_planet_number_occurences.png'), transparent=False, dpi=dpi, bbox_inches="tight")
+        fig.savefig(path.join(self.PLOT, 'line_planet_number_occurences.png'), transparent=False, dpi=dpi,
+                    bbox_inches="tight")
         plt.close(fig)
-
 
     def a_wm_distribution(self):
         Masses = []
