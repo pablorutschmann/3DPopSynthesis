@@ -428,7 +428,7 @@ class population:
 
         fig, ax = plt.subplots(figsize=figsize)
         for key, value in occurences.items():
-            ax.plot(range(max_number + 1), np.array(value) / number_of_systems, linestyle='dashed', linewidth=0.5,
+            ax.plot(range(max_number + 1), np.array(value) / number_of_systems, linestyle='dashed', linewidth=0.5, markersize=4,
                     marker='o', label=f'Threshold {key}' + r' $\mathrm{M_{\oplus}}$')
         ax.set(xlabel='Number of Planets', ylabel=r'Normalized Occurence', xticks=range(max_number + 1))
         ax.legend(loc='best')

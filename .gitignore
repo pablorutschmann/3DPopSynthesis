@@ -43,3 +43,6 @@ cmake-build-debug/
 /get_list_done.sh
 /build_output/
 /master/
+/presentation_plots.py
+/pres_surface_density_profiles.png
+/pres_wmf.png
