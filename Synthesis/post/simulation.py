@@ -44,8 +44,8 @@ class simulation:
                 self.options[key] = float(val)
         self.N_Embryos = self.options['NEmbryos']
         self.N_Planetesimals = self.options['NPlanetesimals']
-        self.Total_Mass = np.random.uniform(10 * M_J / M_S, 100 * M_J / M_S)
-        # self.Total_Mass = self.options['TotalMass']
+        # self.Total_Mass = np.random.uniform(10 * M_J / M_S, 100 * M_J / M_S)
+        self.Total_Mass = self.options['TotalMass']
         self.Sigma_Exponent = self.options['SigmaExponent']
         self.Sigma_Norm = self.options['SigmaNorm']
 
