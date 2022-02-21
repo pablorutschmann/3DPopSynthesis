@@ -12,8 +12,6 @@ from .simulation import simulation
 from .metric import *
 
 
-
-
 class population:
     def __init__(self, PATH, N_sims):
         self.MAIN = PATH
@@ -34,11 +32,11 @@ class population:
         self.dpi = 600
         self.cmap_standart = 'viridis_r'
 
-    def switch_plot_config(self,config):
+    def switch_plot_config(self, config):
         if config == 'paper':
             self.plot_config = 'paper'
             self.figsize = (8, 6)
-            self.fontsize = 60
+            self.fontsize = 80
             self.dpi = 600
             plt.rcParams.update({'font.size': self.fontsize})
             print(f'Plot configuration changed to {config}.')
@@ -84,12 +82,13 @@ class population:
         ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
         ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
         fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
-                     label=r'Reference Value at $1 \mathrm{au}$ [$\mathrm{g}\mathrm{cm}^{-2}$]', ax=ax2, pad=0.09)
+                     label=r'Reference Value at $1 \mathrm{au}$ [$\mathrm{g}\mathrm{cm}^{-2}$]', ax=ax2, pad=0.2)
         # ax.set_yscale('log')
         if self.plot_config == 'presentation':
-            ax.set(title=r'Synthesis Parameter')
+            ax.set(title=r'Synthesis Parameters')
 
-        fig.savefig(path.join(self.PLOT, 'scatter_parameters.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+        fig.savefig(path.join(self.PLOT, 'scatter_parameters.png'), transparent=False, dpi=self.dpi,
+                    bbox_inches="tight")
         plt.close(fig)
 
     def scatter_ecc_inc(self, m_low_lim=0, a_up_lim=30):
@@ -110,29 +109,35 @@ class population:
 
         Masses, Orb_Dist, Ecc, Inc = zip(*data)
 
+        print(f'Number of Object: {len(Masses)}')
+
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
         plt.rcParams.update({'font.size': self.fontsize})
         plt.rcParams.update({"legend.title_fontsize": 9})
 
         cmap = self.cmap_standart
-        cmin = min(Masses)
-        cmax = max(Masses)
+        cmin = min(Orb_Dist)
+        cmax = max(Orb_Dist)
 
         norm = colors.LogNorm(cmin, cmax)
 
         fig, ax = plt.subplots(figsize=self.figsize)
-        ax.scatter(Ecc, Inc, c=Orb_Dist, cmap=cmap, norm=norm, s=12)
+        ax.scatter(Ecc, Inc, c=Orb_Dist, cmap=cmap, norm=norm, s=3)
         x_labels = ax.get_xticklabels()
         plt.setp(x_labels, horizontalalignment='center')
         ax.set(xlabel='Eccentricity', ylabel=r'$\sin(\mathrm{inclination})$')
-        fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Mass [$\mathrm{M_E}$]',
+        fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
+                     label=r'Orbital Distance [$\mathrm{au}$]',
                      ax=ax)
         ax.set_xscale('log')
         ax.set_yscale('log')
         if self.plot_config == 'presentation':
             ax.set(title=r'Eccentricity and Inclination')
-        fig.savefig(path.join(self.PLOT, 'scatter_ecc_inc.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+        save_name = 'scatter_ecc_inc'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
     def scatter_AMD_RMC(self, m_low_lim, a_up_lim):
@@ -142,8 +147,6 @@ class population:
         AMDS = []
         RMCS = []
         NS = []
-
-
 
         for sys in self.SIMS.values():
             AMD, N = sys.get_AMD(m_low_lim, a_up_lim)
@@ -160,8 +163,9 @@ class population:
         print(f'{sigma_RMC=}')
 
         def dist_to_solar(rmc, amd):
-            return np.sqrt((rmc-RMC_sol)**2 / sigma_RMC**2 + (amd-AMD_sol)**2 / sigma_AMD**2)
-        distances = dist_to_solar(RMCS,AMDS)
+            return np.sqrt((rmc - RMC_sol) ** 2 / sigma_RMC ** 2 + (amd - AMD_sol) ** 2 / sigma_AMD ** 2)
+
+        distances = dist_to_solar(RMCS, AMDS)
         print(distances)
 
         cmap = self.cmap_standart
@@ -175,9 +179,10 @@ class population:
         plt.rcParams.update({'font.size': self.fontsize})
 
         fig, ax = plt.subplots(figsize=self.figsize)
-        ax.scatter(RMCS/sigma_RMC, AMDS/sigma_AMD, c=NS, cmap=cmap, norm=norm, s=12)
-        ax.scatter(RMC_sol/sigma_RMC, AMD_sol/sigma_AMD, c='red')
-        ax.scatter(RMCS[np.argmin(distances)]/sigma_RMC,AMDS[np.argmin(distances)]/sigma_AMD,c=NS[np.argmin(distances)])
+        ax.scatter(RMCS / sigma_RMC, AMDS / sigma_AMD, c=NS, cmap=cmap, norm=norm, s=12)
+        ax.scatter(RMC_sol / sigma_RMC, AMD_sol / sigma_AMD, c='red')
+        ax.scatter(RMCS[np.argmin(distances)] / sigma_RMC, AMDS[np.argmin(distances)] / sigma_AMD,
+                   c=NS[np.argmin(distances)])
         x_labels = ax.get_xticklabels()
         plt.setp(x_labels, horizontalalignment='center')
         ax.set(xlabel='RMC', ylabel=r'AMC')
@@ -187,7 +192,11 @@ class population:
         ax.set_yscale('log')
         if self.plot_config == 'presentation':
             ax.set(title=r'Radial Mass Concentration and Angular Momentum Deficit')
-        fig.savefig(path.join(self.PLOT, 'scatter_AMD_RMC.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+
+        save_name = 'scatter_AMD_RMC'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
     def histogram_mass(self, m_low_lim=0, a_up_lim=30):
@@ -213,6 +222,10 @@ class population:
         fig, ax = plt.subplots(figsize=self.figsize)
         # ax.hist(Masses, bins=bins)
         values, base, _ = plt.hist(Masses, bins=bins, rwidth=0.95)
+        ax.axvline(1, color='red', linewidth=1)
+        ax.axvline(M_M / M_E, color='red', linewidth=1)
+        ax.axvline(M_V / M_E, color='red', linewidth=1)
+        ax.axvline(M_ME / M_E, color='red', linewidth=1)
         ax_bis = ax.twinx()
         # values, base = np.histogram(Masses, bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins))
 
@@ -223,8 +236,11 @@ class population:
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
         if self.plot_config == 'presentation':
-            ax.set(title=r'Histrogram of Terrestrial Planets Masses')
-        fig.savefig(path.join(self.PLOT, 'histogram_mass.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+            ax.set(title=r'Histrogram of Planet Masses')
+        save_name = 'histogram_mass'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
     def histogram_weighted_mass(self, m_low_lim=0, a_up_lim=30):
@@ -264,9 +280,11 @@ class population:
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
         if self.plot_config == 'presentation':
-            ax.set(title=r'Weighted Histrogram of Terrestrial Planets Masses')
-        fig.savefig(path.join(self.PLOT, 'histogram_weighted_mass.png'), transparent=False, dpi=self.dpi,
-                    bbox_inches="tight")
+            ax.set(title=r'Weighted Histrogram of Planet Masses')
+        save_name = 'histogram_weighted_mass'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
     def histogram_weighted_mass_nonlog(self, m_low_lim=0, a_up_lim=30):
@@ -304,9 +322,11 @@ class population:
         # ax.set_xscale('log')
         # ax_bis.set_xscale('log')
         if self.plot_config == 'presentation':
-            ax.set(title=r'Weighted Histrogram of Terrestrial Planets Masses')
-        fig.savefig(path.join(self.PLOT, 'histogram_weighted_orb_dist_nonlog.png'), transparent=False, dpi=self.dpi,
-                    bbox_inches="tight")
+            ax.set(title=r'Weighted Histrogram of Planet Masses')
+        save_name = 'histogram_weighted_orb_dist_nonlog'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
     def histogram_a(self, m_low_lim=0, a_up_lim=30):
@@ -346,8 +366,11 @@ class population:
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
         if self.plot_config == 'presentation':
-            ax.set(title=r'Histrogram of Terrestrial Planets Orbital Distances')
-        fig.savefig(path.join(self.PLOT, 'histogram_a.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+            ax.set(title=r'Histrogram of Planet Orbital Distances')
+        save_name = 'histogram_a'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
     def histogram_weighted_a(self, m_low_lim=0, a_up_lim=30):
@@ -387,8 +410,11 @@ class population:
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
         if self.plot_config == 'presentation':
-            ax.set(title=r'Weighted Histogram of Terrestrial Planets Orbital Distances')
-        fig.savefig(path.join(self.PLOT, 'histogram_weighted_a.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+            ax.set(title=r'Weighted Histogram of Planet Orbital Distances')
+        save_name = 'histogram_weighted_a'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
     def histogram_a_twmf(self, m_low_lim=0, a_up_lim=30):
@@ -425,7 +451,7 @@ class population:
         bins = 10 ** np.linspace(np.log10(min(Orb_Dist)), np.log10(max(Orb_Dist)), N_bins)
         fig, ax = plt.subplots(figsize=self.figsize)
         # ax.hist(Masses, bins=bins)
-        values, base, _ = plt.hist(Orb_Dist, bins=bins, rwidth=0.95, density=True, weights=TWMF/np.sum(TWMF))
+        values, base, _ = plt.hist(Orb_Dist, bins=bins, rwidth=0.95, density=True, weights=TWMF / np.sum(TWMF))
         ax.axvline(1, color='red', linewidth=1)
         ax.axvline(0.387, color='red', linewidth=1)
         ax.axvline(0.732, color='red', linewidth=1)
@@ -441,7 +467,10 @@ class population:
         ax_bis.set_xscale('log')
         if self.plot_config == 'presentation':
             ax.set(title=r'TWMF Weighted Histrogram of Terrestrial Planets Orbital Distances')
-        fig.savefig(path.join(self.PLOT, 'histogram_a_twmf.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+        save_name = 'histogram_a_twmf'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
     def histogram_a_wmf(self, m_low_lim=0, a_up_lim=30):
@@ -494,10 +523,13 @@ class population:
         ax_bis.set_xscale('log')
         if self.plot_config == 'presentation':
             ax.set(title=r'WMF Weighted Histrogram of Terrestrial Planets Orbital Distances')
-        fig.savefig(path.join(self.PLOT, 'histogram_a_wmf.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+        save_name = 'histogram_a_wmf'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
-    def histogram_totalmass(self, m_low_lim=0):
+    def histogram_totalmass(self, a_up_lim=30, m_low_lim=0):
         TotalMasses = []
 
         for sim in self.SIMS.values():
@@ -527,7 +559,10 @@ class population:
         ax_bis.set_xscale('log')
         if self.plot_config == 'presentation':
             ax.set(title=r'Histrogram of Total Masses')
-        fig.savefig(path.join(self.PLOT, 'histogram_totalmass.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+        save_name = 'histogram_totalmass'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
     def distances(self, m_low_lim, a_up_lim):
@@ -597,6 +632,10 @@ class population:
         ax.set_yscale('log')
         if self.plot_config == 'presentation':
             ax.set(title=r'Distances between Systems')
+        save_name = 'scatter_distances'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png' ), transparent=False, dpi=self.dpi, bbox_inches="tight")
         fig.savefig(path.join(self.PLOT, 'scatter_distances.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
@@ -634,7 +673,8 @@ class population:
 
         fig, ax = plt.subplots(figsize=self.figsize)
         for key, value in occurences.items():
-            ax.plot(range(max_number + 1), np.array(value) / number_of_systems, linestyle='dashed', linewidth=0.5, markersize=4,
+            ax.plot(range(max_number + 1), np.array(value) / number_of_systems, linestyle='dashed', linewidth=0.5,
+                    markersize=4,
                     marker='o', label=f'Threshold {key}' + r' $\mathrm{M_{\oplus}}$')
         ax.set(xlabel='Number of Planets', ylabel=r'Normalized Occurence', xticks=range(max_number + 1))
         ax.legend(loc='best')
@@ -687,18 +727,21 @@ class population:
             WM += list(sim.snaps[sim.N_snaps - 1].satellites['WM'].values * M_S / M_E)
             SWM += list(sim.snaps[sim.N_snaps - 1].satellites['SWM'].values * M_S / M_E)
             System += [key for i in sim.snaps[sim.N_snaps - 1].satellites['M'].values]
-        data = zip(Masses, Orb_Dist, WM, SWM, System)
+
+        WMF = np.array(WM) / np.array(Masses)
+        SWMF = np.array(WM) / np.array(Masses)
+        TWMF = WMF + SWMF
+
+        data = zip(Masses, Orb_Dist, TWMF, System)
 
         data = [item for item in data if item[0] >= m_low_lim and item[1] <= a_up_lim]
 
-        Masses, Orb_Dist, WM, SWM, System = zip(*data)
-        Masses = np.array(Masses)
-        WM = np.array(WM)
-        SWM = np.array(SWM)
+        earth_analogs = [item for item in data if item[0] >= 0.101 and item[1] <= a_up_lim and item[2] > 0.001]
+        print(earth_analogs)
 
-        WMF = WM / Masses
-        SWMF = SWM / Masses
-        TWMF = WMF + SWMF
+        Masses, Orb_Dist, TWMF, System = zip(*data)
+
+        ms, obs, twmf, system = zip(*earth_analogs)
 
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
@@ -712,20 +755,35 @@ class population:
         norm = colors.Normalize(cmin, cmax)
 
         fig, ax = plt.subplots(figsize=self.figsize)
-        ax.scatter(Orb_Dist, Masses, c=TWMF, cmap=cmap, norm=norm, s=12)
+        ax.scatter(Orb_Dist, Masses, c=TWMF, cmap=cmap, norm=norm, s=5, alpha=0.1)
+        # ax.scatter(obs, ms, c=twmf, cmap=cmap, norm=norm, s=10)
         ax.axvline(1, color='black', linewidth=0.7, linestyle='--')
         ax.axhline(1, color='black', linewidth=0.7, linestyle='--')
         x_labels = ax.get_xticklabels()
-        plt.setp(x_labels, horizontalalignment='center',)
+        plt.setp(x_labels, horizontalalignment='center', )
 
         ax.set(xlabel='Radial Distance [$\mathrm{au}$]', ylabel=r'Mass [$\mathrm{M_{\oplus}}$]')
-        fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Total WMF',ax=ax)
+        fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Total WMF', ax=ax)
         ax.set_xscale('log')
         ax.set_yscale('log')
         if self.plot_config == 'presentation':
             ax.set(title=r'Total WMF Radial Distribution')
-        fig.savefig(path.join(self.PLOT, 'scatter_radial_twmf.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+            save_name = 'scatter_radial_twmf'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png' ), transparent=False, dpi=self.dpi, bbox_inches="tight")
+        fig.savefig(path.join(self.PLOT, 'scatter_radial_twmf.png'), transparent=False, dpi=self.dpi,
+                    bbox_inches="tight")
         plt.close(fig)
+
+        for earth in earth_analogs:
+            print(f'System: {earth[-1]}')
+            print(f'Mass: {earth[0]}')
+            print(f'Orb Dist: {earth[1]}')
+            print(f'TWMF: {earth[2]}')
+            print(f'Exponent: {self.SIMS[earth[-1]].Sigma_Exponent}')
+            print(f'Disk Mass: {self.SIMS[earth[-1]].Total_Mass * M_S / M_J}')
+            print(" ")
 
     def histogram_wmf(self, m_low_lim=0, a_up_lim=30):
         Masses = []
@@ -733,13 +791,11 @@ class population:
         WM = []
         SWM = []
 
-
         for sim in self.SIMS.values():
             Masses += list(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)
             Orb_Dist += list(sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
             WM += list(sim.snaps[sim.N_snaps - 1].satellites['WM'].values * M_S / M_E)
             SWM += list(sim.snaps[sim.N_snaps - 1].satellites['SWM'].values * M_S / M_E)
-
 
         data = zip(Masses, Orb_Dist, WM, SWM)
 
@@ -753,7 +809,6 @@ class population:
         WMF = WM / Masses
         SWMF = SWM / Masses
 
-
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
         plt.rcParams.update({'font.size': self.fontsize})
@@ -763,8 +818,8 @@ class population:
         fig, ax = plt.subplots(figsize=self.figsize)
         # ax.hist(Masses, bins=bins)
         # values, base, _ = plt.hist(Orb_Dist, bins=bins, rwidth=0.95)
-        values, base, _ = plt.hist(WMF/Masses, bins=15, rwidth=0.95, alpha=0.5)
-        values, base, _ = plt.hist(SWMF/Masses, bins=15, rwidth=0.95, alpha=0.5)
+        values, base, _ = plt.hist(WMF / Masses, bins=15, rwidth=0.95, alpha=0.5)
+        values, base, _ = plt.hist(SWMF / Masses, bins=15, rwidth=0.95, alpha=0.5)
         # ax.axvline(1, color='red', linewidth=1)
         # ax.axvline(0.387, color='red', linewidth=1)
         # ax.axvline(0.732, color='red', linewidth=1)
@@ -780,6 +835,10 @@ class population:
         # ax_bis.set_xscale('log')
         if self.plot_config == 'presentation':
             ax.set(title=r'Histrogram of Terrestrial Planets Orbital Distances')
+        save_name = 'histogram_wmf'
+        if a_up_lim < 30 and m_low_lim > 0:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png' ), transparent=False, dpi=self.dpi, bbox_inches="tight")
         fig.savefig(path.join(self.PLOT, 'histogram_wmf.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
