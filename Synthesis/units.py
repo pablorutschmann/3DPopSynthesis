@@ -74,3 +74,23 @@ mtooe = M_S / OE
 # Mass fo Ceres in CGS
 M_ceres = 9.1e20 * 1000
 
+
+
+# Solar System Planets (Mass, Orbital Distance) in Earth Units
+
+# IN CGS UNITS
+mercury = (M_ME, 5.7909227e10)
+venus = (M_V, 1.0820948e11)
+earth = (M_E, au)
+mars = (M_M, 2.2794382e11)
+
+# Gas and Ice Giant Planets
+jupiter = (M_J, 7.7834082e11)
+saturn = (5.6832e29, 1.4266664e12)
+uranus = (8.6810e28, 2.8706582e12)
+neptune = (1.0241e29, 4.4983964e12)
+
+terrestrial = [mercury, venus, earth, mars]
+
+solar_system = [mercury, venus, earth, mars, jupiter, saturn, uranus, neptune]
+

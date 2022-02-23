@@ -42,27 +42,6 @@ def distance(s1, s2):
     return np.sqrt(integral)
 
 
-# Solar System Planets (Mass, Orbital Distance) in Earth Units
 
-# Terrestrial Planets
-# IN EARTH UNITS
-# mercury = (M_ME / M_E, 5.7909227e10 / au)
-# venus = (M_V / M_E, 1.0820948e11 / au)
-# earth = (1, 1)
-# mars = (M_M / M_E, 2.2794382e11 / au)
 
-# IN CGS UNITS
-mercury = (M_ME, 5.7909227e10)
-venus = (M_V, 1.0820948e11)
-earth = (M_E, au)
-mars = (M_M, 2.2794382e11)
 
-# Gas and Ice Giant Planets
-jupiter = (M_J / M_E, 7.7834082e11 / au)
-saturn = (5.6832e29 / M_E, 1.4266664e12 / au)
-uranus = (8.6810e28 / M_E, 2.8706582e12 / au)
-neptune = (1.0241e29, 4.4983964e12 / au)
-
-terrestrial = [mercury, venus, earth, mars]
-
-solar_system = [mercury, venus, earth, mars, jupiter, saturn, uranus, neptune]

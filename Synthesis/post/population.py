@@ -29,6 +29,7 @@ class population:
         self.plot_config = 'paper'
         self.figsize = (8, 6)
         self.fontsize = 60
+        self.legend_fontsize = 9
         self.dpi = 600
         self.cmap_standart = 'viridis_r'
 
@@ -37,7 +38,9 @@ class population:
             self.plot_config = 'paper'
             self.figsize = (8, 6)
             self.fontsize = 80
+            self.legend_fontsize = 9
             self.dpi = 600
+            plt.rcParams.update({"legend.title_fontsize": self.legend_fontsize})
             plt.rcParams.update({'font.size': self.fontsize})
             print(f'Plot configuration changed to {config}.')
 
@@ -45,7 +48,9 @@ class population:
             self.plot_config = 'presentation'
             self.figsize = (8, 7)
             self.fontsize = 130
+            self.legend_fontsize = 11
             self.dpi = 600
+            plt.rcParams.update({"legend.title_fontsize": self.legend_fontsize})
             plt.rcParams.update({'font.size': self.fontsize})
             print(f'Plot configuration changed to {config}.')
         else:
@@ -114,7 +119,7 @@ class population:
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
         plt.rcParams.update({'font.size': self.fontsize})
-        plt.rcParams.update({"legend.title_fontsize": 9})
+        plt.rcParams.update({"legend.title_fontsize": self.legend_fontsize})
 
         cmap = self.cmap_standart
         cmin = min(Orb_Dist)
@@ -231,7 +236,7 @@ class population:
 
         values = np.append(0, values)
         ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
-        ax.set(xlabel=r'M [$M_E$]', ylabel=r'Counts')
+        ax.set(xlabel=r'Mass [$M_E$]', ylabel=r'Counts')
         ax_bis.set(ylabel='Cumulative Distribution')
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
@@ -275,7 +280,7 @@ class population:
 
         values = np.append(0, values)
         ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
-        ax.set(xlabel=r'M [$M_E$]', ylabel=r'Weighed Counts')
+        ax.set(xlabel=r'Mass [$M_E$]', ylabel=r'Weighed Counts')
         ax_bis.set(ylabel='Cumulative Distribution')
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
@@ -361,7 +366,7 @@ class population:
 
         values = np.append(0, values)
         ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
-        ax.set(xlabel=r'a [$\mathrm{au}$]', ylabel=r'Counts')
+        ax.set(xlabel=r'Orbital distance [$\mathrm{au}$]', ylabel=r'Counts')
         ax_bis.set(ylabel='Cumulative Distribution')
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
@@ -405,7 +410,7 @@ class population:
 
         values = np.append(0, values)
         ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
-        ax.set(xlabel=r'a [$\mathrm{au}$]', ylabel=r'Weighted Counts')
+        ax.set(xlabel=r'Orbital distance [$\mathrm{au}$]', ylabel=r'Weighted Counts')
         ax_bis.set(ylabel='Cumulative Distribution')
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
@@ -565,6 +570,56 @@ class population:
         fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
+    def histogram_totalmass_thresh(self, a_up_lim=30, thresholds=None):
+        if thresholds is None:
+            thresholds = [0.0, 1.0, 1.5]
+
+        thresholds = sorted(thresholds)
+
+        systems = []
+        for sim in self.SIMS.values():
+            zipped = zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E,
+                              sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
+            zipped = [(m, a) for (m, a) in zipped if a <= a_up_lim]
+            masses, orb_dist = zip(*zipped)
+            systems.append(np.array(masses))
+
+        total_masses = {key: [] for key in thresholds}
+        for keys, lists in total_masses.items():
+            for i, item in enumerate(systems):
+                filtered = item[np.where(item > keys)]
+                lists.append(np.sum(filtered))
+
+        solar_sys = [m / M_E for (m, a) in terrestrial if a / au <= a_up_lim]
+        total_mass_solar_sys = np.sum(solar_sys)
+
+        print(total_masses)
+        plt.rcParams.update({'figure.autolayout': True})
+        plt.style.use('seaborn-paper')
+        plt.rcParams.update({'font.size': self.fontsize})
+        plt.rcParams.update({"legend.title_fontsize": self.legend_fontsize})
+
+
+        N_bins = 15
+        bins = 10 ** np.linspace(np.log10(min(total_masses[thresholds[0]])), np.log10(max(total_masses[thresholds[0]])), N_bins)
+        fig, ax = plt.subplots(figsize=self.figsize)
+        for key, lists in total_masses.items():
+            label = f'{key}' + r' $\mathrm{M_{\oplus}}$'
+            ax.hist(lists, bins=bins, rwidth=0.95, label=label)
+
+        ax.axvline(total_mass_solar_sys, color='red', linewidth=1)
+
+        ax.set(xlabel=r'Total Mass [$\mathrm{M_{\oplus}}$]', ylabel=r'Counts')
+        ax.set_xscale('log')
+        ax.legend(title='Thresholds')
+        if self.plot_config == 'presentation':
+            ax.set(title=r'Histrogram of Total Masses')
+        save_name = 'histogram_totalmass_thresh'
+        if a_up_lim < 30:
+            save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+        plt.close(fig)
+
     def distances(self, m_low_lim, a_up_lim):
         systems = []
         total_masses = []
@@ -590,6 +645,8 @@ class population:
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
         plt.rcParams.update({'font.size': self.fontsize})
+        plt.rcParams.update({"legend.title_fontsize": self.legend_fontsize})
+
 
         fig, ax = plt.subplots(ncols=1)
         fig.set_size_inches(15.5, 10.5)
@@ -670,6 +727,8 @@ class population:
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
         plt.rcParams.update({'font.size': self.fontsize})
+        plt.rcParams.update({"legend.title_fontsize": self.legend_fontsize})
+
 
         fig, ax = plt.subplots(figsize=self.figsize)
         for key, value in occurences.items():
@@ -680,9 +739,10 @@ class population:
         ax.legend(loc='best')
         if self.plot_config == 'presentation':
             ax.set(title=r'Number of Planets Occurences')
+        save_name = 'line_planet_number_occurences'
         if a_up_lim < 30:
             save_name += '_lim'
-        fig.savefig(path.join(self.PLOT, 'line_planet_number_occurences.png'), transparent=False, dpi=self.dpi,
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi,
                     bbox_inches="tight")
         plt.close(fig)
 
@@ -748,7 +808,7 @@ class population:
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
         plt.rcParams.update({'font.size': self.fontsize})
-        plt.rcParams.update({"legend.title_fontsize": 9})
+        plt.rcParams.update({"legend.title_fontsize": self.legend_fontsize})
 
         cmap = self.cmap_standart
         cmin = min(TWMF)
@@ -850,29 +910,94 @@ class population:
         times = []
         for sim in self.SIMS.values():
             times.extend(sim.collisions.index)
-        times = np.array(times)/1e6
+        times = np.array(times) / 1e6
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
         plt.rcParams.update({'font.size': self.fontsize})
         N_bins = 15
-        bins = 10 ** np.linspace(np.log10(1), np.log10(1000001), N_bins)
         fig, ax = plt.subplots(figsize=self.figsize)
-        # ax.hist(Masses, bins=bins)
-        values, base, _ = plt.hist(times, bins=bins, rwidth=0.95)
+        values, base, _  = plt.hist(times, bins=N_bins, rwidth=0.95)
         ax_bis = ax.twinx()
-        # values, base = np.histogram(Masses, bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins))
-
-        #values = np.append(0, values)
+        values = np.append(0, values)
         ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
         ax.set(xlabel=r'Time [$\mathrm{Myr}$]', ylabel=r'Counts')
+        ax_bis.set(ylabel='Cumulative Distribution')
+        if self.plot_config == 'presentation':
+            ax.set(title=r'Histrogram of Collision Times')
+        save_name = 'histogram_col_time'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+        plt.close(fig)
+
+    def collisions_weighted_time(self):
+        times = []
+        primary_masses = []
+        secondary_masses = []
+        final_masses = []
+        wm2 = []
+        for sim in self.SIMS.values():
+            times.extend(sim.collisions.index)
+            primary_masses.extend(sim.collisions['mass1'] * M_S / M_E )
+            secondary_masses.extend(sim.collisions['mass2'] * M_S / M_E )
+            final_masses.extend(sim.collisions['mass'] * M_S / M_E )
+            wm2.extend(sim.collisions['wm2'] * M_S / M_E )
+
+        zipped = zip(primary_masses,secondary_masses)
+        colliders = [np.abs(tup[0]-tup[1]) for tup in zipped]
+        colliders = np.array(colliders) / np.array(secondary_masses)
+        weights = colliders/np.sum(colliders)
+
+
+        times = np.array(times) / 1e6
+        plt.rcParams.update({'figure.autolayout': True})
+        plt.style.use('seaborn-paper')
+        plt.rcParams.update({'font.size': self.fontsize})
+        N_bins = 15
+        fig, ax = plt.subplots(figsize=self.figsize)
+        values, base, _  = plt.hist(times, bins=N_bins, rwidth=0.95, weights=final_masses/np.sum(final_masses))
+        ax_bis = ax.twinx()
+        values = np.append(0, values)
+        ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
+        ax.set(xlabel=r'Time [$\mathrm{Myr}$]', ylabel=r'Weighted counts')
+        ax_bis.set(ylabel='Cumulative Distribution')
+        if self.plot_config == 'presentation':
+            ax.set(title=r'Histrogram of Collision Times')
+        save_name = 'histogram_weighted_col_time'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+        plt.close(fig)
+
+    def collisions_mass(self):
+        times = []
+        primary_masses = []
+        secondary_masses = []
+        final_masses = []
+        wm2 = []
+        for sim in self.SIMS.values():
+            times.extend(sim.collisions.index)
+            primary_masses.extend(sim.collisions['mass1'] * M_S / M_E )
+            secondary_masses.extend(sim.collisions['mass2'] * M_S / M_E )
+            final_masses.extend(sim.collisions['mass'] * M_S / M_E )
+            wm2.extend(sim.collisions['wm2'] * M_S / M_E )
+
+        data = secondary_masses
+
+        plt.rcParams.update({'figure.autolayout': True})
+        plt.style.use('seaborn-paper')
+        plt.rcParams.update({'font.size': self.fontsize})
+
+        N_bins = 15
+        bins = 10 ** np.linspace(np.log10(min(data)), np.log10(max(data)), N_bins)
+        fig, ax = plt.subplots(figsize=self.figsize)
+        values, base, _  = plt.hist(data, bins=bins, rwidth=0.95)
+        ax_bis = ax.twinx()
+        values = np.append(0, values)
+        ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
+        ax.set(xlabel=r'Mass [$\mathrm{M_{\oplus}}$]', ylabel=r'Weighted counts')
         ax_bis.set(ylabel='Cumulative Distribution')
         ax.set_xscale('log')
         ax_bis.set_xscale('log')
         if self.plot_config == 'presentation':
             ax.set(title=r'Histrogram of Collision Times')
-        save_name = 'histogram_col_time'
-        # if a_up_lim < 30 and m_low_lim > 0:
-        #     save_name += '_lim'
+        save_name = 'histogram_col_mass'
         fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
@@ -896,11 +1021,8 @@ class population:
         N_bins = 15
         bins = 10 ** np.linspace(np.log10(min(orb_dist)), np.log10(max(orb_dist)), N_bins)
         fig, ax = plt.subplots(figsize=self.figsize)
-        # ax.hist(Masses, bins=bins)
         values, base, _ = plt.hist(orb_dist, bins=bins, rwidth=0.95)
         ax_bis = ax.twinx()
-        # values, base = np.histogram(Masses, bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins))
-
         values = np.append(0, values)
         ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
         ax.set(xlabel=r'Orbital distance [$\mathrm{au}$]', ylabel=r'Counts')
@@ -910,8 +1032,6 @@ class population:
         if self.plot_config == 'presentation':
             ax.set(title=r'Histrogram of Collision Places')
         save_name = 'histogram_col_orb_dist'
-        # if a_up_lim < 30 and m_low_lim > 0:
-        #     save_name += '_lim'
         fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
@@ -919,7 +1039,6 @@ class population:
         lost_mass = []
         for id, sim in self.SIMS.items():
             masses = sim.lost_satellites['mass'].values
-            #print(masses)
             cols = sim.lost_satellites['collision'].values
             filter_null = cols == 0.0
             summed = np.sum(masses[filter_null])
@@ -930,17 +1049,16 @@ class population:
         non_lost_mass = lost_mass[filter_not_null]
         lost_mass = lost_mass[filter_null]
         print(f'Number of System with no mass loss: {len(non_lost_mass)}')
+
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
         plt.rcParams.update({'font.size': self.fontsize})
+
         N_bins = 15
         bins = 10 ** np.linspace(np.log10(min(lost_mass)), np.log10(max(lost_mass)), N_bins)
         fig, ax = plt.subplots(figsize=self.figsize)
-        # ax.hist(Masses, bins=bins)
         values, base, _ = plt.hist(lost_mass, bins=bins, rwidth=0.95)
         ax_bis = ax.twinx()
-        # values, base = np.histogram(Masses, bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins))
-
         values = np.append(0, values)
         ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
         ax.set(xlabel=r'Mass [$\mathrm{M_J}$]', ylabel=r'Counts')
@@ -950,8 +1068,6 @@ class population:
         if self.plot_config == 'presentation':
             ax.set(title=r'Histrogram of Lost Mass')
         save_name = 'histogram_lost_mass'
-        # if a_up_lim < 30 and m_low_lim > 0:
-        #     save_name += '_lim'
         fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
 
