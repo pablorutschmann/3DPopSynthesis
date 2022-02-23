@@ -29,7 +29,6 @@ cmake-build-debug/
 /compile.sh
 /DISK_PREPROCESSING.py
 /make.sh
-/POST_PROCESS.py
 /pull_run.sh
 /push.sh
 /restart.sh
@@ -46,3 +45,4 @@ cmake-build-debug/
 /presentation_plots.py
 /pres_surface_density_profiles.png
 /pres_wmf.png
+/POST_PROCESS_old.py

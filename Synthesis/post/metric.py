@@ -1,4 +1,4 @@
-from ..units import *
+from Synthesis.units import *
 import numpy as np
 from scipy.integrate import dblquad
 
