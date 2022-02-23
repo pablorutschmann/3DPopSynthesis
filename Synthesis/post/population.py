@@ -680,6 +680,8 @@ class population:
         ax.legend(loc='best')
         if self.plot_config == 'presentation':
             ax.set(title=r'Number of Planets Occurences')
+        if a_up_lim < 30:
+            save_name += '_lim'
         fig.savefig(path.join(self.PLOT, 'line_planet_number_occurences.png'), transparent=False, dpi=self.dpi,
                     bbox_inches="tight")
         plt.close(fig)
@@ -841,6 +843,118 @@ class population:
         fig.savefig(path.join(self.PLOT, save_name + '.png' ), transparent=False, dpi=self.dpi, bbox_inches="tight")
         fig.savefig(path.join(self.PLOT, 'histogram_wmf.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
+
+
+
+    def collisions_time(self):
+        times = []
+        for sim in self.SIMS.values():
+            times.extend(sim.collisions.index)
+        times = np.array(times)/1e6
+        plt.rcParams.update({'figure.autolayout': True})
+        plt.style.use('seaborn-paper')
+        plt.rcParams.update({'font.size': self.fontsize})
+        N_bins = 15
+        bins = 10 ** np.linspace(np.log10(1), np.log10(1000001), N_bins)
+        fig, ax = plt.subplots(figsize=self.figsize)
+        # ax.hist(Masses, bins=bins)
+        values, base, _ = plt.hist(times, bins=bins, rwidth=0.95)
+        ax_bis = ax.twinx()
+        # values, base = np.histogram(Masses, bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins))
+
+        #values = np.append(0, values)
+        ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
+        ax.set(xlabel=r'Time [$\mathrm{Myr}$]', ylabel=r'Counts')
+        ax_bis.set(ylabel='Cumulative Distribution')
+        ax.set_xscale('log')
+        ax_bis.set_xscale('log')
+        if self.plot_config == 'presentation':
+            ax.set(title=r'Histrogram of Collision Times')
+        save_name = 'histogram_col_time'
+        # if a_up_lim < 30 and m_low_lim > 0:
+        #     save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+        plt.close(fig)
+
+    def collisions_orb_dist(self):
+        xs = []
+        ys = []
+        zs = []
+        for sim in self.SIMS.values():
+            xs.extend(sim.collisions['x'].values)
+            ys.extend(sim.collisions['y'].values)
+            zs.extend(sim.collisions['z'].values)
+
+        xs = np.array(xs)
+        ys = np.array(ys)
+        zs = np.array(zs)
+
+        orb_dist = np.sqrt(np.power(xs,2)+np.power(ys,2)+np.power(zs,2)) * R_S / au
+        plt.rcParams.update({'figure.autolayout': True})
+        plt.style.use('seaborn-paper')
+        plt.rcParams.update({'font.size': self.fontsize})
+        N_bins = 15
+        bins = 10 ** np.linspace(np.log10(min(orb_dist)), np.log10(max(orb_dist)), N_bins)
+        fig, ax = plt.subplots(figsize=self.figsize)
+        # ax.hist(Masses, bins=bins)
+        values, base, _ = plt.hist(orb_dist, bins=bins, rwidth=0.95)
+        ax_bis = ax.twinx()
+        # values, base = np.histogram(Masses, bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins))
+
+        values = np.append(0, values)
+        ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
+        ax.set(xlabel=r'Orbital distance [$\mathrm{au}$]', ylabel=r'Counts')
+        ax_bis.set(ylabel='Cumulative Distribution')
+        ax.set_xscale('log')
+        ax_bis.set_xscale('log')
+        if self.plot_config == 'presentation':
+            ax.set(title=r'Histrogram of Collision Places')
+        save_name = 'histogram_col_orb_dist'
+        # if a_up_lim < 30 and m_low_lim > 0:
+        #     save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+        plt.close(fig)
+
+    def collisions_engulfed(self):
+        lost_mass = []
+        for id, sim in self.SIMS.items():
+            masses = sim.lost_satellites['mass'].values
+            #print(masses)
+            cols = sim.lost_satellites['collision'].values
+            filter_null = cols == 0.0
+            summed = np.sum(masses[filter_null])
+            lost_mass.append(summed)
+        lost_mass = np.array(lost_mass) * M_S / M_J
+        filter_null = lost_mass > 0
+        filter_not_null = lost_mass == 0
+        non_lost_mass = lost_mass[filter_not_null]
+        lost_mass = lost_mass[filter_null]
+        print(f'Number of System with no mass loss: {len(non_lost_mass)}')
+        plt.rcParams.update({'figure.autolayout': True})
+        plt.style.use('seaborn-paper')
+        plt.rcParams.update({'font.size': self.fontsize})
+        N_bins = 15
+        bins = 10 ** np.linspace(np.log10(min(lost_mass)), np.log10(max(lost_mass)), N_bins)
+        fig, ax = plt.subplots(figsize=self.figsize)
+        # ax.hist(Masses, bins=bins)
+        values, base, _ = plt.hist(lost_mass, bins=bins, rwidth=0.95)
+        ax_bis = ax.twinx()
+        # values, base = np.histogram(Masses, bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins))
+
+        values = np.append(0, values)
+        ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
+        ax.set(xlabel=r'Mass [$\mathrm{M_J}$]', ylabel=r'Counts')
+        ax_bis.set(ylabel='Cumulative Distribution')
+        ax.set_xscale('log')
+        ax_bis.set_xscale('log')
+        if self.plot_config == 'presentation':
+            ax.set(title=r'Histrogram of Lost Mass')
+        save_name = 'histogram_lost_mass'
+        # if a_up_lim < 30 and m_low_lim > 0:
+        #     save_name += '_lim'
+        fig.savefig(path.join(self.PLOT, save_name + '.png'), transparent=False, dpi=self.dpi, bbox_inches="tight")
+        plt.close(fig)
+
 
     def final_wmf_radial_distribution(self, cumulative=False, density=False, thresholds=[10e-12]):
         Masses = []

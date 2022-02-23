@@ -51,7 +51,7 @@ class simulation:
 
         # import collisions.txt
         path = os.path.join(self.output_path, 'collisions.txt')
-        df = pd.read_csv(path, sep="	", index_col="#time", dtype='float64')
+        df = pd.read_csv(path, sep="\t", index_col="#time", dtype='float64')
         df.sort_index(inplace=True)
         df.index = df.index.astype(float)
         self.collisions = df

@@ -1532,7 +1532,7 @@ int EvolutionModel::ActiveSatellites() {
 
 }
 
-
+xx
 void EvolutionModel::DestroySatellite(int index, int code, int index2) {
     /*-- DESTROY SATELLITES AND WRITE ON FILES --*/
 
