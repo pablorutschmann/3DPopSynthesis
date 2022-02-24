@@ -1,19 +1,25 @@
 import matplotlib.pyplot as plt
 import os.path as path
+
+import numpy as np
+
 from Synthesis.units import *
 
 
-def collisions_time(pop):
+def collisions_time(pop, t_low_lim=0):
     times = []
     for sim in pop.SIMS.values():
         times.extend(sim.collisions.index)
-    times = np.array(times) / 1e6
+    times = np.array(times)
+    times = times[np.where(times > t_low_lim)]
+    print(times)
+    times /= 1e6
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
     plt.rcParams.update({'font.size': pop.fontsize})
     N_bins = 15
     fig, ax = plt.subplots(figsize=pop.figsize)
-    values, base, _ = plt.hist(times, bins=N_bins, rwidth=0.95)
+    values, base, _ = plt.hist(times, bins=N_bins, rwidth=0.95, log=True)
     ax_bis = ax.twinx()
     values = np.append(0, values)
     ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
@@ -22,11 +28,13 @@ def collisions_time(pop):
     if pop.plot_config == 'presentation':
         ax.set(title=r'Histrogram of Collision Times')
     save_name = 'histogram_col_time'
+    if t_low_lim > 0:
+        save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
     plt.close(fig)
 
 
-def collisions_weighted_time(pop):
+def collisions_weighted_time(pop, t_low_lim = 0):
     times = []
     primary_masses = []
     secondary_masses = []
@@ -39,7 +47,12 @@ def collisions_weighted_time(pop):
         final_masses.extend(sim.collisions['mass'] * M_S / M_E)
         wm2.extend(sim.collisions['wm2'] * M_S / M_E)
 
-    zipped = zip(primary_masses, secondary_masses)
+    zipped = zip(times, primary_masses, secondary_masses, final_masses, wm2)
+    filtered = [item for item in zipped if item[0] > t_low_lim]
+
+    times, primary_masses, secondary_masses, final_masses, wm2 = zip(*filtered)
+
+    zipped = zip(primary_masses,secondary_masses)
     colliders = [np.abs(tup[0] - tup[1]) for tup in zipped]
     colliders = np.array(colliders) / np.array(secondary_masses)
     weights = colliders / np.sum(colliders)
@@ -50,7 +63,7 @@ def collisions_weighted_time(pop):
     plt.rcParams.update({'font.size': pop.fontsize})
     N_bins = 15
     fig, ax = plt.subplots(figsize=pop.figsize)
-    values, base, _ = plt.hist(times, bins=N_bins, rwidth=0.95, weights=final_masses / np.sum(final_masses))
+    values, base, _ = plt.hist(times, bins=N_bins, rwidth=0.95, density=True)
     ax_bis = ax.twinx()
     values = np.append(0, values)
     ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
@@ -59,6 +72,8 @@ def collisions_weighted_time(pop):
     if pop.plot_config == 'presentation':
         ax.set(title=r'Histrogram of Collision Times')
     save_name = 'histogram_weighted_col_time'
+    if t_low_lim > 0:
+        save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
     plt.close(fig)
 
@@ -76,23 +91,30 @@ def collisions_mass(pop):
         final_masses.extend(sim.collisions['mass'] * M_S / M_E)
         wm2.extend(sim.collisions['wm2'] * M_S / M_E)
 
-    data = secondary_masses
+    secondary_masses = np.array(secondary_masses)
+    primary_masses = np.array(primary_masses)
+    final_masses = np.array(final_masses)
+    lists = [primary_masses,secondary_masses]
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
     plt.rcParams.update({'font.size': pop.fontsize})
 
     N_bins = 15
-    bins = 10 ** np.linspace(np.log10(min(data)), np.log10(max(data)), N_bins)
+    bins = 10 ** np.linspace(np.log10(min(secondary_masses)), np.log10(max(primary_masses)), N_bins)
     fig, ax = plt.subplots(figsize=pop.figsize)
-    values, base, _ = plt.hist(data, bins=bins, rwidth=0.95)
-    ax_bis = ax.twinx()
-    values = np.append(0, values)
-    ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
-    ax.set(xlabel=r'Mass [$\mathrm{M_{\oplus}}$]', ylabel=r'Weighted counts')
-    ax_bis.set(ylabel='Cumulative Distribution')
+    #values, base, _ = plt.hist(stacked, bins=bins, rwidth=0.95, stacked=True)
+    ax.hist(lists, bins=bins, rwidth=0.95, alpha=1, stacked=True)
+    #ax.hist(primary_masses, bins=bins, rwidth=0.95, alpha=0.5)
+    #ax.hist(secondary_masses, bins=bins, rwidth=0.95, alpha=0.5)
+    #plt.hist(data2, bins=bins, rwidth=0.95, alpha=0.5, label='Secondary Masses')
+    #ax_bis = ax.twinx()
+    #values = np.append(0, values)
+    #ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
+    ax.set(xlabel=r'Mass [$\mathrm{M_{\oplus}}$]', ylabel=r'Counts')
+    #ax_bis.set(ylabel='Cumulative Distribution')
     ax.set_xscale('log')
-    ax_bis.set_xscale('log')
+    #ax_bis.set_xscale('log')
     if pop.plot_config == 'presentation':
         ax.set(title=r'Histrogram of Collision Times')
     save_name = 'histogram_col_mass'

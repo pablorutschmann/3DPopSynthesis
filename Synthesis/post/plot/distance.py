@@ -3,9 +3,10 @@ from matplotlib import cm
 from matplotlib import colors
 import os.path as path
 from Synthesis.post.metric import *
+from tqdm import tqdm
 
 
-def scatter_AMD_RMC(pop, m_low_lim, a_up_lim):
+def scatter_AMD_RMC(pop, m_low_lim = 0, a_up_lim = 30):
     RMC_sol = 89.9
     AMD_sol = 0.0018
 
@@ -13,12 +14,15 @@ def scatter_AMD_RMC(pop, m_low_lim, a_up_lim):
     RMCS = []
     NS = []
 
-    for sys in pop.SIMS.values():
-        AMD, N = sys.get_AMD(m_low_lim, a_up_lim)
-        AMDS.append(AMD)
-        RMC, N = sys.get_RMC(m_low_lim, a_up_lim)
-        RMCS.append(RMC)
-        NS.append(N)
+    for id, sys in tqdm(pop.SIMS.items()):
+        if id > 200:
+            break
+        else:
+            AMD, N = sys.get_AMD(m_low_lim, a_up_lim)
+            AMDS.append(AMD)
+            RMC, N = sys.get_RMC(m_low_lim, a_up_lim)
+            RMCS.append(RMC)
+            NS.append(N)
 
     AMDS = np.array((AMDS))
     RMCS = np.array(RMCS)

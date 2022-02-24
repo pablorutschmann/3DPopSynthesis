@@ -11,9 +11,9 @@ from Synthesis.units import *
 from Synthesis.post.simulation import simulation
 
 
-def line_n_planets(pop, a_up_lim, thresholds=None):
+def line_n_planets(pop, a_up_lim = 30, thresholds=None):
     if thresholds is None:
-        thresholds = [0.05, 0.1, 0.15]
+        thresholds = [0.1, 0.4, 1.6]
 
     thresholds = sorted(thresholds)
     numbers = {key: [] for key in thresholds}
@@ -25,19 +25,26 @@ def line_n_planets(pop, a_up_lim, thresholds=None):
                           sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au))
         zipped = [(m, a) for (m, a) in zipped if a <= a_up_lim]
         systems.append(zipped)
-    number_of_systems = len(systems)
+    number_of_systems = {}
     for keys, lists in numbers.items():
+        count = 0
         for i, item in enumerate(systems):
             filtered = [(m, a) for (m, a) in item if
                         m >= keys]
             leng = len(filtered)
             lists += [leng]
             systems[i] = filtered
+            if filtered:
+                count += 1
+            else:
+                print(filtered)
+            print(count)
+        number_of_systems[keys] = count
 
     max_number = max(numbers[thresholds[0]])
-    for key, value in numbers.items():
+    for keys, value in numbers.items():
         for i in range(max_number + 1):
-            occurences[key] += [value.count(i)]
+            occurences[keys] += [value.count(i)]
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
@@ -45,10 +52,11 @@ def line_n_planets(pop, a_up_lim, thresholds=None):
     plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
 
     fig, ax = plt.subplots(figsize=pop.figsize)
-    for key, value in occurences.items():
-        ax.plot(range(max_number + 1), np.array(value) / number_of_systems, linestyle='dashed', linewidth=0.5,
-                markersize=4,
-                marker='o', label=f'Threshold {key}' + r' $\mathrm{M_{\oplus}}$')
+    for keys, value in occurences.items():
+        ax.plot(range(max_number + 1), np.array(value)/ len(systems), linestyle='dashed', linewidth=0.7,
+                markersize=6,
+                marker='o', label=f'Threshold {keys}' + r' $\mathrm{M_{\oplus}}$')
+        ax.fill_between(range(max_number + 1),np.array(value)/ len(systems), alpha=0.3)
     ax.set(xlabel='Number of Planets', ylabel=r'Normalized Occurence', xticks=range(max_number + 1))
     ax.legend(loc='best')
     if pop.plot_config == 'presentation':

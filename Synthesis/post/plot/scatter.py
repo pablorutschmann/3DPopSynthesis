@@ -17,7 +17,6 @@ def scatter_parameters(pop):
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
-    print(f'{pop.fontsize=}')
     plt.rcParams.update({'font.size': pop.fontsize})
 
     cmap = pop.cmap_standart
@@ -36,7 +35,7 @@ def scatter_parameters(pop):
     ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
     ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
     fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
-                 label=r'Reference Value at $1 \mathrm{au}$ [$\mathrm{g}\mathrm{cm}^{-2}$]', ax=ax2, pad=0.2)
+                 label=r'Reference Value at $1 \mathrm{au}$ [$\mathrm{g}\mathrm{cm}^{-2}$]', ax=ax2, pad=0.12)
     # ax.set_yscale('log')
     if pop.plot_config == 'presentation':
         ax.set(title=r'Synthesis Parameters')
@@ -90,6 +89,57 @@ def scatter_ecc_inc(pop, m_low_lim=0, a_up_lim=30):
     if pop.plot_config == 'presentation':
         ax.set(title=r'Eccentricity and Inclination')
     save_name = 'scatter_ecc_inc'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+def scatter_a_mass(pop, m_low_lim=0, a_up_lim=30):
+    Masses = []
+    Orb_Dist = []
+    WM = []
+    SWM = []
+
+    for sim in pop.SIMS.values():
+        Masses += list(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)
+        Orb_Dist += list(sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
+        WM += list(sim.snaps[sim.N_snaps - 1].satellites['WM'].values * M_S / M_E)
+        SWM += list(sim.snaps[sim.N_snaps - 1].satellites['SWM'].values * M_S / M_E)
+
+    data = zip(Masses, Orb_Dist, WM, SWM)
+
+    data = [(m,a,wm/m,swm/m) for (m,a,wm,swm) in data if m >= m_low_lim and a <= a_up_lim]
+
+    Masses, Orb_Dist, WMF, SWMF = zip(*data)
+
+    TWMF = np.array(WMF) + np.array(SWMF)
+
+    print(f'Number of Object: {len(Masses)}')
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
+
+    cmap = pop.cmap_standart
+    cmin = min(TWMF)
+    cmax = max(TWMF)
+
+    norm = colors.Normalize(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(Orb_Dist, Masses, c=TWMF, cmap=cmap, norm=norm, s=3)
+    x_labels = ax.get_xticklabels()
+    plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel=r'Orbital Distance [$\mathrm{au}$]', ylabel=r'Mass [$\mathrm{M_{\oplus}}$]')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
+                 label=r'Total WMF',
+                 ax=ax)
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Eccentricity and Inclination')
+    save_name = 'scatter_a_mass'
     if a_up_lim < 30 and m_low_lim > 0:
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")

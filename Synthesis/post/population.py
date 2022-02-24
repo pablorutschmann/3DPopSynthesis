@@ -25,6 +25,8 @@ class population:
         self.dpi = 600
         self.cmap_standart = 'viridis_r'
 
+        print(self)
+
     def switch_plot_config(self, config):
         if config == 'paper':
             self.plot_config = 'paper'

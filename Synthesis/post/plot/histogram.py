@@ -1,5 +1,8 @@
 import matplotlib.pyplot as plt
 import os.path as path
+
+import numpy as np
+
 from Synthesis.units import *
 
 
@@ -438,7 +441,7 @@ def histogram_totalmass(pop, a_up_lim=30, m_low_lim=0):
 
 def histogram_totalmass_thresh(pop, a_up_lim=30, thresholds=None):
     if thresholds is None:
-        thresholds = [0.0, 1.0, 1.5]
+        thresholds = [0.0, 0.1, 1.0, 10]
 
     thresholds = sorted(thresholds)
 
@@ -459,7 +462,6 @@ def histogram_totalmass_thresh(pop, a_up_lim=30, thresholds=None):
     solar_sys = [m / M_E for (m, a) in terrestrial if a / au <= a_up_lim]
     total_mass_solar_sys = np.sum(solar_sys)
 
-    print(total_masses)
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
     plt.rcParams.update({'font.size': pop.fontsize})
@@ -477,10 +479,69 @@ def histogram_totalmass_thresh(pop, a_up_lim=30, thresholds=None):
 
     ax.set(xlabel=r'Total Mass [$\mathrm{M_{\oplus}}$]', ylabel=r'Counts')
     ax.set_xscale('log')
-    ax.legend(title='Thresholds')
+    ax.legend(title='Thresholds', frameon=False)
+    #plt.legend(frameon=False)
     if pop.plot_config == 'presentation':
         ax.set(title=r'Histrogram of Total Masses')
     save_name = 'histogram_totalmass_thresh'
+    if a_up_lim < 30:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+def histogram_a_thresh(pop, a_up_lim=30, thresholds=None):
+    if thresholds is None:
+        thresholds = [0.0, 0.5, 1.0]
+
+    thresholds = sorted(thresholds)
+
+    Masses = []
+    Orb_Dist = []
+    System = []
+    for key, sim in pop.SIMS.items():
+        Masses += list(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)
+        Orb_Dist += list(sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
+        System += [key for i in sim.snaps[sim.N_snaps - 1].satellites['M'].values]
+
+    data = zip(Masses, Orb_Dist, System)
+    data = [item for item in data if item[1] <= a_up_lim]
+
+    Orb_Dict = {}
+    Weights = {}
+    for thresh in thresholds:
+            Orb_Dict[thresh] = np.array([item[1] for item in data if item[0] >= thresh])
+            print(np.array([item[-1] for item in data if item[0] >= thresh]))
+            Weights[thresh] = np.size(np.unique(np.array([item[-1] for item in data if item[0] >= thresh])))
+    solar_sys = [m / M_E for (m, a) in terrestrial if a / au <= a_up_lim]
+    total_mass_solar_sys = np.sum(solar_sys)
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
+
+    N_bins = 15
+    bins = 10 ** np.linspace(np.log10(min(Orb_Dict[thresholds[0]])), np.log10(max(Orb_Dict[thresholds[0]])),
+                             N_bins)
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    stacked = []
+    for thr, arr in Orb_Dict.items():
+        label = f'{thr}' + r' $\mathrm{M_{\oplus}}$'
+        stacked.append(arr)
+        ax.hist(arr, bins=bins, rwidth=0.95, label=label, alpha=1, weights=np.full_like(arr,1/Weights[thr]))
+    #ax.hist(stacked,bins=bins, rwidth=0.95, label=Orb_Dict.keys(), alpha=0.4)
+    ax.axvline(1, color='red', linewidth=1)
+    ax.axvline(0.387, color='red', linewidth=1)
+    ax.axvline(0.732, color='red', linewidth=1)
+    ax.axvline(1.52, color='red', linewidth=1)
+
+    ax.set(xlabel=r'Orbital Distance [$\mathrm{au}$]', ylabel=r'Counts')
+    ax.set_xscale('log')
+    ax.legend(title='Thresholds', frameon=False)
+    plt.legend(frameon=False)
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Histrogram of Total Masses')
+    save_name = 'histogram_a_thresh'
     if a_up_lim < 30:
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
