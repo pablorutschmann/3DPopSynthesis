@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib import cm
 from matplotlib import colors
+from matplotlib import patches
 import os.path as path
 from Synthesis.units import *
+from tqdm import tqdm
 
 
 def scatter_parameters(pop):
@@ -44,6 +47,7 @@ def scatter_parameters(pop):
                 bbox_inches="tight")
     plt.close(fig)
 
+
 def scatter_parameters_numbers(pop, m_low_lim=0, a_up_lim=30):
     TotalMasses = []
     SigmaCoeffs = []
@@ -51,6 +55,7 @@ def scatter_parameters_numbers(pop, m_low_lim=0, a_up_lim=30):
     Masses = []
     Orb_Dist = []
     Numbers = []
+    Means = []
     Systems = []
 
     for sim in pop.SIMS.values():
@@ -60,8 +65,12 @@ def scatter_parameters_numbers(pop, m_low_lim=0, a_up_lim=30):
         Orb_Dist = list(sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
         system = zip(Masses, Orb_Dist)
         filtered = [item for item in system if item[0] >= m_low_lim and item[1] <= a_up_lim]
+        mean = np.mean([item[0] for item in filtered])
+        Means.append(mean)
         Numbers.append(len(filtered))
-    print(Numbers)
+    Means = np.array(Means) / np.sum(Means)
+    print(Numbers * Means)
+    Numbers = np.array(Numbers)
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
     plt.rcParams.update({'font.size': pop.fontsize})
@@ -87,6 +96,56 @@ def scatter_parameters_numbers(pop, m_low_lim=0, a_up_lim=30):
         ax.set(title=r'Synthesis Parameters')
 
     fig.savefig(path.join(pop.PLOT, 'scatter_parameters_numbers.png'), transparent=False, dpi=pop.dpi,
+                bbox_inches="tight")
+    plt.close(fig)
+
+
+def scatter_parameters_RMC(pop, m_low_lim=0, a_up_lim=30):
+    TotalMasses = []
+    SigmaCoeffs = []
+    Reference = []
+    Masses = []
+    Orb_Dist = []
+    Numbers = []
+    Means = []
+    Systems = []
+    RMCS = []
+
+    for sim in tqdm(pop.SIMS.values()):
+        TotalMasses.append(sim.Total_Mass)
+        SigmaCoeffs.append(sim.Sigma_Exponent)
+        RMC, N = sim.get_RMC(m_low_lim, a_up_lim)
+
+        RMCS.append(RMC)
+
+    Means = np.array(Means) / np.sum(Means)
+    print(Numbers * Means)
+    Numbers = np.array(RMCS)
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    cmap = pop.cmap_standart
+    cmin = min(Numbers)
+    cmax = max(Numbers)
+
+    norm = colors.LogNorm(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(SigmaCoeffs, TotalMasses, c=Numbers, cmap=cmap, norm=norm, s=12)
+    x_labels = ax.get_xticklabels()
+    plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel='Surface Density Power Law Exponent', ylabel=r'Total Disk Mass [$M_{\odot}$]', xticks=SigmaCoeffs)
+    ax2 = ax.twinx()
+    mn, mx = ax.get_ylim()
+    ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
+    ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
+                 label=r'RMC', ax=ax2, pad=0.12)
+    # ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Synthesis Parameters')
+
+    fig.savefig(path.join(pop.PLOT, 'scatter_parameters_rmc.png'), transparent=False, dpi=pop.dpi,
                 bbox_inches="tight")
     plt.close(fig)
 
@@ -140,6 +199,7 @@ def scatter_ecc_inc(pop, m_low_lim=0, a_up_lim=30):
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
     plt.close(fig)
 
+
 def scatter_a_mass(pop, m_low_lim=0, a_up_lim=30):
     Masses = []
     Orb_Dist = []
@@ -154,7 +214,7 @@ def scatter_a_mass(pop, m_low_lim=0, a_up_lim=30):
 
     data = zip(Masses, Orb_Dist, WM, SWM)
 
-    data = [(m,a,wm/m,swm/m) for (m,a,wm,swm) in data if m >= m_low_lim and a <= a_up_lim]
+    data = [(m, a, wm / m, swm / m) for (m, a, wm, swm) in data if m >= m_low_lim and a <= a_up_lim]
 
     Masses, Orb_Dist, WMF, SWMF = zip(*data)
 
@@ -197,29 +257,38 @@ def scatter_radial_twmf(pop, m_low_lim=0, a_up_lim=30):
     Orb_Dist = []
     WM = []
     SWM = []
+    Ecc = []
     System = []
 
     for key, sim in pop.SIMS.items():
         Masses += list(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)
+        Ecc += list(sim.snaps[sim.N_snaps - 1].satellites['e'].values * M_S / M_E)
         Orb_Dist += list(sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
         WM += list(sim.snaps[sim.N_snaps - 1].satellites['WM'].values * M_S / M_E)
         SWM += list(sim.snaps[sim.N_snaps - 1].satellites['SWM'].values * M_S / M_E)
         System += [key for i in sim.snaps[sim.N_snaps - 1].satellites['M'].values]
 
     WMF = np.array(WM) / np.array(Masses)
-    SWMF = np.array(WM) / np.array(Masses)
+    SWMF = np.array(SWM) / np.array(Masses)
     TWMF = WMF + SWMF
+    total_number = len(Masses)
+    print(f'Total Number of planets: {total_number}')
+    data = zip(Masses, Orb_Dist, WMF, SWMF, TWMF, Ecc, System)
 
-    data = zip(Masses, Orb_Dist, TWMF, System)
-
-    data = [item for item in data if item[0] >= m_low_lim and item[1] <= a_up_lim]
+    data = [item for item in data if item[0] >= 0.3 and item[0] <= 3]
+    mass_lim_number = len(data)
+    print(f'Number of planets in mass limit: {mass_lim_number}, {mass_lim_number/total_number}')
+    data = [item for item in data if item[4] > 0]
+    non_zero_wm = data.copy()
+    non_zero_wmf_number = len(data)
+    print(f'Number of planets in mass limit with non zero TWMF: {non_zero_wmf_number}, {non_zero_wmf_number/mass_lim_number} ({non_zero_wmf_number/total_number})')
 
     earth_analogs = [item for item in data if item[0] >= 0.101 and item[1] <= a_up_lim and item[2] > 0.001]
-    print(earth_analogs)
+    #print(earth_analogs)
 
-    Masses, Orb_Dist, TWMF, System = zip(*data)
+    Masses, Orb_Dist, WMF, SWMF, TWMF, Ecc, System = zip(*data)
 
-    ms, obs, twmf, system = zip(*earth_analogs)
+    ms, obs, wmf, swmf, twmf, ecc, system = zip(*earth_analogs)
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
@@ -227,38 +296,130 @@ def scatter_radial_twmf(pop, m_low_lim=0, a_up_lim=30):
     plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
 
     cmap = pop.cmap_standart
+    TWMF = TWMF
     cmin = min(TWMF)
     cmax = max(TWMF)
 
-    norm = colors.Normalize(cmin, cmax)
+    norm = colors.LogNorm(cmin, cmax)
 
     fig, ax = plt.subplots(figsize=pop.figsize)
-    ax.scatter(Orb_Dist, Masses, c=TWMF, cmap=cmap, norm=norm, s=5, alpha=0.1)
+    ax.scatter(Orb_Dist, Masses, c=TWMF, cmap=cmap, norm=norm, s=7, alpha=1)
     # ax.scatter(obs, ms, c=twmf, cmap=cmap, norm=norm, s=10)
     ax.axvline(1, color='black', linewidth=0.7, linestyle='--')
     ax.axhline(1, color='black', linewidth=0.7, linestyle='--')
     x_labels = ax.get_xticklabels()
     plt.setp(x_labels, horizontalalignment='center', )
 
-    ax.set(xlabel='Radial Distance [$\mathrm{au}$]', ylabel=r'Mass [$\mathrm{M_{\oplus}}$]')
+    ax.set(xlabel='Orbital Distance [$\mathrm{au}$]', ylabel=r'Mass [$\mathrm{M_{\oplus}}$]')
     fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Total WMF', ax=ax)
     ax.set_xscale('log')
     ax.set_yscale('log')
     if pop.plot_config == 'presentation':
         ax.set(title=r'Total WMF Radial Distribution')
-        save_name = 'scatter_radial_twmf'
+    save_name = 'scatter_radial_twmf'
     if a_up_lim < 30 and m_low_lim > 0:
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
-    fig.savefig(path.join(pop.PLOT, 'scatter_radial_twmf.png'), transparent=False, dpi=pop.dpi,
-                bbox_inches="tight")
     plt.close(fig)
 
-    for earth in earth_analogs:
-        print(f'System: {earth[-1]}')
-        print(f'Mass: {earth[0]}')
-        print(f'Orb Dist: {earth[1]}')
-        print(f'TWMF: {earth[2]}')
-        print(f'Exponent: {pop.SIMS[earth[-1]].Sigma_Exponent}')
-        print(f'Disk Mass: {pop.SIMS[earth[-1]].Total_Mass * M_S / M_J}')
-        print(" ")
+    def scatter_pie(PLOT_PATH, earth_analogs):
+
+        plt.rcParams.update({'figure.autolayout': True})
+        plt.style.use('seaborn-paper')
+        plt.rcParams.update({'font.size': pop.fontsize})
+        plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
+        fig, ax = plt.subplots(figsize=pop.figsize)
+
+        colors = ['red', 'green', 'blue']
+        labels = ['Solids', 'Hydrated Silica', 'Water/Ice']
+
+        red_patch = patches.Patch(color='green', label='Solids')
+        green_patch = patches.Patch(color='red', label='Hydrated Silica')
+        blue_patch = patches.Patch(color='blue', label='Water/Ice')
+        handles = [red_patch, green_patch, blue_patch]
+
+        Masses, Orb_Dist, WMF, SWMF, TWMF, Ecc, System = zip(*earth_analogs)
+        print(np.array(WMF)/np.array(TWMF))
+
+        mean_mass = np.min(Masses)
+        mass_scaling = mean_mass / 90000
+        mass_scaling = 0.000000001
+
+        def pie_1d(r1, r2):
+            # calculate the points of the first pie marker
+            # these are just the origin (0, 0) + some (cos, sin) points on a circle
+            x1 = np.cos(2 * np.pi * np.linspace(0, r1))
+            y1 = np.sin(2 * np.pi * np.linspace(0, r1))
+            xy1 = np.row_stack([[0, 0], np.column_stack([x1, y1])])
+            s1 = np.abs(xy1).max()
+
+            x2 = np.cos(2 * np.pi * np.linspace(r1, 1))
+            y2 = np.sin(2 * np.pi * np.linspace(r1, 1))
+            xy2 = np.row_stack([[0, 0], np.column_stack([x2, y2])])
+            s2 = np.abs(xy2).max()
+
+            # x3 = np.cos(2 * np.pi * np.linspace(r2, 1))
+            # y3 = np.sin(2 * np.pi * np.linspace(r2, 1))
+            # xy3 = np.row_stack([[0, 0], np.column_stack([x3, y3])])
+            # s3 = np.abs(xy3).max()
+
+            return xy1, s1, xy2, s2#, xy3, s3
+
+        # cale the masses to the marker sizes
+        def NormalizeData(m):
+            return (m - np.log10(np.min(TWMF))) / (np.log10(np.max(TWMF)) - np.log10(np.min(TWMF)))
+
+        # def NormalizeData(m):
+        #     return (m - (np.min(TWMF))) / ((np.max(TWMF)) - (np.min(TWMF)))
+
+
+        def plot_one(row):
+            WMF_ratio = row[2]/row[4]
+            SWMF_Ratio = 1
+            #xy1, s1, xy2, s2, xy3, s3 = pie_1d(WMF_ratio, SWMF_ratio)
+            xy1, s1, xy2, s2 = pie_1d(WMF_ratio, 1)
+
+            scale = NormalizeData(np.log10(row[4])) * 100
+
+            ax.scatter(row[1], row[0], marker=xy1, s=s1 * scale , facecolor='blue')
+            ax.scatter(row[1], row[0], marker=xy2, s=s2 * scale, facecolor='red')
+            #ax.scatter(row[1], row[6], marker=xy3, s=s3 * scale , facecolor='red')
+
+        for index, row in enumerate(earth_analogs):
+            plot_one(row)
+
+        #ax.set_ylim(-1 * min(self.satellites['e']), 1.1 * max(self.satellites['e']))
+        ax.set_xlabel(r'Orbital Distance [$\mathrm{au}$]')
+        ax.set_ylabel('Mass [$M_{\oplus}$]')
+        ax.legend(handles=handles, title='Components')
+        fig.savefig(path.join(pop.PLOT, 'scatter_ratios.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+        plt.close(fig)
+
+    #filter twmf close to earth
+    data = [item for item in data if item[2] >= 0.00025 and item[3] >= 0.00075]
+    print(data)
+    scatter_pie(pop.PLOT,data)
+    wmf_sim_number = len(data)
+    #print(data)
+    print(f'Number of planets in mass limit and WMF above 0.00025 and SWMF above 0.00075: {len(data)}, {wmf_sim_number/mass_lim_number}  ({wmf_sim_number/total_number})')
+    # for earth in data:
+    #     print(f'System: {earth[-1]}')
+    #     print(f'Mass: {earth[0]}')
+    #     print(f'Orb Dist: {earth[1]}')
+    #     print(f'WMF: {earth[2]}')
+    #     print(f'SWMF: {earth[2]}')
+    #     print(f'TWMF: {earth[2]}')
+    #     print(f'Exponent: {pop.SIMS[earth[-1]].Sigma_Exponent}')
+    #     print(f'Disk Mass: {pop.SIMS[earth[-1]].Total_Mass * M_S / M_J}')
+    #     print(" ")
+
+    #filter roughly earth mass already roughly in the right positions
+    data = [item for item in data if item[1] <= 2]
+    earth_like_number = len(data)
+    print(f'Number of planets in mass limit and WMF above 0.00025 and SWMF above 0.00075 at correct positions: {earth_like_number}, {earth_like_number/wmf_sim_number}  ({earth_like_number/total_number})')
+
+
+
+
+
+

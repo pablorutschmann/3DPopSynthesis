@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import os.path as path
 from os import makedirs
 from .simulation import simulation
+from tqdm import tqdm
 
 class population:
     def __init__(self, PATH, N_sims):
@@ -13,7 +14,7 @@ class population:
         if not path.exists(self.PLOT):
             makedirs(self.PLOT)
 
-        for i in range(1, self.NSIMS + 1):
+        for i in tqdm(range(1, self.NSIMS + 1)):
             self.SIMS[i] = simulation(self.system_path(i))
 
         print(self.SIMS)

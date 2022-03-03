@@ -5,7 +5,7 @@ import os.path as path
 from Synthesis.post.metric import *
 from Synthesis.post.metric import earth_distance
 from tqdm import tqdm
-
+from importlib import reload
 
 from sklearn.manifold import TSNE
 
@@ -238,13 +238,13 @@ def tsne(pop, m_low_lim=0, a_up_lim=30):
     Numbers = []
 
     for id, sim in pop.SIMS.items():
-        if id > 40:
+        if id > 145:
             break
         TotalMasses.append(sim.Total_Mass)
         SigmaCoeffs.append(sim.Sigma_Exponent)
 
     for id, sim in tqdm(pop.SIMS.items()):
-        if id > 40:
+        if id > 145:
             break
         total_masses.append(sim.Total_Mass)
         sigma_exponents.append(sim.Sigma_Exponent)
@@ -481,6 +481,7 @@ def distance_earth2(pop, m_low_lim=0, a_up_lim=30):
     total_masses = []
     sigma_exponents = []
 
+
     for id, sim in tqdm(pop.SIMS.items()):
         if id > 200:
             break
@@ -496,22 +497,27 @@ def distance_earth2(pop, m_low_lim=0, a_up_lim=30):
         zipped = zip(Masses, Orb_Dist, TWMF)
 
         # Remove under threshold Masses
+        # filtered = [(m * M_S / M_E, a * R_S / au, wmf) for (m, a, wmf) in zipped if
+        #             m >=  m_low_lim * M_E / M_S and a <= a_up_lim * au / R_S and wmf > 0]
         filtered = [(m * M_S / M_E, a * R_S / au, wmf) for (m, a, wmf) in zipped if
-                    m >= m_low_lim * M_E / M_S and a <= a_up_lim * au / R_S]
+                    m >=  0.1 * M_E / M_S and m <= 5 * M_E / M_S and a <= a_up_lim * au / R_S and wmf > 0]
         systems.append(filtered)
     distances = []
     # print(systems)
     # func = lambda x: distance(x, terrestrial)
     # distances = list(map(func, systems))
+    print(earth_distance([(0.6,1.2,0.002)], [earth_wmf]))
     def get_min_dist(sys):
         distances = []
         for planet in enumerate(sys):
-            distances.append(earth_distance([planet],[earth_wmf]))
+            print(planet[1])
+            distances.append(earth_distance([planet[1]],[earth_wmf]))
 
         return np.min(distances), sys[np.argmin(distances)]
     planets = []
     for sys in tqdm(systems):
         distances.append(earth_distance(sys, [earth_wmf]))
+        print(sys)
         # dist, planet = get_min_dist(sys)
         # distances.append(dist)
         # planets.append(planet)
