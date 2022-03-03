@@ -15,8 +15,24 @@ def histogram_mass(pop, m_low_lim=0, a_up_lim=30):
         Masses += list(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)
         Orb_Dist += list(sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
 
+    print(f'Total Number of Bodies: {len(Masses)}')
+
     data = zip(Masses, Orb_Dist)
+    data2 = zip(Masses, Orb_Dist)
+    data3 = zip(Masses, Orb_Dist)
+    # print([(m,a) for (m,a) in data])
+    #
+    print(f'Number of Bodies within {a_up_lim} au:')
+    list_within = [(m, a) for (m, a) in data2 if a <= a_up_lim]
+    print(f'{len(list_within)}; {len(list_within) / len(Masses)}')
+    print(
+        f'Number of Bodies over a mass of  {m_low_lim} M_E: {len([item[0] for item in data3 if item[0] >= m_low_lim])}; {len([item[0] for item in data3 if item[0] >= m_low_lim]) / len(Masses)}')
+
+    #
+    # print(data)
+
     data = [item for item in data if item[0] >= m_low_lim and item[1] <= a_up_lim]
+    print(f'Number of Terrestrial Bodies: {len(data)}; {len(data) / len(Masses)}')
 
     Masses, Orb_Dist = zip(*data)
 
@@ -83,7 +99,7 @@ def histogram_weighted_mass(pop, m_low_lim=0, a_up_lim=30):
 
     values = np.append(0, values)
     ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
-    ax.set(xlabel=r'Mass [$M_E$]', ylabel=r'Weighed Counts')
+    ax.set(xlabel=r'Mass [$M_E$]', ylabel=r'Weighted Counts')
     ax_bis.set(ylabel='Cumulative Distribution')
     ax.set_xscale('log')
     ax_bis.set_xscale('log')
@@ -126,7 +142,7 @@ def histogram_weighted_mass_nonlog(pop, m_low_lim=0, a_up_lim=30):
 
     values = np.append(0, values)
     ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
-    ax.set(xlabel=r'M [$M_E$]', ylabel=r'Weighed Counts')
+    ax.set(xlabel=r'M [$M_E$]', ylabel=r'Weighted Counts')
     ax_bis.set(ylabel='Cumulative Distribution')
     # ax.set_xscale('log')
     # ax_bis.set_xscale('log')
@@ -401,8 +417,7 @@ def histogram_wmf(pop, m_low_lim=0, a_up_lim=30):
     plt.close(fig)
 
 
-
-def histogram_totalmass(pop, a_up_lim=30, m_low_lim=0):
+def histogram_totalmass(pop, m_low_lim=0, a_up_lim=30):
     TotalMasses = []
 
     for sim in pop.SIMS.values():
@@ -474,13 +489,15 @@ def histogram_totalmass_thresh(pop, a_up_lim=30, thresholds=None):
     for key, lists in total_masses.items():
         label = f'{key}' + r' $\mathrm{M_{\oplus}}$'
         ax.hist(lists, bins=bins, rwidth=0.95, label=label)
+        print(
+            f'Number of systems conatining at least 1 object with mass {key}: {len([x for x in lists if x != 0]) / len(total_masses[thresholds[0]])}')
 
     ax.axvline(total_mass_solar_sys, color='red', linewidth=1)
 
     ax.set(xlabel=r'Total Mass [$\mathrm{M_{\oplus}}$]', ylabel=r'Counts')
     ax.set_xscale('log')
     ax.legend(title='Thresholds', frameon=False)
-    #plt.legend(frameon=False)
+    # plt.legend(frameon=False)
     if pop.plot_config == 'presentation':
         ax.set(title=r'Histrogram of Total Masses')
     save_name = 'histogram_totalmass_thresh'
@@ -488,6 +505,7 @@ def histogram_totalmass_thresh(pop, a_up_lim=30, thresholds=None):
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
     plt.close(fig)
+
 
 def histogram_a_thresh(pop, a_up_lim=30, thresholds=None):
     if thresholds is None:
@@ -509,9 +527,9 @@ def histogram_a_thresh(pop, a_up_lim=30, thresholds=None):
     Orb_Dict = {}
     Weights = {}
     for thresh in thresholds:
-            Orb_Dict[thresh] = np.array([item[1] for item in data if item[0] >= thresh])
-            print(np.array([item[-1] for item in data if item[0] >= thresh]))
-            Weights[thresh] = np.size(np.unique(np.array([item[-1] for item in data if item[0] >= thresh])))
+        Orb_Dict[thresh] = np.array([item[1] for item in data if item[0] >= thresh])
+        print(np.array([item[-1] for item in data if item[0] >= thresh]))
+        Weights[thresh] = np.size(np.unique(np.array([item[-1] for item in data if item[0] >= thresh])))
     solar_sys = [m / M_E for (m, a) in terrestrial if a / au <= a_up_lim]
     total_mass_solar_sys = np.sum(solar_sys)
 
@@ -528,8 +546,8 @@ def histogram_a_thresh(pop, a_up_lim=30, thresholds=None):
     for thr, arr in Orb_Dict.items():
         label = f'{thr}' + r' $\mathrm{M_{\oplus}}$'
         stacked.append(arr)
-        ax.hist(arr, bins=bins, rwidth=0.95, label=label, alpha=1, weights=np.full_like(arr,1/Weights[thr]))
-    #ax.hist(stacked,bins=bins, rwidth=0.95, label=Orb_Dict.keys(), alpha=0.4)
+        ax.hist(arr, bins=bins, rwidth=0.95, label=label, alpha=1, weights=np.full_like(arr, 1 / Weights[thr]))
+    # ax.hist(stacked,bins=bins, rwidth=0.95, label=Orb_Dict.keys(), alpha=0.4)
     ax.axvline(1, color='red', linewidth=1)
     ax.axvline(0.387, color='red', linewidth=1)
     ax.axvline(0.732, color='red', linewidth=1)
@@ -546,3 +564,83 @@ def histogram_a_thresh(pop, a_up_lim=30, thresholds=None):
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
     plt.close(fig)
+
+
+def histogram_max_mass(pop, m_low_lim=0, a_up_lim=30):
+    MaxMasses = []
+
+    for sim in pop.SIMS.values():
+        MaxMasses.append(np.max(
+            [item for item in list(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E) if
+             item >= m_low_lim]))
+    print(max(MaxMasses))
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+
+    N_bins = 15
+    bins = 10 ** np.linspace(np.log10(min(MaxMasses)), np.log10(max(MaxMasses)), N_bins)
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    # ax.hist(Masses, bins=bins)
+    values, base, _ = plt.hist(MaxMasses, bins=bins, rwidth=0.95)
+    # ax.axvline(1, color='red', linewidth=1)
+
+    ax_bis = ax.twinx()
+    # values, base = np.histogram(Masses, bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins))
+
+    values = np.append(0, values)
+    ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
+    ax.set(xlabel=r'Maximum Mass [$\mathrm{M_{\oplus}}$]', ylabel=r'Counts')
+    ax_bis.set(ylabel='Cumulative Distribution')
+    ax.set_xscale('log')
+    ax_bis.set_xscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Histrogram of Maximum Masses')
+    save_name = 'histogram_max_mass'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+
+def histogram_max_mass_fraction(pop, m_low_lim=0, a_up_lim=30):
+    AverageMasses = []
+
+    for sim in pop.SIMS.values():
+        arr = np.sort(np.array([item for item in list(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E) if
+                                item >= m_low_lim]), axis=0)
+        weights = arr / np.sum(arr)
+        AverageMasses.append(max(weights))
+        # AverageMasses.append(np.median(
+        #     [item for item in list(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E) if
+        #      item >= m_low_lim]))
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+
+    N_bins = 15
+    # bins = 10 ** np.linspace(np.log10(min(AverageMasses)), np.log10(max(AverageMasses)), N_bins)
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    # ax.hist(Masses, bins=bins)
+    values, base, _ = plt.hist(AverageMasses, bins=N_bins, rwidth=0.95)
+    # ax.axvline(1, color='red', linewidth=1)
+
+    ax_bis = ax.twinx()
+    # values, base = np.histogram(Masses, bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins))
+
+    values = np.append(0, values)
+    ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
+    ax.set(xlabel=r'Fraction', ylabel=r'Counts')
+    ax_bis.set(ylabel='Cumulative Distribution')
+    # ax.set_xscale('log')
+    # ax_bis.set_xscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Histrogram of Average Masses')
+    save_name = 'histogram_max_mass_fraction'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+# def histogram_planets_time

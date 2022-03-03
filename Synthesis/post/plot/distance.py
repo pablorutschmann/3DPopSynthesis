@@ -3,16 +3,112 @@ from matplotlib import cm
 from matplotlib import colors
 import os.path as path
 from Synthesis.post.metric import *
+from Synthesis.post.metric import earth_distance
 from tqdm import tqdm
 
 
-def scatter_AMD_RMC(pop, m_low_lim = 0, a_up_lim = 30):
-    RMC_sol = 89.9
-    AMD_sol = 0.0018
+from sklearn.manifold import TSNE
 
+RMC_sol = 89.9
+AMD_sol = 0.0018
+
+
+def histogram_AMD(pop, m_low_lim=0, a_up_lim=30):
+    AMDS = []
+    NS = []
+
+    for id, sys in tqdm(pop.SIMS.items()):
+        if id > 200:
+            break
+        else:
+            AMD, N = sys.get_AMD(m_low_lim, a_up_lim)
+            AMDS.append(AMD)
+            NS.append(N)
+
+    AMDS = np.array((AMDS))
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+
+    N_bins = 15
+    bins = 10 ** np.linspace(np.log10(min(AMDS)), np.log10(max(AMDS)), N_bins)
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    # ax.hist(Masses, bins=bins)
+    values, base, _ = plt.hist(AMDS, bins=bins, rwidth=0.95)
+    print(f'Bin edges: {base[np.argwhere(base >= AMD_sol)[0,0]]}, {base[np.argwhere(base >= AMD_sol)[0,0] + 1]}')
+    print(f'Number of systems in that bin: {values[np.argwhere(base >= AMD_sol)[0,0]-1]}')
+    print(f'Fraction: {values[np.argwhere(base >= AMD_sol)[0,0]-1]/np.sum(values)}')
+    ax.axvline(AMD_sol, color='red', linewidth=1)
+    # ax_bis = ax.twinx()
+    # values, base = np.histogram(Masses, bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins))
+
+    # values = np.append(0, values)
+    # ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
+    ax.set(xlabel=r'AMD', ylabel=r'Counts')
+    # ax_bis.set(ylabel='Cumulative Distribution')
+    ax.set_xscale('log')
+    # ax_bis.set_xscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Histrogram of AMD')
+    save_name = 'histogram_AMD'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+
+def histogram_RMC(pop, m_low_lim=0, a_up_lim=30):
+    RMCS = []
+    NS = []
+
+    for id, sys in tqdm(pop.SIMS.items()):
+        if id > 200:
+            break
+        else:
+            RMC, N = sys.get_RMC(m_low_lim, a_up_lim)
+            RMCS.append(RMC)
+            NS.append(N)
+
+    RMCS = np.array((RMCS))
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+
+    N_bins = 15
+    bins = 10 ** np.linspace(np.log10(min(RMCS)), np.log10(max(RMCS)), N_bins)
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    # ax.hist(Masses, bins=bins)
+    values, base, _ = plt.hist(RMCS, bins=bins, rwidth=0.95)
+    print(f'Bin edges: {base[np.argwhere(base >= AMD_sol)[0,0]]}, {base[np.argwhere(base >= RMC_sol)[0,0] + 1]}')
+    print(f'Number of systems in that bin: {values[np.argwhere(base >= RMC_sol)[0,0]-1]}')
+    print(f'Fraction: {values[np.argwhere(base >= RMC_sol)[0,0]-1]/np.sum(values)}')
+    ax.axvline(RMC_sol, color='red', linewidth=1)
+    # ax_bis = ax.twinx()
+    # values, base = np.histogram(Masses, bins = 10 ** np.linspace(np.log10(min(Masses)), np.log10(max(Masses)), N_bins))
+
+    # values = np.append(0, values)
+    # ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
+    ax.set(xlabel=r'RMC', ylabel=r'Counts')
+    # ax_bis.set(ylabel='Cumulative Distribution')
+    ax.set_xscale('log')
+    # ax_bis.set_xscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Histrogram of RMC')
+    save_name = 'histogram_RMC'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+
+def scatter_AMD_RMC(pop, m_low_lim=0, a_up_lim=30):
     AMDS = []
     RMCS = []
     NS = []
+    SIGMAS = []
+    TOTALMASSES = []
 
     for id, sys in tqdm(pop.SIMS.items()):
         if id > 200:
@@ -23,9 +119,13 @@ def scatter_AMD_RMC(pop, m_low_lim = 0, a_up_lim = 30):
             RMC, N = sys.get_RMC(m_low_lim, a_up_lim)
             RMCS.append(RMC)
             NS.append(N)
+            SIGMAS.append(sys.Sigma_Exponent)
+            TOTALMASSES.append(sys.Total_Mass * M_S / M_J)
 
     AMDS = np.array((AMDS))
     RMCS = np.array(RMCS)
+    SIGMAS = np.array(SIGMAS)
+    TOTALMASSES = np.array(TOTALMASSES)
     sigma_AMD = np.std(AMDS)
     sigma_RMC = np.std(RMCS)
     print(f'{sigma_AMD=}')
@@ -38,45 +138,45 @@ def scatter_AMD_RMC(pop, m_low_lim = 0, a_up_lim = 30):
     print(distances)
 
     cmap = pop.cmap_standart
-    cmin = min(NS)
-    cmax = max(NS)
+    cmin = min(RMCS)
+    cmax = max(RMCS)
 
-    norm = colors.Normalize(cmin, cmax)
+    norm = colors.LogNorm(cmin, cmax)
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
     plt.rcParams.update({'font.size': pop.fontsize})
 
     fig, ax = plt.subplots(figsize=pop.figsize)
-    ax.scatter(RMCS / sigma_RMC, AMDS / sigma_AMD, c=NS, cmap=cmap, norm=norm, s=12)
-    ax.scatter(RMC_sol / sigma_RMC, AMD_sol / sigma_AMD, c='red')
-    ax.scatter(RMCS[np.argmin(distances)] / sigma_RMC, AMDS[np.argmin(distances)] / sigma_AMD,
-               c=NS[np.argmin(distances)])
+    #ax.scatter(AMDS/sigma_AMD, RMCS/sigma_RMC, c=distances, cmap=cmap, norm=norm, s=12)
+    #ax.scatter(SIGMAS, TOTALMASSES, c=distances[np.argmin(distances)])
+    ax.scatter(SIGMAS, TOTALMASSES, c=RMCS)
     x_labels = ax.get_xticklabels()
     plt.setp(x_labels, horizontalalignment='center')
-    ax.set(xlabel='RMC', ylabel=r'AMC')
-    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Number of Satellites',
+    ax.set(xlabel='Power Law Exponent', ylabel=r'Total Disk Mass [$M_J$]')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
                  ax=ax)
-    ax.set_xscale('log')
+    # ax.set_xscale('log')
     ax.set_yscale('log')
     if pop.plot_config == 'presentation':
         ax.set(title=r'Radial Mass Concentration and Angular Momentum Deficit')
 
-    save_name = 'scatter_AMD_RMC'
+    save_name = 'scatter_para_dist_AMD_RMC'
     if a_up_lim < 30 and m_low_lim > 0:
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
     plt.close(fig)
 
 
-def distances(pop, m_low_lim, a_up_lim):
+def distances(pop, m_low_lim=0, a_up_lim=30):
     systems = []
     total_masses = []
     sigma_exponents = []
-    m_low_lim = m_low_lim
-    a_up_lim = a_up_lim
 
-    for sim in pop.SIMS.values():
+
+    for id, sim in tqdm(pop.SIMS.items()):
+        if id > 200:
+            break
         total_masses.append(sim.Total_Mass)
         sigma_exponents.append(sim.Sigma_Exponent)
 
@@ -87,38 +187,19 @@ def distances(pop, m_low_lim, a_up_lim):
         filtered = [(m * M_S / M_E, a * R_S / au) for (m, a) in zipped if
                     m >= m_low_lim * M_E / M_S and a <= a_up_lim * au / R_S]
         systems.append(filtered)
+    distances = []
+    # print(systems)
+    # func = lambda x: distance(x, terrestrial)
+    # distances = list(map(func, systems))
+    for sys in tqdm(systems):
+        distances.append(distance(sys, terrestrial))
 
-    func = lambda x: distance(x, terrestrial)
-    distances = list(map(func, systems))
+    print(distances)
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
     plt.rcParams.update({'font.size': pop.fontsize})
     plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
-
-    fig, ax = plt.subplots(ncols=1)
-    fig.set_size_inches(15.5, 10.5)
-    ax.scatter(sigma_exponents, distances)
-
-    ax.set_xlabel('Number of initial Planetesimals')
-
-    ax.set_ylabel('Distance')
-    ax.legend()
-    fig.suptitle('Distance Metric to Solar System')
-    fig.savefig(path.join(pop.PLOT, 'distances_exponent.png'))
-    plt.close(fig)
-
-    fig, ax = plt.subplots(ncols=1)
-    fig.set_size_inches(15.5, 10.5)
-    ax.scatter(total_masses, distances)
-
-    ax.set_xlabel('Number of initial Planetesimals')
-
-    ax.set_ylabel('Distance')
-    ax.legend()
-    fig.suptitle('Distance Metric to Solar System')
-    fig.savefig(path.join(pop.PLOT, 'distances_mass.png'))
-    plt.close(fig)
 
     cmap = 'viridis_r'
     cmin = min(distances)
@@ -133,7 +214,6 @@ def distances(pop, m_low_lim, a_up_lim):
     ax.set(xlabel='Sigma Exponent', ylabel=r'Total Mass', xticks=sigma_exponents)
     fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
                  ax=ax)
-    ax.set_xscale('log')
     ax.set_yscale('log')
     if pop.plot_config == 'presentation':
         ax.set(title=r'Distances between Systems')
@@ -142,4 +222,324 @@ def distances(pop, m_low_lim, a_up_lim):
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
     fig.savefig(path.join(pop.PLOT, 'scatter_distances.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+
+def tsne(pop, m_low_lim=0, a_up_lim=30):
+    systems = []
+    sys_matrix = []
+    total_masses = []
+    sigma_exponents = []
+    TotalMasses = []
+    SigmaCoeffs = []
+    Reference = []
+    RMCS = []
+    AMDS = []
+    Numbers = []
+
+    for id, sim in pop.SIMS.items():
+        if id > 40:
+            break
+        TotalMasses.append(sim.Total_Mass)
+        SigmaCoeffs.append(sim.Sigma_Exponent)
+
+    for id, sim in tqdm(pop.SIMS.items()):
+        if id > 40:
+            break
+        total_masses.append(sim.Total_Mass)
+        sigma_exponents.append(sim.Sigma_Exponent)
+
+        zipped = zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E,
+                     sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
+
+        # Remove under threshold Masses
+        filtered = [(m, a) for (m, a) in zipped if
+                    m >= m_low_lim and a <= a_up_lim]
+        # Numbers.append(len(filtered))
+        # Sorted = sorted(filtered, key=lambda x: x[0])[:4]
+        # Sorted = sorted(Sorted,key=lambda x: x[1])
+        Numbers.append(len(filtered))
+        cum_mass = np.sum([m for (m, a) in filtered])
+        data_point = []
+        for item in filtered:
+            # print([*item])
+            data_point.extend([*item])
+        systems.append(data_point)
+        # Reference.append(sim.Sigma_Norm * pow(R_S / (0.3 * au), sim.Sigma_Exponent) * (M_S / R_S2))
+        system = [(m, a) for (m, a) in filtered]
+        #print(system)
+        sys_matrix.append(system)
+        #Reference.append(distance(system, terrestrial))
+        Reference.append( (sim.Sigma_Exponent)**2 * sim.Total_Mass/100)
+        # Reference.append(cum_mass)
+    Numbers = Reference
+
+    terr = [(m/M_E, a/au) for (m,a) in terrestrial]
+    sys_matrix.append(terr)
+    num = len(sys_matrix)
+    def get_distances(i):
+        dist =  np.zeros(num)
+        for j in range(i,num):
+            if i == j:
+                dist[j] = 0.0
+            else:
+                dist[j] = distance(sys_matrix[i],sys_matrix[j])
+        return dist
+
+    # try:
+    #     matrix_metric = np.load(pop.PLOT + 'metric_matrix' + '.npy')
+    #     print('Loaded from pickle')
+    # except:
+    rows = []
+    for i, item in tqdm(enumerate(sys_matrix)):
+        rows.append(get_distances(i))
+
+    upper = np.reshape(rows,(num,num))
+    lower =  upper.T
+    matrix_metric = upper + lower
+
+    np.save(pop.PLOT + 'metric_matrix', matrix_metric)
+    print('saved to Pickle')
+    print(matrix_metric)
+
+    # AMDS = np.array((AMDS))
+    # RMCS = np.array(RMCS)
+    # sigma_AMD = np.std(AMDS)
+    # sigma_RMC = np.std(R  CS)
+    # print(f'{sigma_AMD=}')
+    # print(f'{sigma_RMC=}')
+    #
+    # def dist_to_solar(rmc, amd):
+    #     return np.sqrt((rmc - RMC_sol) ** 2 / sigma_RMC ** 2 + (amd - AMD_sol) ** 2 / sigma_AMD ** 2)
+    #
+    # distances = dist_to_solar(RMCS, AMDS)
+    # print(f'{distances=}')
+
+    max_len = 0
+    for sys in systems:
+        if len(sys) > max_len:
+            max_len = len(sys)
+
+    data = []
+    for sys in systems:
+        sys = np.pad(sys, pad_width=(0, max_len - len(sys)), mode="constant", constant_values=0.0)
+        data.append(sys)
+
+    terrestrial_data_point = []
+    for item in terrestrial:
+        terrestrial_data_point.extend([item[0] / M_E, item[1] / au])
+
+    terrestrial_data_point = np.pad(terrestrial_data_point, pad_width=(0, max_len - len(terrestrial_data_point)),
+                                    mode="constant", constant_values=0.0)
+    # print(data)
+
+    data = np.vstack(data)
+    # print(data)
+    print(f'{data.shape=}')
+
+    all_data = np.vstack([data, terrestrial_data_point])
+
+    model = TSNE(2, perplexity=35, metric='precomputed')
+
+    X_embedded = model.fit_transform(matrix_metric)
+
+    systems_embedded = X_embedded[:-1, :]
+    terrestrial_embedded = X_embedded[-1, :]
+
+    def dist_to_earth_embed(point):
+        return np.sqrt((point[0] - terrestrial_embedded[0])**2 + (point[1] - terrestrial_embedded[1])**2)
+
+    dist_embed = np.apply_along_axis(arr=systems_embedded, func1d=dist_to_earth_embed, axis=1)
+    Numbers = dist_embed
+    print(dist_embed)
+    print(f'{systems_embedded.shape=}')
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
+
+    cmap = pop.cmap_standart
+    cmin = min(Numbers)
+    cmax = max(Numbers)
+
+    norm = colors.Normalize(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(systems_embedded[:, 0], systems_embedded[:, 1], c=Numbers, cmap=cmap, norm=norm, s=12)
+    ax.scatter(terrestrial_embedded[0], terrestrial_embedded[1], c='red')
+    x_labels = ax.get_xticklabels()
+    plt.setp(x_labels, horizontalalignment='center')
+    ax.set_xlabel('Axis 1')
+    ax.set_ylabel('Axis 2')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'AMD,RMC Distance',
+                 ax=ax)
+    # ax.set_xscale('log')
+    # ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Radial Mass Concentration and Angular Momentum Deficit')
+
+    save_name = 'scatter_tsne'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+
+    cmap = pop.cmap_standart
+    cmin = min(dist_embed)
+    cmax = max(dist_embed)
+
+    norm = colors.LogNorm(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(SigmaCoeffs, TotalMasses, c=dist_embed, cmap=cmap, norm=norm, s=12)
+    x_labels = ax.get_xticklabels()
+    plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel='Surface Density Power Law Exponent', ylabel=r'Total Disk Mass [$M_{\odot}$]', xticks=SigmaCoeffs)
+    ax2 = ax.twinx()
+    mn, mx = ax.get_ylim()
+    ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
+    ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
+                 label=r'Reference Value at $1 \mathrm{au}$ [$\mathrm{g}\mathrm{cm}^{-2}$]', ax=ax2, pad=0.12)
+    # ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Synthesis Parameters')
+
+    fig.savefig(path.join(pop.PLOT, 'scatter_parameters_embed_dist.png'), transparent=False, dpi=pop.dpi,
+                bbox_inches="tight")
+    plt.close(fig)
+
+    #
+    # fig, ax = plt.subplots(ncols=1)
+    # fig.set_size_inches(pop.figsize)
+    # ax.scatter(systems_embedded[:, 0], systems_embedded[:, 1], cmap=cmap)
+    # ax.scatter(terrestrial_embedded[0], terrestrial_embedded[1], color='r')
+    #
+    # plt.close(fig)
+
+
+def distance_earth(pop, m_low_lim=0, a_up_lim=30):
+    systems = []
+    total_masses = []
+    sigma_exponents = []
+
+    for id, sim in tqdm(pop.SIMS.items()):
+        if id > 200:
+            break
+        total_masses.append(sim.Total_Mass)
+        sigma_exponents.append(sim.Sigma_Exponent)
+
+        zipped = zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values,
+                     sim.snaps[sim.N_snaps - 1].satellites['a'].values)
+
+        # Remove under threshold Masses
+        filtered = [(m * M_S / M_E, a * R_S / au) for (m, a) in zipped if
+                    m >= m_low_lim * M_E / M_S and a <= a_up_lim * au / R_S]
+        systems.append(filtered)
+    distances = []
+    # print(systems)
+    # func = lambda x: distance(x, terrestrial)
+    # distances = list(map(func, systems))
+    for sys in tqdm(systems):
+        distances.append(distance(sys, [(M_E,au)]))
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
+
+    cmap = 'viridis_r'
+    cmin = min(distances)
+    cmax = max(distances)
+
+    norm = colors.Normalize(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(sigma_exponents, total_masses, c=distances, cmap=cmap, norm=norm, s=12)
+    x_labels = ax.get_xticklabels(list(set(sigma_exponents)))
+    plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel='Sigma Exponent', ylabel=r'Total Mass', xticks=sigma_exponents)
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
+                 ax=ax)
+    ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Distances between Systems')
+    save_name = 'scatter_metric_earth'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+
+    plt.close(fig)
+
+def distance_earth2(pop, m_low_lim=0, a_up_lim=30):
+    systems = []
+    total_masses = []
+    sigma_exponents = []
+
+    for id, sim in tqdm(pop.SIMS.items()):
+        if id > 200:
+            break
+        total_masses.append(sim.Total_Mass)
+        sigma_exponents.append(sim.Sigma_Exponent)
+
+        WM = np.array(sim.snaps[sim.N_snaps - 1].satellites['WM'].values)
+        SWM = np.array(sim.snaps[sim.N_snaps - 1].satellites['SWM'].values)
+        Masses = np.array(sim.snaps[sim.N_snaps - 1].satellites['M'].values)
+        Orb_Dist = np.array(sim.snaps[sim.N_snaps - 1].satellites['a'].values)
+        TWMF = (WM + SWM) / Masses
+
+        zipped = zip(Masses, Orb_Dist, TWMF)
+
+        # Remove under threshold Masses
+        filtered = [(m * M_S / M_E, a * R_S / au, wmf) for (m, a, wmf) in zipped if
+                    m >= m_low_lim * M_E / M_S and a <= a_up_lim * au / R_S]
+        systems.append(filtered)
+    distances = []
+    # print(systems)
+    # func = lambda x: distance(x, terrestrial)
+    # distances = list(map(func, systems))
+    def get_min_dist(sys):
+        distances = []
+        for planet in enumerate(sys):
+            distances.append(earth_distance([planet],[earth_wmf]))
+
+        return np.min(distances), sys[np.argmin(distances)]
+    planets = []
+    for sys in tqdm(systems):
+        distances.append(earth_distance(sys, [earth_wmf]))
+        # dist, planet = get_min_dist(sys)
+        # distances.append(dist)
+        # planets.append(planet)
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
+
+    cmap = 'viridis_r'
+    cmin = min(distances)
+    cmax = max(distances)
+
+    norm = colors.Normalize(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(sigma_exponents, total_masses, c=distances, cmap=cmap, norm=norm, s=12)
+    x_labels = ax.get_xticklabels(list(set(sigma_exponents)))
+    plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel='Sigma Exponent', ylabel=r'Total Mass', xticks=sigma_exponents)
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
+                 ax=ax)
+    ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Distances between Systems')
+    save_name = 'scatter_metric_earth'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+
     plt.close(fig)

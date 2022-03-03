@@ -12,8 +12,12 @@ def collisions_time(pop, t_low_lim=0):
         times.extend(sim.collisions.index)
     times = np.array(times)
     times = times[np.where(times > t_low_lim)]
-    print(times)
     times /= 1e6
+
+    median = np.median(times)
+    print(f'{median=}')
+    last_ten = len([t for t in times if t >= 0.9]) / len(times)
+    print(f'{last_ten=}')
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
     plt.rcParams.update({'font.size': pop.fontsize})
@@ -136,6 +140,8 @@ def collisions_orb_dist(pop):
     zs = np.array(zs)
 
     orb_dist = np.sqrt(np.power(xs, 2) + np.power(ys, 2) + np.power(zs, 2)) * R_S / au
+    median = np.median(orb_dist)
+    print(f'{median=}')
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
     plt.rcParams.update({'font.size': pop.fontsize})
@@ -159,18 +165,43 @@ def collisions_orb_dist(pop):
 
 def collisions_engulfed(pop):
     lost_mass = []
+    numbers = []
+    max_lost = []
+    count = 0
+    thresholds = [0.1,1.0,10.0, 20.0]
+    thresh_numbers = dict.fromkeys(thresholds, 0)
     for id, sim in pop.SIMS.items():
-        masses = sim.lost_satellites['mass'].values
+        count += 1
+        masses = sim.lost_satellites['mass'].values * M_S / M_E
         cols = sim.lost_satellites['collision'].values
         filter_null = cols == 0.0
-        summed = np.sum(masses[filter_null])
+        filtered = masses[filter_null]
+        if len(filtered) > 0:
+            max_lost.append(max(filtered))
+        for thr in thresholds:
+            if any(x >= thr for x in filtered):
+                thresh_numbers[thr] += 1
+        numbers.append(len(filtered))
+        summed = np.sum(filtered)
         lost_mass.append(summed)
-    lost_mass = np.array(lost_mass) * M_S / M_J
+    lost_mass = np.array(lost_mass)
+    numbers_filt = []
+    max_lost_filt = max_lost
+    for i,item in enumerate(lost_mass):
+        if item > 0.0:
+            numbers_filt.append(numbers[i])
     filter_null = lost_mass > 0
     filter_not_null = lost_mass == 0
     non_lost_mass = lost_mass[filter_not_null]
     lost_mass = lost_mass[filter_null]
     print(f'Number of System with no mass loss: {len(non_lost_mass)}')
+    print(f'Number of Systems that lost more than 1 object: {len([1 for i in numbers_filt if i > 1])/count}')
+    print(f'Number of Systems that lost no objects: {1 - len([1 for i in numbers_filt if i > 1])/count}')
+    print(f'Number of Systems that lost more than 10 object: {len([1 for i in numbers_filt if i > 10])/count}')
+    print(f'Number of Systems that lost more than 20 object: {len([1 for i in numbers_filt if i > 25])/count}')
+    for key,val in thresh_numbers.items():
+        thresh_numbers[key] = val / count
+    print(thresh_numbers)
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
@@ -179,11 +210,11 @@ def collisions_engulfed(pop):
     N_bins = 15
     bins = 10 ** np.linspace(np.log10(min(lost_mass)), np.log10(max(lost_mass)), N_bins)
     fig, ax = plt.subplots(figsize=pop.figsize)
-    values, base, _ = plt.hist(lost_mass, bins=bins, rwidth=0.95)
+    values, base, _ = plt.hist(lost_mass, bins=bins, rwidth=0.95, weights=np.array(max_lost_filt)/ np.sum(max_lost_filt))
     ax_bis = ax.twinx()
     values = np.append(0, values)
     ax_bis.plot(base, np.cumsum(values) / np.cumsum(values)[-1], color='black', linestyle='dashed', markersize=0.1)
-    ax.set(xlabel=r'Mass [$\mathrm{M_J}$]', ylabel=r'Counts')
+    ax.set(xlabel=r'Lost Mass [$\mathrm{M_E}$]', ylabel=r'Counts')
     ax_bis.set(ylabel='Cumulative Distribution')
     ax.set_xscale('log')
     ax_bis.set_xscale('log')

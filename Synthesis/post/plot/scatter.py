@@ -44,6 +44,52 @@ def scatter_parameters(pop):
                 bbox_inches="tight")
     plt.close(fig)
 
+def scatter_parameters_numbers(pop, m_low_lim=0, a_up_lim=30):
+    TotalMasses = []
+    SigmaCoeffs = []
+    Reference = []
+    Masses = []
+    Orb_Dist = []
+    Numbers = []
+    Systems = []
+
+    for sim in pop.SIMS.values():
+        TotalMasses.append(sim.Total_Mass)
+        SigmaCoeffs.append(sim.Sigma_Exponent)
+        Masses = list(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)
+        Orb_Dist = list(sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
+        system = zip(Masses, Orb_Dist)
+        filtered = [item for item in system if item[0] >= m_low_lim and item[1] <= a_up_lim]
+        Numbers.append(len(filtered))
+    print(Numbers)
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    cmap = pop.cmap_standart
+    cmin = min(Numbers)
+    cmax = max(Numbers)
+
+    norm = colors.Normalize(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(SigmaCoeffs, TotalMasses, c=Numbers, cmap=cmap, norm=norm, s=12)
+    x_labels = ax.get_xticklabels()
+    plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel='Surface Density Power Law Exponent', ylabel=r'Total Disk Mass [$M_{\odot}$]', xticks=SigmaCoeffs)
+    ax2 = ax.twinx()
+    mn, mx = ax.get_ylim()
+    ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
+    ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
+                 label=r'Number of Planets', ax=ax2, pad=0.12)
+    # ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Synthesis Parameters')
+
+    fig.savefig(path.join(pop.PLOT, 'scatter_parameters_numbers.png'), transparent=False, dpi=pop.dpi,
+                bbox_inches="tight")
+    plt.close(fig)
+
 
 def scatter_ecc_inc(pop, m_low_lim=0, a_up_lim=30):
     Masses = []

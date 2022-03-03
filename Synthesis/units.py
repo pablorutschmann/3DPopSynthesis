@@ -94,3 +94,7 @@ terrestrial = [mercury, venus, earth, mars]
 
 solar_system = [mercury, venus, earth, mars, jupiter, saturn, uranus, neptune]
 
+earth_wmf = (M_E, au, 6 * OE)
+
+print(OE / M_E)
+print( 5 * OE /M_E)

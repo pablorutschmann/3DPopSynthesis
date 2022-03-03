@@ -19,17 +19,25 @@ def line_n_planets(pop, a_up_lim = 30, thresholds=None):
     numbers = {key: [] for key in thresholds}
     occurences = {key: [] for key in thresholds}
     systems = []
+    mean_numbers = []
 
     for sim in pop.SIMS.values():
         zipped = list(zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E,
                           sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au))
         zipped = [(m, a) for (m, a) in zipped if a <= a_up_lim]
+        zipped2 = list(zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E,
+                          sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au))
+        mean_numbers.append(len([(m, a) for (m, a) in zipped2 if a <= a_up_lim and m >= M_ME / M_E]))
         systems.append(zipped)
     number_of_systems = {}
+
+    print(f'The average number of terrestrial planets is:  {np.mean(mean_numbers)}')
+    print(f'with a standard deviation of: {np.std(mean_numbers)}')
     for keys, lists in numbers.items():
         count = 0
         for i, item in enumerate(systems):
-            filtered = [(m, a) for (m, a) in item if
+            filtered = item.copy()
+            filtered = [(m, a) for (m, a) in filtered if
                         m >= keys]
             leng = len(filtered)
             lists += [leng]
@@ -37,10 +45,9 @@ def line_n_planets(pop, a_up_lim = 30, thresholds=None):
             if filtered:
                 count += 1
             else:
-                print(filtered)
-            print(count)
+                continue
+            #print(count)
         number_of_systems[keys] = count
-
     max_number = max(numbers[thresholds[0]])
     for keys, value in numbers.items():
         for i in range(max_number + 1):
