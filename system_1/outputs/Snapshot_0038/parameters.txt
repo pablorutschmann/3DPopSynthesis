@@ -1,0 +1,8 @@
+Time	380010
+UpdateTime	380010
+SaveIndex	38
+TimeStopFormation	6.42532e+06
+GlobalDt	0.00154109
+IceLineID	478
+IceLineRadius	584.227
+PebbleFlux	1e-09
