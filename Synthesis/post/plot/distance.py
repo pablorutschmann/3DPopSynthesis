@@ -138,10 +138,10 @@ def scatter_AMD_RMC(pop, m_low_lim=0, a_up_lim=30):
     print(distances)
 
     cmap = pop.cmap_standart
-    cmin = min(RMCS)
-    cmax = max(RMCS)
+    cmin = min(distances)
+    cmax = max(distances)
 
-    norm = colors.LogNorm(cmin, cmax)
+    norm = colors.Normalize(cmin, cmax)
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
@@ -150,7 +150,7 @@ def scatter_AMD_RMC(pop, m_low_lim=0, a_up_lim=30):
     fig, ax = plt.subplots(figsize=pop.figsize)
     #ax.scatter(AMDS/sigma_AMD, RMCS/sigma_RMC, c=distances, cmap=cmap, norm=norm, s=12)
     #ax.scatter(SIGMAS, TOTALMASSES, c=distances[np.argmin(distances)])
-    ax.scatter(SIGMAS, TOTALMASSES, c=RMCS)
+    ax.scatter(SIGMAS, TOTALMASSES, c=distances, cmap=cmap, norm=norm, s=12)
     x_labels = ax.get_xticklabels()
     plt.setp(x_labels, horizontalalignment='center')
     ax.set(xlabel='Power Law Exponent', ylabel=r'Total Disk Mass [$M_J$]')
@@ -205,7 +205,7 @@ def distances(pop, m_low_lim=0, a_up_lim=30):
     cmin = min(distances)
     cmax = max(distances)
 
-    norm = colors.Normalize(cmin, cmax)
+    norm = colors.LogNorm(cmin, cmax)
 
     fig, ax = plt.subplots(figsize=pop.figsize)
     ax.scatter(sigma_exponents, total_masses, c=distances, cmap=cmap, norm=norm, s=12)

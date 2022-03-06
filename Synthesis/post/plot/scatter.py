@@ -99,6 +99,55 @@ def scatter_parameters_numbers(pop, m_low_lim=0, a_up_lim=30):
                 bbox_inches="tight")
     plt.close(fig)
 
+def scatter_parameters_AMD(pop, m_low_lim=0, a_up_lim=30):
+    TotalMasses = []
+    SigmaCoeffs = []
+    Reference = []
+    Masses = []
+    Orb_Dist = []
+    Numbers = []
+    Means = []
+    Systems = []
+    AMDS = []
+
+    for sim in tqdm(pop.SIMS.values()):
+        TotalMasses.append(sim.Total_Mass)
+        SigmaCoeffs.append(sim.Sigma_Exponent)
+        AMD, N = sim.get_AMD(m_low_lim, a_up_lim)
+
+        AMDS.append(AMD)
+
+    Means = np.array(Means) / np.sum(Means)
+    print(Numbers * Means)
+    Numbers = np.array(AMDS)
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    cmap = pop.cmap_standart
+    cmin = min(Numbers)
+    cmax = max(Numbers)
+
+    norm = colors.LogNorm(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(SigmaCoeffs, TotalMasses, c=Numbers, cmap=cmap, norm=norm, s=12)
+    x_labels = ax.get_xticklabels()
+    plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel='Surface Density Power Law Exponent', ylabel=r'Total Disk Mass [$M_{\odot}$]', xticks=SigmaCoeffs)
+    ax2 = ax.twinx()
+    mn, mx = ax.get_ylim()
+    ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
+    ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
+                 label=r'AMD', ax=ax2, pad=0.12)
+    # ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Synthesis Parameters')
+
+    fig.savefig(path.join(pop.PLOT, 'scatter_parameters_amd.png'), transparent=False, dpi=pop.dpi,
+                bbox_inches="tight")
+    plt.close(fig)
+
 
 def scatter_parameters_RMC(pop, m_low_lim=0, a_up_lim=30):
     TotalMasses = []
@@ -155,20 +204,26 @@ def scatter_ecc_inc(pop, m_low_lim=0, a_up_lim=30):
     Orb_Dist = []
     Ecc = []
     Inc = []
+    Types = []
 
     for sim in pop.SIMS.values():
         Masses += list(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)
         Orb_Dist += list(sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
         Ecc += list(sim.snaps[sim.N_snaps - 1].satellites['e'].values)
         Inc += list(sim.snaps[sim.N_snaps - 1].satellites['i'].values)
+        Types += list(sim.snaps[sim.N_snaps - 1].satellites['Type'].values)
 
-    data = zip(Masses, Orb_Dist, Ecc, Inc)
+    data = zip(Masses, Orb_Dist, Ecc, Inc, Types)
 
     data = [item for item in data if item[0] >= m_low_lim and item[1] <= a_up_lim]
 
-    Masses, Orb_Dist, Ecc, Inc = zip(*data)
+    Masses, Orb_Dist, Ecc, Inc, Types = zip(*data)
+
+    number_of_no_accretion = len([item for item in data if np.abs(0.01-item[0])/item[0] < 0.01 and item[-1] == 1])
+
 
     print(f'Number of Object: {len(Masses)}')
+    print(f'Number of Embryos with no significant accretion: {number_of_no_accretion}, {number_of_no_accretion/len(Masses)}')
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
@@ -322,24 +377,23 @@ def scatter_radial_twmf(pop, m_low_lim=0, a_up_lim=30):
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
     plt.close(fig)
 
-    def scatter_pie(PLOT_PATH, earth_analogs):
+    def scatter_pie(earth_analogs):
 
         plt.rcParams.update({'figure.autolayout': True})
         plt.style.use('seaborn-paper')
         plt.rcParams.update({'font.size': pop.fontsize})
         plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
+
         fig, ax = plt.subplots(figsize=pop.figsize)
 
-        colors = ['red', 'green', 'blue']
-        labels = ['Solids', 'Hydrated Silica', 'Water/Ice']
+        colors = ['red', 'blue']
+        labels = ['Hydrated Silica', 'Water/Ice']
 
-        red_patch = patches.Patch(color='green', label='Solids')
-        green_patch = patches.Patch(color='red', label='Hydrated Silica')
+        red_patch = patches.Patch(color='red', label='Hydrated Silica')
         blue_patch = patches.Patch(color='blue', label='Water/Ice')
-        handles = [red_patch, green_patch, blue_patch]
+        handles = [red_patch, blue_patch]
 
         Masses, Orb_Dist, WMF, SWMF, TWMF, Ecc, System = zip(*earth_analogs)
-        print(np.array(WMF)/np.array(TWMF))
 
         mean_mass = np.min(Masses)
         mass_scaling = mean_mass / 90000
@@ -366,39 +420,53 @@ def scatter_radial_twmf(pop, m_low_lim=0, a_up_lim=30):
             return xy1, s1, xy2, s2#, xy3, s3
 
         # cale the masses to the marker sizes
+        # def NormalizeData(m):
+        #     return (np.log10(m) - np.log10(np.min(TWMF))) / (np.log10(np.max(TWMF)) - np.log10(np.min(TWMF)))
+
         def NormalizeData(m):
-            return (m - np.log10(np.min(TWMF))) / (np.log10(np.max(TWMF)) - np.log10(np.min(TWMF)))
+            return (np.log10(m) - np.log10(np.min(Masses))) / (np.log10(np.max(Masses)) - np.log10(np.min(Masses)))
 
         # def NormalizeData(m):
         #     return (m - (np.min(TWMF))) / ((np.max(TWMF)) - (np.min(TWMF)))
 
+        # def NormalizeData(m):
+        #     return (m - (np.min(Masses))) / ((np.max(Masses)) - (np.min(Masses)))
 
-        def plot_one(row):
+        earth_point = (1,1,0.00025,0.00075,0.001,0,0)
+        def plot_one(row,earth=False):
             WMF_ratio = row[2]/row[4]
             SWMF_Ratio = 1
             #xy1, s1, xy2, s2, xy3, s3 = pie_1d(WMF_ratio, SWMF_ratio)
             xy1, s1, xy2, s2 = pie_1d(WMF_ratio, 1)
 
-            scale = NormalizeData(np.log10(row[4])) * 100
+            scale = NormalizeData(row[0]) * 50
+            if earth == True:
+                ax.scatter(row[1], row[4], s=s2 * scale * 2, facecolor='green')
+            ax.scatter(row[1], row[4], marker=xy1, s=s1 * scale , facecolor='blue')
+            ax.scatter(row[1], row[4], marker=xy2, s=s2 * scale, facecolor='red')
 
-            ax.scatter(row[1], row[0], marker=xy1, s=s1 * scale , facecolor='blue')
-            ax.scatter(row[1], row[0], marker=xy2, s=s2 * scale, facecolor='red')
             #ax.scatter(row[1], row[6], marker=xy3, s=s3 * scale , facecolor='red')
 
         for index, row in enumerate(earth_analogs):
             plot_one(row)
-
+        plot_one(earth_point,True)
         #ax.set_ylim(-1 * min(self.satellites['e']), 1.1 * max(self.satellites['e']))
         ax.set_xlabel(r'Orbital Distance [$\mathrm{au}$]')
-        ax.set_ylabel('Mass [$M_{\oplus}$]')
+        ax.set_ylabel('Total Water Mass Fractions')
+        ax.set_xscale('log')
+        ax.set_yscale('log')
         ax.legend(handles=handles, title='Components')
         fig.savefig(path.join(pop.PLOT, 'scatter_ratios.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
         plt.close(fig)
 
     #filter twmf close to earth
     data = [item for item in data if item[2] >= 0.00025 and item[3] >= 0.00075]
-    print(data)
-    scatter_pie(pop.PLOT,data)
+    systems_id = [sys[-1] for sys in data]
+    print(f'Number of systems with Earth Candidate {len(np.unique(systems_id))}, {len(np.unique(systems_id))/pop.NSIMS} ')
+    scatter_pie(non_zero_wm)
+
+    earth_analogs2 = data.copy()
+
     wmf_sim_number = len(data)
     #print(data)
     print(f'Number of planets in mass limit and WMF above 0.00025 and SWMF above 0.00075: {len(data)}, {wmf_sim_number/mass_lim_number}  ({wmf_sim_number/total_number})')
@@ -418,6 +486,32 @@ def scatter_radial_twmf(pop, m_low_lim=0, a_up_lim=30):
     earth_like_number = len(data)
     print(f'Number of planets in mass limit and WMF above 0.00025 and SWMF above 0.00075 at correct positions: {earth_like_number}, {earth_like_number/wmf_sim_number}  ({earth_like_number/total_number})')
 
+    SE = []
+    TM = []
+    for id in np.unique([sys[-1] for sys in earth_analogs2]):
+        SE.append(pop.SIMS[id].Sigma_Exponent)
+        TM.append(pop.SIMS[id].Total_Mass)
+
+    SE = np.array(SE)
+    TM = np.array(TM)
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(SE, TM, s=12)
+    x_labels = ax.get_xticklabels()
+    plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel='Surface Density Power Law Exponent', ylabel=r'Total Disk Mass [$M_{\odot}$]', xticks=SE)
+    ax2 = ax.twinx()
+    mn, mx = ax.get_ylim()
+    ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
+    ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
+    # fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
+    #              label=r'Reference Value at $1 \mathrm{au}$ [$\mathrm{g}\mathrm{cm}^{-2}$]', ax=ax2, pad=0.12)
+    # ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Synthesis Parameters')
+
+    fig.savefig(path.join(pop.PLOT, 'scatter_parameters_earth_analogs.png'), transparent=False, dpi=pop.dpi,
+                bbox_inches="tight")
+    plt.close(fig)
 
 
 
