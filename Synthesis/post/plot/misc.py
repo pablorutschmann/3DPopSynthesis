@@ -27,7 +27,7 @@ def line_n_planets(pop, a_up_lim = 30, thresholds=None):
         zipped = [(m, a) for (m, a) in zipped if a <= a_up_lim]
         zipped2 = list(zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E,
                           sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au))
-        mean_numbers.append(len([(m, a) for (m, a) in zipped2 if a <= a_up_lim and m >= M_ME / M_E]))
+        mean_numbers.append(len([(m, a) for (m, a) in zipped2.copy() if a <= a_up_lim and m >= M_ME / M_E]))
         systems.append(zipped)
     number_of_systems = {}
 

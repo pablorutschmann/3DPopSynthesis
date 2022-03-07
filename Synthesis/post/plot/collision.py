@@ -218,6 +218,8 @@ def collisions_engulfed(pop):
     ax_bis.set(ylabel='Cumulative Distribution')
     ax.set_xscale('log')
     ax_bis.set_xscale('log')
+    ax.set_yscale('log')
+    ax_bis.set_yscale('log')
     if pop.plot_config == 'presentation':
         ax.set(title=r'Histrogram of Lost Mass')
     save_name = 'histogram_lost_mass'

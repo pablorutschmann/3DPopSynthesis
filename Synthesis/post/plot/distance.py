@@ -1,4 +1,7 @@
+import os.path
+
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib import cm
 from matplotlib import colors
 import os.path as path
@@ -18,7 +21,7 @@ def histogram_AMD(pop, m_low_lim=0, a_up_lim=30):
     NS = []
 
     for id, sys in tqdm(pop.SIMS.items()):
-        if id > 200:
+        if id > 250:
             break
         else:
             AMD, N = sys.get_AMD(m_low_lim, a_up_lim)
@@ -63,7 +66,7 @@ def histogram_RMC(pop, m_low_lim=0, a_up_lim=30):
     NS = []
 
     for id, sys in tqdm(pop.SIMS.items()):
-        if id > 200:
+        if id > 250:
             break
         else:
             RMC, N = sys.get_RMC(m_low_lim, a_up_lim)
@@ -111,7 +114,7 @@ def scatter_AMD_RMC(pop, m_low_lim=0, a_up_lim=30):
     TOTALMASSES = []
 
     for id, sys in tqdm(pop.SIMS.items()):
-        if id > 200:
+        if id > 250:
             break
         else:
             AMD, N = sys.get_AMD(m_low_lim, a_up_lim)
@@ -175,7 +178,7 @@ def distances(pop, m_low_lim=0, a_up_lim=30):
 
 
     for id, sim in tqdm(pop.SIMS.items()):
-        if id > 200:
+        if id > 250:
             break
         total_masses.append(sim.Total_Mass)
         sigma_exponents.append(sim.Sigma_Exponent)
@@ -191,9 +194,12 @@ def distances(pop, m_low_lim=0, a_up_lim=30):
     # print(systems)
     # func = lambda x: distance(x, terrestrial)
     # distances = list(map(func, systems))
-    for sys in tqdm(systems):
-        distances.append(distance(sys, terrestrial))
-
+    try:
+        distances = np.load(file=path.join(pop.PLOT,'dist.npy'))
+    except:
+        for sys in tqdm(systems):
+            distances.append(distance(sys, terrestrial))
+        np.save(arr=distances,file=path.join(pop.PLOT,'dist'))
     print(distances)
 
     plt.rcParams.update({'figure.autolayout': True})
@@ -214,14 +220,81 @@ def distances(pop, m_low_lim=0, a_up_lim=30):
     ax.set(xlabel='Sigma Exponent', ylabel=r'Total Mass', xticks=sigma_exponents)
     fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
                  ax=ax)
-    ax.set_yscale('log')
+    #ax.set_yscale('log')
     if pop.plot_config == 'presentation':
         ax.set(title=r'Distances between Systems')
     save_name = 'scatter_distances'
     if a_up_lim < 30 and m_low_lim > 0:
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
-    fig.savefig(path.join(pop.PLOT, 'scatter_distances.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    #fig.savefig(path.join(pop.PLOT, 'scatter_distances.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+
+def distances_reference(pop, m_low_lim=0, a_up_lim=30):
+    systems = []
+    total_masses = []
+    sigma_exponents = []
+    reference = []
+    numbers = []
+
+
+    for id, sim in tqdm(pop.SIMS.items()):
+        if id > 250:
+            break
+        total_masses.append(sim.Total_Mass)
+        sigma_exponents.append(sim.Sigma_Exponent)
+        reference.append(sim.Sigma_Norm / (R_S / au)**sim.Sigma_Exponent / denstos * pow(au/R_S, sim.Sigma_Exponent) / denstos)
+
+        zipped = zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values,
+                     sim.snaps[sim.N_snaps - 1].satellites['a'].values)
+
+        # Remove under threshold Masses
+        filtered = [(m * M_S / M_E, a * R_S / au) for (m, a) in zipped if
+                    m >= m_low_lim * M_E / M_S and a <= a_up_lim * au / R_S]
+
+        systems.append(filtered)
+        numbers.append(len(filtered))
+    distances = []
+    # print(systems)
+    # func = lambda x: distance(x, terrestrial)
+    # distances = list(map(func, systems))
+
+    try:
+        distances = np.load(file=path.join(pop.PLOT,'dist.npy'))
+    except:
+        for sys in tqdm(systems):
+            distances.append(distance(sys, terrestrial))
+        np.save(arr=distances,file=path.join(pop.PLOT,'dist'))
+    print(distances)
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
+
+    cmap = 'viridis_r'
+    cmin = min(numbers)
+    cmax = max(numbers)
+
+    norm = colors.Normalize(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(np.array(reference), distances, c=numbers, norm=norm, s=12)
+    # x_labels = ax.get_xticklabels(list(set(reference)))
+    # plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel='Reference Value [$\mathrm{g cm^{-2}}$]', ylabel=r'Distance')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
+                 ax=ax)
+    ax.set_yscale('log')
+    ax.set_xscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Distances between Systems')
+    save_name = 'scatter_distances_reference'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    #fig.savefig(path.join(pop.PLOT, 'scatter_distances.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
     plt.close(fig)
 
 
@@ -237,14 +310,14 @@ def tsne(pop, m_low_lim=0, a_up_lim=30):
     AMDS = []
     Numbers = []
 
-    for id, sim in pop.SIMS.items():
-        if id > 145:
+    for id, sim in tqdm(pop.SIMS.items()):
+        if id > 3:
             break
         TotalMasses.append(sim.Total_Mass)
         SigmaCoeffs.append(sim.Sigma_Exponent)
 
     for id, sim in tqdm(pop.SIMS.items()):
-        if id > 145:
+        if id > 3:
             break
         total_masses.append(sim.Total_Mass)
         sigma_exponents.append(sim.Sigma_Exponent)
@@ -270,37 +343,78 @@ def tsne(pop, m_low_lim=0, a_up_lim=30):
         #print(system)
         sys_matrix.append(system)
         #Reference.append(distance(system, terrestrial))
-        Reference.append( (sim.Sigma_Exponent)**2 * sim.Total_Mass/100)
+        Reference.append(sim.Sigma_Norm / (R_S / au)**sim.Sigma_Exponent / denstos * pow(au/R_S, sim.Sigma_Exponent) / denstos)
         # Reference.append(cum_mass)
     Numbers = Reference
 
     terr = [(m/M_E, a/au) for (m,a) in terrestrial]
     sys_matrix.append(terr)
     num = len(sys_matrix)
-    def get_distances(i):
-        dist =  np.zeros(num)
-        for j in range(i,num):
-            if i == j:
-                dist[j] = 0.0
-            else:
-                dist[j] = distance(sys_matrix[i],sys_matrix[j])
-        return dist
+    # def get_distances(i):
+    #     dist =  np.zeros(num)
+    #     for j in range(i,num):
+    #         if i == j:
+    #             dist[j] = 0.0
+    #         else:
+    #             dist[j] = distance(sys_matrix[i],sys_matrix[j])
+    #     return dist
+    #
+    #
+    #     for j in range(i,num):
+    #         if i == j:
+    #             dist[j] = 0.0
+    #         else:
+    #             dist[j] = distance(sys_matrix[i],sys_matrix[j])
+    #     return dist
 
-    # try:
-    #     matrix_metric = np.load(pop.PLOT + 'metric_matrix' + '.npy')
-    #     print('Loaded from pickle')
-    # except:
-    rows = []
-    for i, item in tqdm(enumerate(sys_matrix)):
-        rows.append(get_distances(i))
 
-    upper = np.reshape(rows,(num,num))
-    lower =  upper.T
-    matrix_metric = upper + lower
+    def get_distances(n,arr):
+        out = np.zeros(n)
+        sys = arr[0]
+        others = arr[1:]
+        def dist_arr(other):
+            return distance(sys,other)
 
-    np.save(pop.PLOT + 'metric_matrix', matrix_metric)
-    print('saved to Pickle')
-    print(matrix_metric)
+        dist_func = np.vectorize(dist_arr)
+
+        distances_array = dist_func(others)
+
+        #out = np.pad(distances_array, (0,0) , 'constant', constant_values=(n-len(others), 0))
+        out[-len(distances_array):] = distances_array
+        print(len(others))
+
+
+        return out
+
+
+    # rows = np.array([np.array(sys_matrix[i:], dtype='object') for i in range(num-1)], dtype='object')
+    # print(rows)
+    #
+    # upper = np.array(list(map(lambda x :get_distances(arr=x,n=num),rows)))
+    # print(upper)
+    # upper = np.vstack([upper,np.zeros(num)])
+    #
+    # upper = np.reshape(upper,(num,num))
+    # matrix_metric = upper + upper.T
+
+
+    try:
+        matrix_metric = np.load(path.join(pop.PLOT,f'metric_matrix_{num}.npy'))
+        print('Loaded from pickle')
+    except:
+        rows = np.array([np.array(sys_matrix[i:], dtype='object') for i in range(num-1)], dtype='object')
+        print(rows)
+
+        upper = np.array(list(map(lambda x :get_distances(arr=x,n=num),rows)))
+        print(upper)
+        upper = np.vstack([upper,np.zeros(num)])
+
+        upper = np.reshape(upper,(num,num))
+        matrix_metric = upper + upper.T
+
+        np.save(path.join(pop.PLOT,f'metric_matrix_{num}'), matrix_metric)
+        print('saved to Pickle')
+        print(matrix_metric)
 
     # AMDS = np.array((AMDS))
     # RMCS = np.array(RMCS)
@@ -339,7 +453,7 @@ def tsne(pop, m_low_lim=0, a_up_lim=30):
 
     all_data = np.vstack([data, terrestrial_data_point])
 
-    model = TSNE(2, perplexity=35, metric='precomputed')
+    model = TSNE(2, perplexity=15, metric='precomputed')
 
     X_embedded = model.fit_transform(matrix_metric)
 
@@ -359,6 +473,7 @@ def tsne(pop, m_low_lim=0, a_up_lim=30):
     plt.rcParams.update({'font.size': pop.fontsize})
     plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
 
+    Numbers = Reference
     cmap = pop.cmap_standart
     cmin = min(Numbers)
     cmax = max(Numbers)
@@ -429,7 +544,7 @@ def distance_earth(pop, m_low_lim=0, a_up_lim=30):
     sigma_exponents = []
 
     for id, sim in tqdm(pop.SIMS.items()):
-        if id > 200:
+        if id > 50:
             break
         total_masses.append(sim.Total_Mass)
         sigma_exponents.append(sim.Sigma_Exponent)
@@ -445,6 +560,12 @@ def distance_earth(pop, m_low_lim=0, a_up_lim=30):
     # print(systems)
     # func = lambda x: distance(x, terrestrial)
     # distances = list(map(func, systems))
+    def get_min_dist(sys):
+        distances = []
+        for planet in enumerate(sys):
+            print(planet[1])
+            distances.append(earth_distance([planet[1]],[(1,1)]))
+
     for sys in tqdm(systems):
         distances.append(distance(sys, [(M_E,au)]))
 
@@ -466,7 +587,7 @@ def distance_earth(pop, m_low_lim=0, a_up_lim=30):
     ax.set(xlabel='Sigma Exponent', ylabel=r'Total Mass', xticks=sigma_exponents)
     fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
                  ax=ax)
-    ax.set_yscale('log')
+    #ax.set_yscale('log')
     if pop.plot_config == 'presentation':
         ax.set(title=r'Distances between Systems')
     save_name = 'scatter_metric_earth'
@@ -483,7 +604,7 @@ def distance_earth2(pop, m_low_lim=0, a_up_lim=30):
 
 
     for id, sim in tqdm(pop.SIMS.items()):
-        if id > 200:
+        if id > 2:
             break
         total_masses.append(sim.Total_Mass)
         sigma_exponents.append(sim.Sigma_Exponent)

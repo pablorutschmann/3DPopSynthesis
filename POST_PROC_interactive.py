@@ -3,7 +3,7 @@ from Synthesis.post.plot import *
 from Synthesis.units import *
 from importlib import reload
 
-POP = post.population('SynthesisRuns/combined',145)
+POP = post.population('SynthesisRuns/combined',242)
 POP.switch_plot_config('paper')
 
 print(POP)
@@ -24,6 +24,7 @@ thresholds = [0.05,0.1,0.15]
 ## GLOBAL STATISTICS
 scatter.scatter_parameters(POP)
 scatter.scatter_ecc_inc(POP)
+scatter.scatter_a_mass(POP)
 histogram.histogram_mass(POP)
 histogram.histogram_weighted_mass(POP)
 histogram.histogram_a(POP)

@@ -17,9 +17,12 @@ def histogram_mass(pop, m_low_lim=0, a_up_lim=30):
 
     print(f'Total Number of Bodies: {len(Masses)}')
 
-    data = zip(Masses, Orb_Dist)
-    data2 = zip(Masses, Orb_Dist)
-    data3 = zip(Masses, Orb_Dist)
+    data = list(zip(Masses, Orb_Dist))
+    data2 = data.copy()
+    data3 = data.copy()
+
+    print(
+        f'Number of Bodies over a mass of  M_E: {len([ite[0] for ite in data2 if ite[0] >= 0.1])}; {np.float(len([it[0] for it in data2 if it[0] >= 0.1])) / len(Masses)}')
     # print([(m,a) for (m,a) in data])
     #
     print(f'Number of Bodies within {a_up_lim} au:')
@@ -27,6 +30,7 @@ def histogram_mass(pop, m_low_lim=0, a_up_lim=30):
     print(f'{len(list_within)}; {len(list_within) / len(Masses)}')
     print(
         f'Number of Bodies over a mass of  {m_low_lim} M_E: {len([item[0] for item in data3 if item[0] >= m_low_lim])}; {len([item[0] for item in data3 if item[0] >= m_low_lim]) / len(Masses)}')
+
 
     #
     # print(data)
@@ -476,6 +480,8 @@ def histogram_totalmass_thresh(pop, a_up_lim=30, thresholds=None):
 
     solar_sys = [m / M_E for (m, a) in terrestrial if a / au <= a_up_lim]
     total_mass_solar_sys = np.sum(solar_sys)
+    systems_heavier_sol = [tm for tm in total_masses[thresholds[0]].copy() if tm >= total_mass_solar_sys ]
+    print(f'Systems heavier than Solar System: {len(systems_heavier_sol)}, {len(systems_heavier_sol)/ len(total_masses[thresholds[0]])}')
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')

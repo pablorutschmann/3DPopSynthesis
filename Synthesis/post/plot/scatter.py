@@ -6,7 +6,10 @@ from matplotlib import patches
 import os.path as path
 from Synthesis.units import *
 from tqdm import tqdm
+from scipy.integrate import quad
 
+def Power_Law(x, a, b):
+    return a * np.power(x, b)
 
 def scatter_parameters(pop):
     TotalMasses = []
@@ -16,7 +19,10 @@ def scatter_parameters(pop):
     for sim in pop.SIMS.values():
         TotalMasses.append(sim.Total_Mass)
         SigmaCoeffs.append(sim.Sigma_Exponent)
-        Reference.append(sim.Sigma_Norm * pow(R_S / au, sim.Sigma_Exponent) * (M_S / R_S2))
+        print(sim.Sigma_Exponent)
+        print(sim.Sigma_Norm * (R_S / au)**sim.Sigma_Exponent / denstos)
+        Reference.append(sim.Sigma_Norm / (R_S / au)**sim.Sigma_Exponent / denstos * pow(au/R_S, sim.Sigma_Exponent) / denstos)
+
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
@@ -289,7 +295,7 @@ def scatter_a_mass(pop, m_low_lim=0, a_up_lim=30):
     norm = colors.Normalize(cmin, cmax)
 
     fig, ax = plt.subplots(figsize=pop.figsize)
-    ax.scatter(Orb_Dist, Masses, c=TWMF, cmap=cmap, norm=norm, s=3)
+    ax.scatter(Orb_Dist, Masses, c=TWMF, cmap=cmap, norm=norm, s=2, alpha=1)
     x_labels = ax.get_xticklabels()
     plt.setp(x_labels, horizontalalignment='center')
     ax.set(xlabel=r'Orbital Distance [$\mathrm{au}$]', ylabel=r'Mass [$\mathrm{M_{\oplus}}$]')
