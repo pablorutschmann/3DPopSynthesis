@@ -222,7 +222,7 @@ def distances(pop, m_low_lim=0, a_up_lim=30):
     ax.scatter(sigma_exponents, total_masses, c=distances, cmap=cmap, norm=norm, s=12)
     x_labels = ax.get_xticklabels(list(set(sigma_exponents)))
     plt.setp(x_labels, horizontalalignment='center')
-    ax.set(xlabel='Sigma Exponent', ylabel=r'Total Mass', xticks=sigma_exponents)
+    ax.set(xlabel='Sigma Exponent', ylabel=r'Total Disk Mass [$M_{\odot}$]', xticks=sigma_exponents)
     ax2 = ax.twinx()
     mn, mx = ax.get_ylim()
     ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
@@ -621,7 +621,7 @@ def distance_earth(pop, m_low_lim=0, a_up_lim=30):
     ax.scatter(sigma_exponents, total_masses, c=distances, cmap=cmap, norm=norm, s=12)
     x_labels = ax.get_xticklabels(list(set(sigma_exponents)))
     plt.setp(x_labels, horizontalalignment='center')
-    ax.set(xlabel='Sigma Exponent', ylabel=r'Total Mass', xticks=sigma_exponents)
+    ax.set(xlabel='Sigma Exponent', ylabel=r'Total Disk Mass [$M_{\odot}]', xticks=sigma_exponents)
     fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
                  ax=ax)
     #ax.set_yscale('log')
@@ -706,13 +706,13 @@ def distance_earth2(pop, m_low_lim=0, a_up_lim=30):
 
 
     cmap = pop.cmap_standart
-    cmin = min(distances)
-    cmax = max(distances)
+    cmin = min(distances_all)
+    cmax = max(distances_all)
 
     norm = colors.Normalize(cmin, cmax)
 
     fig, ax = plt.subplots(figsize=pop.figsize)
-    ax.scatter(sigma_exponents, total_masses, c=distances, cmap=cmap, norm=norm, s=12)
+    ax.scatter(sigma_exponents, total_masses, c=distances_all, cmap=cmap, norm=norm, s=12)
     x_labels = ax.get_xticklabels(list(set(sigma_exponents)))
     plt.setp(x_labels, horizontalalignment='center')
     ax2 = ax.twinx()
@@ -725,7 +725,7 @@ def distance_earth2(pop, m_low_lim=0, a_up_lim=30):
     #ax.set_yscale('log')
     if pop.plot_config == 'presentation':
         ax.set(title=r'Distances between Systems')
-    save_name = 'scatter_metric_earth_min'
+    save_name = 'scatter_metric_earth'
     if a_up_lim < 30 and m_low_lim > 0:
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")

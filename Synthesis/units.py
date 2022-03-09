@@ -98,3 +98,9 @@ earth_wmf = (1, 1, 6 * OE / M_E)
 
 print(OE / M_E)
 print( 6 * OE / M_E)
+
+print(65.0 * R_S / au)
+
+print(0.01 * 10)
+print(1e-5 * 190)
+print(0.01 * 10 + 1e-5 * 190)
