@@ -30,13 +30,12 @@ def collisions_time(pop, t_low_lim=0):
     ax.set(xlabel=r'Time [$\mathrm{Myr}$]', ylabel=r'Counts')
     ax_bis.set(ylabel='Cumulative Distribution')
     if pop.plot_config == 'presentation':
-        ax.set(title=r'Histrogram of Collision Times')
+        ax.set(title=r'Histogram of Collision Times')
     save_name = 'histogram_col_time'
     if t_low_lim > 0:
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
     plt.close(fig)
-
 
 def collisions_weighted_time(pop, t_low_lim = 0):
     times = []

@@ -79,10 +79,10 @@ M_ceres = 9.1e20 * 1000
 # Solar System Planets (Mass, Orbital Distance) in Earth Units
 
 # IN CGS UNITS
-mercury = (M_ME, 5.7909227e10)
-venus = (M_V, 1.0820948e11)
-earth = (M_E, au)
-mars = (M_M, 2.2794382e11)
+mercury = (M_ME /M_E, 5.7909227e10 / au)
+venus = (M_V/M_E, 1.0820948e11/ au)
+earth = (M_E/M_E, au/ au)
+mars = (M_M/M_E, 2.2794382e11/ au)
 
 # Gas and Ice Giant Planets
 jupiter = (M_J, 7.7834082e11)

@@ -64,18 +64,18 @@ def scatter_parameters_numbers(pop, m_low_lim=0, a_up_lim=30):
     Means = []
     Systems = []
 
-    for sim in pop.SIMS.values():
+    for id,sim in pop.SIMS.items():
         TotalMasses.append(sim.Total_Mass)
         SigmaCoeffs.append(sim.Sigma_Exponent)
         Masses = list(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)
         Orb_Dist = list(sim.snaps[sim.N_snaps - 1].satellites['a'].values * R_S / au)
         system = zip(Masses, Orb_Dist)
         filtered = [item for item in system if item[0] >= m_low_lim and item[1] <= a_up_lim]
-        mean = np.mean([item[0] for item in filtered])
-        Means.append(mean)
+        # mean = np.max([item[0] for item in filtered])/np.sum([item[0] for item in filtered])
+        # Means.append(mean)
         Numbers.append(len(filtered))
-    Means = np.array(Means) / np.sum(Means)
-    print(Numbers * Means)
+    #Means = np.array(Means) / np.sum(Means)
+    print(Numbers)
     Numbers = np.array(Numbers)
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
@@ -104,6 +104,65 @@ def scatter_parameters_numbers(pop, m_low_lim=0, a_up_lim=30):
     fig.savefig(path.join(pop.PLOT, 'scatter_parameters_numbers.png'), transparent=False, dpi=pop.dpi,
                 bbox_inches="tight")
     plt.close(fig)
+
+def scatter_parameters_lost_mass(pop, m_low_lim=0, a_up_lim=30):
+    TotalMasses = []
+    SigmaCoeffs = []
+    lost_mass = []
+    numbers = []
+    Reference = []
+    TM = []
+    for id, sim in pop.SIMS.items():
+        TotalMasses.append(sim.Total_Mass)
+        SigmaCoeffs.append(sim.Sigma_Exponent)
+        TM.append(np.sum([item for item in list(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E)]))
+        Reference.append(sim.Sigma_Norm / (R_S / au)**sim.Sigma_Exponent / denstos * pow(au/R_S, sim.Sigma_Exponent) / denstos)
+        masses = sim.lost_satellites['mass'].values * M_S / M_J
+        cols = sim.lost_satellites['collision'].values
+        filter_null = cols == 0.0
+        filtered = masses[filter_null]
+        summed = np.sum(filtered)
+        numbers.append(len(filtered))
+        # summed = np.sum(filtered)
+        lost_mass.append(summed)
+
+    lost_mass = np.array(lost_mass)
+
+    #Means = np.array(Means) / np.sum(Means)
+    # print(Numbers / np.array(Means))
+    Numbers = np.array(SigmaCoeffs)
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+
+    # arr = np.unique(SigmaCoeffs)
+    cmap = plt.get_cmap(pop.cmap_standart,len(SigmaCoeffs))
+
+    norm = colors.BoundaryNorm(np.linspace(-1.625, -0.375, len(np.unique(SigmaCoeffs))+1, endpoint=True), cmap.N)
+
+
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(Reference, lost_mass, c=SigmaCoeffs, cmap=cmap, norm=norm, s=12)
+    x_labels = ax.get_xticklabels()
+    plt.setp(x_labels, horizontalalignment='center')
+    ax.set(ylabel='Total Lost Mass [$\mathrm{M_J}$]', xlabel=r'Reference Value at 1 $\mathrm{au}$ [$\mathrm{g cm^{-2}}$]')
+    # ax2 = ax.twinx()
+    # mn, mx = ax.get_ylim()
+    # ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
+    # ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap,norm=norm), orientation='vertical',
+                 label=r'Power-Law Exponent', ax=ax, ticks=np.unique(SigmaCoeffs))
+    ax.set_yscale('log')
+    ax.set_xscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Synthesis Parameters')
+
+    fig.savefig(path.join(pop.PLOT, 'scatter_reference_lost_mass.png'), transparent=False, dpi=pop.dpi,
+                bbox_inches="tight")
+    plt.close(fig)
+
+
 
 def scatter_parameters_AMD(pop, m_low_lim=0, a_up_lim=30):
     TotalMasses = []
@@ -180,13 +239,13 @@ def scatter_parameters_RMC(pop, m_low_lim=0, a_up_lim=30):
     plt.style.use('seaborn-paper')
     plt.rcParams.update({'font.size': pop.fontsize})
     cmap = pop.cmap_standart
-    cmin = min(Numbers)
-    cmax = max(Numbers)
+    cmin = min(RMCS)
+    cmax = max(RMCS)
 
-    norm = colors.LogNorm(cmin, cmax)
+    norm = colors.Normalize(cmin, cmax)
 
     fig, ax = plt.subplots(figsize=pop.figsize)
-    ax.scatter(SigmaCoeffs, TotalMasses, c=Numbers, cmap=cmap, norm=norm, s=12)
+    ax.scatter(SigmaCoeffs, TotalMasses, c=RMCS, cmap=cmap, norm=norm, s=12)
     x_labels = ax.get_xticklabels()
     plt.setp(x_labels, horizontalalignment='center')
     ax.set(xlabel='Surface Density Power Law Exponent', ylabel=r'Total Disk Mass [$M_{\odot}$]', xticks=SigmaCoeffs)
@@ -200,7 +259,48 @@ def scatter_parameters_RMC(pop, m_low_lim=0, a_up_lim=30):
     if pop.plot_config == 'presentation':
         ax.set(title=r'Synthesis Parameters')
 
-    fig.savefig(path.join(pop.PLOT, 'scatter_parameters_rmc.png'), transparent=False, dpi=pop.dpi,
+    fig.savefig(path.join(pop.PLOT, 'scatter_parameters_rmc_nonlog.png'), transparent=False, dpi=pop.dpi,
+                bbox_inches="tight")
+    plt.close(fig)
+
+
+
+def scatter_collision_number(pop, m_low_lim=0, a_up_lim=30):
+    TotalMasses = []
+    SigmaCoeffs = []
+    times = []
+
+    for sim in tqdm(pop.SIMS.values()):
+        TotalMasses.append(sim.Total_Mass)
+        SigmaCoeffs.append(sim.Sigma_Exponent)
+        times.append(len(sim.collisions.index))
+
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    cmap = pop.cmap_standart
+    cmin = min(times)
+    cmax = max(times)
+
+    norm = colors.Normalize(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(SigmaCoeffs, TotalMasses, c=times, cmap=cmap, norm=norm, s=12)
+    x_labels = ax.get_xticklabels()
+    plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel='Surface Density Power Law Exponent', ylabel=r'Total Disk Mass [$M_{\odot}$]', xticks=SigmaCoeffs)
+    ax2 = ax.twinx()
+    mn, mx = ax.get_ylim()
+    ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
+    ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
+                 label=r'Number of Collisions', ax=ax2, pad=0.12)
+    # ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Synthesis Parameters')
+
+    fig.savefig(path.join(pop.PLOT, 'scatter_parameters_collision_number.png'), transparent=False, dpi=pop.dpi,
                 bbox_inches="tight")
     plt.close(fig)
 
@@ -494,14 +594,22 @@ def scatter_radial_twmf(pop, m_low_lim=0, a_up_lim=30):
 
     SE = []
     TM = []
+    RE = []
     for id in np.unique([sys[-1] for sys in earth_analogs2]):
         SE.append(pop.SIMS[id].Sigma_Exponent)
         TM.append(pop.SIMS[id].Total_Mass)
+        RE.append(pop.SIMS[id].Sigma_Norm / (R_S / au)**pop.SIMS[id].Sigma_Exponent / denstos * pow(au/R_S, pop.SIMS[id].Sigma_Exponent) / denstos)
 
     SE = np.array(SE)
     TM = np.array(TM)
+
+    cmap = pop.cmap_standart
+    cmin = min(RE)
+    cmax = max(RE)
+
+    norm = colors.LogNorm(cmin, cmax)
     fig, ax = plt.subplots(figsize=pop.figsize)
-    ax.scatter(SE, TM, s=12)
+    ax.scatter(SE, TM, c=RE, cmap=cmap, norm=norm, s=12)
     x_labels = ax.get_xticklabels()
     plt.setp(x_labels, horizontalalignment='center')
     ax.set(xlabel='Surface Density Power Law Exponent', ylabel=r'Total Disk Mass [$M_{\odot}$]', xticks=SE)
@@ -509,8 +617,8 @@ def scatter_radial_twmf(pop, m_low_lim=0, a_up_lim=30):
     mn, mx = ax.get_ylim()
     ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
     ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
-    # fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
-    #              label=r'Reference Value at $1 \mathrm{au}$ [$\mathrm{g}\mathrm{cm}^{-2}$]', ax=ax2, pad=0.12)
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
+                 label=r'Reference Value at $1 \mathrm{au}$ [$\mathrm{g}\mathrm{cm}^{-2}$]', ax=ax2, pad=0.12)
     # ax.set_yscale('log')
     if pop.plot_config == 'presentation':
         ax.set(title=r'Synthesis Parameters')
@@ -518,6 +626,7 @@ def scatter_radial_twmf(pop, m_low_lim=0, a_up_lim=30):
     fig.savefig(path.join(pop.PLOT, 'scatter_parameters_earth_analogs.png'), transparent=False, dpi=pop.dpi,
                 bbox_inches="tight")
     plt.close(fig)
+
 
 
 

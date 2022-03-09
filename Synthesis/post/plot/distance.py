@@ -175,13 +175,16 @@ def distances(pop, m_low_lim=0, a_up_lim=30):
     systems = []
     total_masses = []
     sigma_exponents = []
+    numbers = []
+    reference = []
 
 
-    for id, sim in tqdm(pop.SIMS.items()):
+    for id, sim in pop.SIMS.items():
         if id > 250:
             break
         total_masses.append(sim.Total_Mass)
         sigma_exponents.append(sim.Sigma_Exponent)
+        reference.append(sim.Sigma_Norm / (R_S / au)**sim.Sigma_Exponent / denstos * pow(au/R_S, sim.Sigma_Exponent) / denstos)
 
         zipped = zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values,
                      sim.snaps[sim.N_snaps - 1].satellites['a'].values)
@@ -190,24 +193,26 @@ def distances(pop, m_low_lim=0, a_up_lim=30):
         filtered = [(m * M_S / M_E, a * R_S / au) for (m, a) in zipped if
                     m >= m_low_lim * M_E / M_S and a <= a_up_lim * au / R_S]
         systems.append(filtered)
+        numbers.append(len(filtered))
     distances = []
+    num=len(systems)
     # print(systems)
     # func = lambda x: distance(x, terrestrial)
     # distances = list(map(func, systems))
     try:
-        distances = np.load(file=path.join(pop.PLOT,'dist.npy'))
+        distances = np.load(file=path.join(pop.PLOT,f'dist_terr_log_M_{num}.npy'))
+
     except:
         for sys in tqdm(systems):
             distances.append(distance(sys, terrestrial))
-        np.save(arr=distances,file=path.join(pop.PLOT,'dist'))
+        np.save(arr=distances,file=path.join(pop.PLOT,f'dist_terr_{num}.npy'))
     print(distances)
-
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
     plt.rcParams.update({'font.size': pop.fontsize})
     plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
 
-    cmap = 'viridis_r'
+    cmap = pop.cmap_standart
     cmin = min(distances)
     cmax = max(distances)
 
@@ -218,18 +223,49 @@ def distances(pop, m_low_lim=0, a_up_lim=30):
     x_labels = ax.get_xticklabels(list(set(sigma_exponents)))
     plt.setp(x_labels, horizontalalignment='center')
     ax.set(xlabel='Sigma Exponent', ylabel=r'Total Mass', xticks=sigma_exponents)
+    ax2 = ax.twinx()
+    mn, mx = ax.get_ylim()
+    ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
+    ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
     fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
-                 ax=ax)
-    #ax.set_yscale('log')
+                 ax=ax2, pad=0.12)
+
     if pop.plot_config == 'presentation':
         ax.set(title=r'Distances between Systems')
-    save_name = 'scatter_distances'
+    save_name = 'scatter_distances_log_M'
     if a_up_lim < 30 and m_low_lim > 0:
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
     #fig.savefig(path.join(pop.PLOT, 'scatter_distances.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
     plt.close(fig)
 
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
+    cmap = pop.cmap_standart
+    cmin = min(numbers)
+    cmax = max(numbers)
+
+    norm = colors.Normalize(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(reference, distances, c=numbers, norm=norm, s=12)
+    # x_labels = ax.get_xticklabels(list(set(reference)))
+    # plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel='Reference Value [$\mathrm{g cm^{-2}}$]', ylabel=r'Distance')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Number of Planets',
+                 ax=ax)
+    ax.set_yscale('log')
+    ax.set_xscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Distances between Systems')
+    save_name = 'scatter_distances_log_M_reference'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    #fig.savefig(path.join(pop.PLOT, 'scatter_distances.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
 
 def distances_reference(pop, m_low_lim=0, a_up_lim=30):
     systems = []
@@ -246,26 +282,27 @@ def distances_reference(pop, m_low_lim=0, a_up_lim=30):
         sigma_exponents.append(sim.Sigma_Exponent)
         reference.append(sim.Sigma_Norm / (R_S / au)**sim.Sigma_Exponent / denstos * pow(au/R_S, sim.Sigma_Exponent) / denstos)
 
-        zipped = zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values,
-                     sim.snaps[sim.N_snaps - 1].satellites['a'].values)
+        zipped = zip(sim.snaps[sim.N_snaps - 1].satellites['M'].values * M_S / M_E,
+                     sim.snaps[sim.N_snaps - 1].satellites['a'].values  * R_S / au)
 
         # Remove under threshold Masses
-        filtered = [(m * M_S / M_E, a * R_S / au) for (m, a) in zipped if
-                    m >= m_low_lim * M_E / M_S and a <= a_up_lim * au / R_S]
+        filtered = [(m, a) for (m, a) in zipped if
+                    m >= m_low_lim and a <= a_up_lim]
 
         systems.append(filtered)
         numbers.append(len(filtered))
-    distances = []
+    print(numbers)
     # print(systems)
     # func = lambda x: distance(x, terrestrial)
     # distances = list(map(func, systems))
-
+    num=len(systems)
     try:
-        distances = np.load(file=path.join(pop.PLOT,'dist.npy'))
+        distances = np.load(file=path.join(pop.PLOT,f'dist_terr_log_M_{num}.npy'))
     except:
+        distances = []
         for sys in tqdm(systems):
             distances.append(distance(sys, terrestrial))
-        np.save(arr=distances,file=path.join(pop.PLOT,'dist'))
+        np.save(arr=distances,file=path.join(pop.PLOT,f'dist_terr_{num}'))
     print(distances)
 
     plt.rcParams.update({'figure.autolayout': True})
@@ -273,24 +310,24 @@ def distances_reference(pop, m_low_lim=0, a_up_lim=30):
     plt.rcParams.update({'font.size': pop.fontsize})
     plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
 
-    cmap = 'viridis_r'
+    cmap = pop.cmap_standart
     cmin = min(numbers)
     cmax = max(numbers)
 
     norm = colors.Normalize(cmin, cmax)
 
     fig, ax = plt.subplots(figsize=pop.figsize)
-    ax.scatter(np.array(reference), distances, c=numbers, norm=norm, s=12)
+    ax.scatter(reference, distances, c=numbers, norm=norm, s=12)
     # x_labels = ax.get_xticklabels(list(set(reference)))
     # plt.setp(x_labels, horizontalalignment='center')
     ax.set(xlabel='Reference Value [$\mathrm{g cm^{-2}}$]', ylabel=r'Distance')
-    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Number of Planets',
                  ax=ax)
-    ax.set_yscale('log')
+    # ax.set_yscale('log')
     ax.set_xscale('log')
     if pop.plot_config == 'presentation':
         ax.set(title=r'Distances between Systems')
-    save_name = 'scatter_distances_reference'
+    save_name = 'scatter_distances_log_M_reference'
     if a_up_lim < 30 and m_low_lim > 0:
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
@@ -399,7 +436,7 @@ def tsne(pop, m_low_lim=0, a_up_lim=30):
 
 
     try:
-        matrix_metric = np.load(path.join(pop.PLOT,f'metric_matrix_{num}.npy'))
+        matrix_metric = np.load(path.join(pop.PLOT,f'metric_matrix_log_M_{num}.npy'))
         print('Loaded from pickle')
     except:
         rows = np.array([np.array(sys_matrix[i:], dtype='object') for i in range(num-1)], dtype='object')
@@ -412,7 +449,7 @@ def tsne(pop, m_low_lim=0, a_up_lim=30):
         upper = np.reshape(upper,(num,num))
         matrix_metric = upper + upper.T
 
-        np.save(path.join(pop.PLOT,f'metric_matrix_{num}'), matrix_metric)
+        np.save(path.join(pop.PLOT,f'metric_matrix_log_M_{num}'), matrix_metric)
         print('saved to Pickle')
         print(matrix_metric)
 
@@ -601,13 +638,15 @@ def distance_earth2(pop, m_low_lim=0, a_up_lim=30):
     systems = []
     total_masses = []
     sigma_exponents = []
+    reference = []
 
 
     for id, sim in tqdm(pop.SIMS.items()):
-        if id > 2:
+        if id > 242:
             break
         total_masses.append(sim.Total_Mass)
         sigma_exponents.append(sim.Sigma_Exponent)
+        reference.append(sim.Sigma_Norm / (R_S / au)**sim.Sigma_Exponent / denstos * pow(au/R_S, sim.Sigma_Exponent) / denstos)
 
         WM = np.array(sim.snaps[sim.N_snaps - 1].satellites['WM'].values)
         SWM = np.array(sim.snaps[sim.N_snaps - 1].satellites['SWM'].values)
@@ -624,31 +663,49 @@ def distance_earth2(pop, m_low_lim=0, a_up_lim=30):
                     m >=  0.1 * M_E / M_S and m <= 5 * M_E / M_S and a <= a_up_lim * au / R_S and wmf > 0]
         systems.append(filtered)
     distances = []
+    num = len(systems)
     # print(systems)
     # func = lambda x: distance(x, terrestrial)
     # distances = list(map(func, systems))
-    print(earth_distance([(0.6,1.2,0.002)], [earth_wmf]))
-    def get_min_dist(sys):
-        distances = []
-        for planet in enumerate(sys):
-            print(planet[1])
-            distances.append(earth_distance([planet[1]],[earth_wmf]))
+    #print(earth_distance([(0.6,1.2,0.002)], [earth_wmf]))
+    # def get_min_dist(sys):
+    #     distances = []
+    #     for planet in enumerate(sys):
+    #         print(planet[1])
+    #         distances.append(earth_distance([planet[1]],[earth_wmf]))
+    #
+    #     return np.min(distances), sys[np.argmin(distances)]
+    # planets = []
 
-        return np.min(distances), sys[np.argmin(distances)]
-    planets = []
-    for sys in tqdm(systems):
-        distances.append(earth_distance(sys, [earth_wmf]))
-        print(sys)
         # dist, planet = get_min_dist(sys)
         # distances.append(dist)
         # planets.append(planet)
+
+    try:
+        distances = np.load(path.join(pop.PLOT,f'dist_earth_min_{num}.npy'))
+        distances_all = np.load(path.join(pop.PLOT,f'dist_earth_{num}.npy'))
+        planets = np.load(path.join(pop.PLOT,f'planets_earth_min_{num}.npy'))
+        print('Loaded from pickle')
+    except:
+        distances = []
+        for sys in tqdm(systems):
+            distances.append(earth_distance(sys, [earth_wmf]))
+
+        np.save(path.join(pop.PLOT,f'dist_earth_{num}'), distances)
+        print('saved to Pickle')
+        print(distances)
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
     plt.rcParams.update({'font.size': pop.fontsize})
     plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
 
-    cmap = 'viridis_r'
+    # for i,item in enumerate(distances):
+    #     if item < 0:
+    #         distances[i] = max(distances)*0.1
+
+
+    cmap = pop.cmap_standart
     cmin = min(distances)
     cmax = max(distances)
 
@@ -658,15 +715,47 @@ def distance_earth2(pop, m_low_lim=0, a_up_lim=30):
     ax.scatter(sigma_exponents, total_masses, c=distances, cmap=cmap, norm=norm, s=12)
     x_labels = ax.get_xticklabels(list(set(sigma_exponents)))
     plt.setp(x_labels, horizontalalignment='center')
-    ax.set(xlabel='Sigma Exponent', ylabel=r'Total Mass', xticks=sigma_exponents)
-    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Distance',
-                 ax=ax)
-    ax.set_yscale('log')
+    ax2 = ax.twinx()
+    mn, mx = ax.get_ylim()
+    ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
+    ax2.set_ylabel('Total Disk Mass [$M_{J}$]')
+    ax.set(xlabel='Sigma Exponent', ylabel=r'Total Disk Mass [$M_{\odot}$]', xticks=sigma_exponents)
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Minimal Distance',
+                 ax=ax2, pad=0.12)
+    #ax.set_yscale('log')
     if pop.plot_config == 'presentation':
         ax.set(title=r'Distances between Systems')
-    save_name = 'scatter_metric_earth'
+    save_name = 'scatter_metric_earth_min'
     if a_up_lim < 30 and m_low_lim > 0:
         save_name += '_lim'
     fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
-
     plt.close(fig)
+
+
+    wmfs = [w for (m,a,w) in planets]
+
+    cmap = pop.cmap_standart
+    cmin = min(wmfs)
+    cmax = max(wmfs)
+
+    norm = colors.Normalize(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(reference, distances, c=wmfs, norm=norm, s=12)
+    # x_labels = ax.get_xticklabels(list(set(reference)))
+    # plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel='Reference Value [$\mathrm{g cm^{-2}}$]', ylabel=r'Minimal Distance')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical', label=r'Total Water Mass Fraction',
+                 ax=ax)
+    #ax.set_yscale('log')
+    ax.set_xscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Distances between Systems')
+    save_name = 'scatter_distances_earth_reference'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    #fig.savefig(path.join(pop.PLOT, 'scatter_distances.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+

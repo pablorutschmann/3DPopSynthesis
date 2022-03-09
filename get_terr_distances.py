@@ -37,7 +37,7 @@ def get_dist(pop,mlow,aup):
 
         # Remove under threshold Masses
         filtered = [(m * M_S / M_E, a * R_S / au) for (m, a) in zipped if
-                    m >= m_low_lim * M_E / M_S and a <= a_up_lim * au / R_S]
+                    m >= mlow * M_E / M_S and a <= aup * au / R_S]
         systems.append(filtered)
     num=len(systems)
     distances = []
@@ -45,8 +45,9 @@ def get_dist(pop,mlow,aup):
     # func = lambda x: distance(x, terrestrial)
     distances = np.array(list(map(lambda x :distance(x,terrestrial),systems)))
 
-    np.save(join(pop.PLOT,f'dist_terr_{num}'), distances)
+    np.save(join(pop.PLOT,f'dist_terr_log_M_{num}'), distances)
     print('saved to Pickle')
     print(distances)
+
 
 get_dist(POP,m_low_lim,a_up_lim)
