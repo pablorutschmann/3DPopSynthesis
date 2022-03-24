@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import os.path as path
 from os import makedirs
+
+import numpy as np
+
 from .simulation import simulation
 from tqdm import tqdm
 
@@ -68,7 +71,6 @@ class population:
           Main Path: {self.MAIN}
           Number Of Simulations: {self.NSIMS}
       """
-
 
 if __name__ == "__main__":
     TEST = population("test", 9)

@@ -3,7 +3,7 @@ from Synthesis.post.plot import *
 from Synthesis.units import *
 from importlib import reload
 
-POP = post.population('SynthesisRuns/combined',242)
+POP = post.population('SynthesisRuns/combined', 242)
 POP.switch_plot_config('paper')
 
 print(POP)

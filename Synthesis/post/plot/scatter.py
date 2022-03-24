@@ -38,7 +38,7 @@ def scatter_parameters(pop):
     ax.scatter(SigmaCoeffs, TotalMasses, c=Reference, cmap=cmap, norm=norm, s=12)
     x_labels = ax.get_xticklabels()
     plt.setp(x_labels, horizontalalignment='center')
-    ax.set(xlabel='Surface Density Power Law Exponent', ylabel=r'Total Disk Mass [$M_{\odot}$]', xticks=SigmaCoeffs)
+    ax.set(xlabel='Surface Density Power Law Exponent', ylabel=r'Total Mass [$M_{\odot}$]', xticks=SigmaCoeffs)
     ax2 = ax.twinx()
     mn, mx = ax.get_ylim()
     ax2.set_ylim(M_S / M_J * mn, M_S / M_J * mx)
@@ -343,7 +343,8 @@ def scatter_ecc_inc(pop, m_low_lim=0, a_up_lim=30):
     norm = colors.LogNorm(cmin, cmax)
 
     fig, ax = plt.subplots(figsize=pop.figsize)
-    ax.scatter(Ecc, Inc, c=Orb_Dist, cmap=cmap, norm=norm, s=3)
+    ax.scatter(Ecc, np.sin(np.array(Inc)/360 * 2 * np.pi), c=Orb_Dist, cmap=cmap, norm=norm, s=3)
+    # ax.scatter(Ecc, np.sin(np.array(Inc)), c=Orb_Dist, cmap=cmap, norm=norm, s=3)
     x_labels = ax.get_xticklabels()
     plt.setp(x_labels, horizontalalignment='center')
     ax.set(xlabel='Eccentricity', ylabel=r'$\sin(\mathrm{inclination})$')
@@ -439,17 +440,160 @@ def scatter_radial_twmf(pop, m_low_lim=0, a_up_lim=30):
     data = [item for item in data if item[0] >= 0.3 and item[0] <= 3]
     mass_lim_number = len(data)
     print(f'Number of planets in mass limit: {mass_lim_number}, {mass_lim_number/total_number}')
+
+    data_copy = data.copy()
+    data_wmf = [item for item in data_copy if item[2] > 0.0]
+    Masses, Orb_Dist, WMF, SWMF, TWMF, Ecc, System = zip(*data_wmf)
+    n_ea_ml_nz_wmf = len(Masses)
+    print(f'Number of planets in mass limit with nonzero liquid watermass fraction: {n_ea_ml_nz_wmf}, {n_ea_ml_nz_wmf/mass_lim_number}')
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+
+    N_bins = 15
+    bins = 10 ** np.linspace(np.log10(min(WMF)), np.log10(max(WMF)), N_bins)
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    # ax.hist(Masses, bins=bins)
+    # values, base, _ = plt.hist(Orb_Dist, bins=bins, rwidth=0.95)
+    ax.hist(WMF, bins=bins, rwidth=0.95)
+    ax.axvline(OE/M_E, color='red', linewidth=1)
+    ax.set(xlabel=r'Mass Fraction', ylabel=r'Counts')
+    ax.set_xscale('log')
+    # ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Histrogram of Terrestrial Planets Orbital Distances')
+    save_name = 'histogram_earth_analogs_wmf'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+    data_copy = data.copy()
+    data_wmf_lim = [item for item in data_copy if item[2] > 0.0 and item[3] > 0.00075]
+    Masses, Orb_Dist, WMF, SWMF, TWMF, Ecc, System = zip(*data_wmf_lim)
+    # n_ea_ml_nz_wmf = len(Masses)
+    # print(f'Number of planets in mass limit with nonzero liquid watermass fraction: {n_ea_ml_nz_wmf}, {n_ea_ml_nz_wmf/mass_lim_number}')
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+
+    N_bins = 15
+    bins = 10 ** np.linspace(np.log10(min(WMF)), np.log10(max(WMF)), N_bins)
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    # ax.hist(Masses, bins=bins)
+    # values, base, _ = plt.hist(Orb_Dist, bins=bins, rwidth=0.95)
+    ax.hist(WMF, bins=bins, rwidth=0.95)
+    ax.axvline(OE/M_E, color='red', linewidth=1)
+    ax.set(xlabel=r'Mass Fraction', ylabel=r'Counts')
+    ax.set_xscale('log')
+    # ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Histrogram of Terrestrial Planets Orbital Distances')
+    save_name = 'histogram_earth_analogs_wmf_lim'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+    data_copy = data.copy()
+    data_swmf_lim = [item for item in data_copy if item[3] > 0.0 and item[2] > 0.00025]
+    Masses, Orb_Dist, WMF, SWMF, TWMF, Ecc, System = zip(*data_swmf_lim)
+    # n_ea_ml_nz_wmf = len(Masses)
+    # print(f'Number of planets in mass limit with nonzero liquid watermass fraction: {n_ea_ml_nz_wmf}, {n_ea_ml_nz_wmf/mass_lim_number}')
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+
+    N_bins = 15
+    bins = 10 ** np.linspace(np.log10(min(WMF)), np.log10(max(WMF)), N_bins)
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    # ax.hist(Masses, bins=bins)
+    # values, base, _ = plt.hist(Orb_Dist, bins=bins, rwidth=0.95)
+    ax.hist(WMF, bins=bins, rwidth=0.95)
+    ax.axvline(OE/M_E, color='red', linewidth=1)
+    ax.set(xlabel=r'Mass Fraction', ylabel=r'Counts')
+    ax.set_xscale('log')
+    # ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Histrogram of Terrestrial Planets Orbital Distances')
+    save_name = 'histogram_earth_analogs_swmf_lim'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+    data_copy = data.copy()
+    data_swmf = [item for item in data_copy if item[3] > 0.0]
+    Masses, Orb_Dist, WMF, SWMF, TWMF, Ecc, System = zip(*data_swmf)
+    n_ea_ml_nz_swmf = len(Masses)
+    print(f'Number of planets in mass limit with nonzero hydrated solids watermass fraction: {n_ea_ml_nz_swmf}, {n_ea_ml_nz_swmf/mass_lim_number}')
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+
+    N_bins = 15
+    bins = 10 ** np.linspace(np.log10(min(SWMF)), np.log10(max(SWMF)), N_bins)
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    # ax.hist(Masses, bins=bins)
+    # values, base, _ = plt.hist(Orb_Dist, bins=bins, rwidth=0.95)
+    ax.hist(WMF, bins=bins, rwidth=0.95)
+    ax.axvline(3 * OE/M_E, color='red', linewidth=1)
+    ax.set(xlabel=r'Mass Fraction', ylabel=r'Counts')
+    ax.set_xscale('log')
+    # ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Histrogram of Terrestrial Planets Orbital Distances')
+    save_name = 'histogram_earth_analogs_swmf'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
+    data_copy = data.copy()
+    data_twmf = [item for item in data_copy if item[2] > 0.0 and item[3] > 0.0]
+    Masses, Orb_Dist, WMF, SWMF, TWMF, Ecc, System = zip(*data_twmf)
+    n_ea_ml_nz_twmf = len(Masses)
+    print(f'Number of planets in mass limit with nonzero wmf and swmf: {n_ea_ml_nz_twmf}, {n_ea_ml_nz_twmf/mass_lim_number}')
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    ratios = np.array(WMF)/np.array(SWMF)
+    N_bins = 15
+    bins = 10 ** np.linspace(np.log10(min(ratios)), np.log10(max(ratios)), N_bins)
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    # ax.hist(Masses, bins=bins)
+    # values, base, _ = plt.hist(Orb_Dist, bins=bins, rwidth=0.95)
+    ax.hist(ratios, bins=bins, rwidth=0.95)
+    ax.axvline(1/3, color='red', linewidth=1)
+    ax.set(xlabel=r'Ratio', ylabel=r'Counts')
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Histrogram of Terrestrial Planets Orbital Distances')
+    save_name = 'histogram_earth_analogs_twmf'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
     data = [item for item in data if item[4] > 0]
     non_zero_wm = data.copy()
     non_zero_wmf_number = len(data)
     print(f'Number of planets in mass limit with non zero TWMF: {non_zero_wmf_number}, {non_zero_wmf_number/mass_lim_number} ({non_zero_wmf_number/total_number})')
+
+
 
     earth_analogs = [item for item in data if item[0] >= 0.101 and item[1] <= a_up_lim and item[2] > 0.001]
     #print(earth_analogs)
 
     Masses, Orb_Dist, WMF, SWMF, TWMF, Ecc, System = zip(*data)
 
-    ms, obs, wmf, swmf, twmf, ecc, system = zip(*earth_analogs)
+
 
     plt.rcParams.update({'figure.autolayout': True})
     plt.style.use('seaborn-paper')
@@ -586,6 +730,40 @@ def scatter_radial_twmf(pop, m_low_lim=0, a_up_lim=30):
     #     print(f'Exponent: {pop.SIMS[earth[-1]].Sigma_Exponent}')
     #     print(f'Disk Mass: {pop.SIMS[earth[-1]].Total_Mass * M_S / M_J}')
     #     print(" ")
+
+    ms, obs, wmf, swmf, twmf, ecc, system = zip(*earth_analogs2)
+
+    plt.rcParams.update({'figure.autolayout': True})
+    plt.style.use('seaborn-paper')
+    plt.rcParams.update({'font.size': pop.fontsize})
+    plt.rcParams.update({"legend.title_fontsize": pop.legend_fontsize})
+
+    cmap = pop.cmap_standart
+    cmin = min(twmf)
+    cmax = max(twmf)
+
+    norm = colors.Normalize(cmin, cmax)
+
+    fig, ax = plt.subplots(figsize=pop.figsize)
+    ax.scatter(wmf, swmf, c=twmf, cmap=cmap, norm=norm, s=2, alpha=1)
+    x_labels = ax.get_xticklabels()
+    plt.setp(x_labels, horizontalalignment='center')
+    ax.set(xlabel=r'Water Mass Fraction]', ylabel=r'Solids Water Mass Fraction')
+    ax.axvline(0.00025, color='black', linewidth=0.7, linestyle='--')
+    ax.axhline(0.00075, color='black', linewidth=0.7, linestyle='--')
+    fig.colorbar(cm.ScalarMappable(cmap=cmap, norm=norm), orientation='vertical',
+                 label=r'Total WMF',
+                 ax=ax)
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    if pop.plot_config == 'presentation':
+        ax.set(title=r'Eccentricity and Inclination')
+    save_name = 'scatter_wmf_swmf'
+    if a_up_lim < 30 and m_low_lim > 0:
+        save_name += '_lim'
+    fig.savefig(path.join(pop.PLOT, save_name + '.png'), transparent=False, dpi=pop.dpi, bbox_inches="tight")
+    plt.close(fig)
+
 
     #filter roughly earth mass already roughly in the right positions
     data = [item for item in data if item[1] <= 2]
